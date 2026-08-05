@@ -41,7 +41,7 @@ jobs:
 
       - name: Upload architecture artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: architecture-artifacts-${{ github.ref_name }}
           path: artifacts/architecture/
@@ -53,7 +53,7 @@ jobs:
           tar --exclude=.git --exclude=.github --exclude=.venv -czf dist/source-${GITHUB_REF_NAME}.tar.gz .
 
       - name: Upload release artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: source-${{ github.ref_name }}
           path: dist/source-${{ github.ref_name }}.tar.gz
