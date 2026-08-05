@@ -1,0 +1,11 @@
+{
+  "listing": {
+    "list_tradable_cold_ms": 17.076,
+    "list_tradable_warm_ms": 0.027
+  },
+  "perf_benchmark_runner": {
+    "returncode": 0,
+    "elapsed_sec": 2.0,
+    "stderr_tail": ""
+  }
+}

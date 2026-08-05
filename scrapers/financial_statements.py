@@ -10,7 +10,7 @@ from __future__ import annotations
 import os
 from typing import Any
 
-import requests
+import requests  # type: ignore[import-untyped]
 
 from scrapers.finance_scraper import VNDIRECT_HEADERS
 

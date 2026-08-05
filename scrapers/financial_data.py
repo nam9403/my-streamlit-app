@@ -1,11 +1,14 @@
 """
-Lấy snapshot tài chính: ưu tiên JSON mẫu; có thể mở rộng requests tới nguồn mở.
+Lấy snapshot tài chính: mặc định ưu tiên giá/dữ liệu live; mock_json làm dự phòng hoặc khi II_SNAPSHOT_PREFER_LIVE=0.
 """
 
 from __future__ import annotations
 
 import json
 import os
+import threading
+import time
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -14,27 +17,198 @@ import requests  # type: ignore
 
 from core.snapshot_disk_cache import get_cached_snapshot, get_disk_snapshot_any_age, put_snapshot
 from core.valuation import value_investing_summary
+from scrapers.vn_listing import list_tradable_vn_symbols, tradable_vn_symbol_count
 
 # Đường dẫn tới mock JSON (cùng cây dự án)
 _ROOT = Path(__file__).resolve().parent.parent
 _MOCK_PATH = _ROOT / "data" / "mock_financials.json"
 _META_PATH = _ROOT / "data" / "stock_metadata.json"
+_SWR_REFRESH_LAST_TS: dict[str, float] = {}
+
+# Tránh đọc/parsing JSON lặp khi file không đổi (scan + panels gọi nhiều lần mỗi rerun).
+_meta_cache_mtime: float = -2.0
+_meta_cache_data: dict[str, Any] | None = None
+_subtype_cache_mtime: float = -2.0
+_subtype_cache_data: dict[str, str] | None = None
+_peer_buckets_mtime: float = -2.0
+_peer_buckets: dict[Any, list[str]] | None = None
+_mock_cache_mtime: float = -2.0
+_mock_cache_data: dict[str, Any] | None = None
+
+
+def _meta_path_mtime() -> float:
+    try:
+        if not _META_PATH.exists():
+            return -1.0
+        return float(_META_PATH.stat().st_mtime)
+    except OSError:
+        return -1.0
+
+
+def _mock_path_mtime() -> float:
+    try:
+        if not _MOCK_PATH.exists():
+            return -1.0
+        return float(_MOCK_PATH.stat().st_mtime)
+    except OSError:
+        return -1.0
+
+
+def clear_stock_metadata_cache() -> None:
+    """Gọi sau khi sửa stock_metadata.json trong test hoặc reload thủ công."""
+    global _meta_cache_mtime, _meta_cache_data, _subtype_cache_mtime, _subtype_cache_data
+    global _peer_buckets_mtime, _peer_buckets, _mock_cache_mtime, _mock_cache_data
+    _meta_cache_mtime = -2.0
+    _meta_cache_data = None
+    _subtype_cache_mtime = -2.0
+    _subtype_cache_data = None
+    _peer_buckets_mtime = -2.0
+    _peer_buckets = None
+    _mock_cache_mtime = -2.0
+    _mock_cache_data = None
+
+
+def universe_symbol_count() -> int:
+    """Tổng số mã universe (nhất quán với list_universe_symbols khi offset=0, limit=None)."""
+    return tradable_vn_symbol_count(use_api=True)
 
 
 def _prefer_live_snapshot() -> bool:
     """
     Policy:
-    - prod/preprod/staging: ưu tiên nguồn live trước mock.
-    - dev/local: giữ hành vi ưu tiên mock để chạy nhanh/offline.
-    Có thể override bằng II_SNAPSHOT_PREFER_LIVE=1/0.
+    - II_SNAPSHOT_PREFER_LIVE=1 → luôn ưu tiên nguồn live (giá thật).
+    - II_SNAPSHOT_PREFER_LIVE=0 → ưu tiên mock_json khi có (offline / siêu nhanh).
+    - Không set biến: mặc định ưu tiên live (đúng kỳ vọng khi mở app xem giá thật).
     """
     force = str(os.environ.get("II_SNAPSHOT_PREFER_LIVE", "") or "").strip().lower()
     if force in ("1", "true", "yes", "on"):
         return True
     if force in ("0", "false", "no", "off"):
         return False
-    env_name = str(os.environ.get("II_ENV", "dev") or "").strip().lower()
-    return env_name in ("prod", "production", "preprod", "staging", "stage")
+    return True
+
+
+def _quote_order_prefers_cafef_first() -> bool:
+    raw = str(os.environ.get("II_QUOTE_PROVIDER_ORDER", "vndirect,cafef,vietstock") or "").strip().lower()
+    if not raw:
+        return False
+    first = raw.split(",")[0].strip()
+    return first.startswith("cafef")
+
+
+def _snapshot_uses_ohlcv_store_fastpath_price(snap: dict[str, Any]) -> bool:
+    ps = str(snap.get("price_source") or "").lower()
+    if "ohlcv_store_fastpath" in ps:
+        return True
+    return "ohlcv_store_fastpath" in str(snap.get("source") or "").lower()
+
+
+def _skip_disk_cache_for_fresh_cafef_quote(snap: dict[str, Any]) -> bool:
+    """Khi ưu tiên CafeF, không phục vụ snapshot đĩa cũ chỉ còn dấu OHLCV store (tránh 'treo' nguồn sai)."""
+    return _quote_order_prefers_cafef_first() and _snapshot_uses_ohlcv_store_fastpath_price(snap)
+
+
+def _stale_ohlcv_disk_bypass_enabled() -> bool:
+    """
+    Mặc định tắt: tránh quét Finder/scan (hàng chục–trăm mã) mỗi lần đều bỏ cache đĩa → gọi mạng lặp cực chậm.
+
+    Bật II_SNAPSHOT_BYPASS_STALE_OHLCV_DISK=1 khi cần ép refresh snapshot đĩa có price_source OHLCV fastpath
+    (bảng kệ đã ưu tiên quote live riêng khi II_SNAPSHOT_PREFER_LIVE=1, không phụ thuộc cờ này).
+    """
+    v = str(os.environ.get("II_SNAPSHOT_BYPASS_STALE_OHLCV_DISK", "0") or "").strip().lower()
+    return v in ("1", "true", "yes", "on")
+
+
+def _unified_live_price_enabled() -> bool:
+    """
+    Giá thống nhất toàn app + ưu tiên quote mới nhất (get_stock_data, không cache).
+
+    Khi bật (mặc định ON): không dùng đóng cửa OHLCV để ghi đè `row["price"]`;
+    luôn thử quote tươi. Biểu đồ OHLCV vẫn dùng nguồn portal riêng.
+
+    Tắt bằng II_UNIFIED_LIVE_PRICE=0 nếu cần khớp chart với OHLCV kho (không khuyến nghị cho khách).
+    """
+    v = str(os.environ.get("II_UNIFIED_LIVE_PRICE", "1") or "").strip().lower()
+    return v not in ("0", "false", "no", "off")
+
+
+def _ohlcv_max_stale_days() -> int:
+    try:
+        return max(1, min(14, int(os.environ.get("II_OHLCV_PRICE_MAX_STALE_DAYS", "3") or 3)))
+    except ValueError:
+        return 3
+
+
+def _ohlcv_frame_is_stale(ohlcv: Any, *, max_age_days: int | None = None) -> bool:
+    """True nếu nến cuối quá cũ so với hôm nay — không được dùng làm giá khách."""
+    try:
+        if ohlcv is None or getattr(ohlcv, "empty", True):
+            return True
+        last_d = ohlcv.iloc[-1].get("date")
+        ts = pd.Timestamp(last_d)
+        if pd.isna(ts):
+            return True
+        today = pd.Timestamp.now(tz=None).normalize()
+        age = int((today - ts.normalize()).days)
+        return age > int(max_age_days if max_age_days is not None else _ohlcv_max_stale_days())
+    except Exception:
+        return True
+
+
+def ensure_request_time_live_price(row: dict[str, Any], symbol: str) -> dict[str, Any]:
+    """
+    Ép cập nhật giá quote tại thời điểm khách yêu cầu phân tích.
+
+    Không lấy giá đóng cửa OHLCV kho làm giá hiện tại. Fail-soft: giữ giá cũ nếu mạng lỗi.
+    """
+    if not isinstance(row, dict):
+        return {}
+    out = row
+    sym = str(symbol or out.get("symbol") or "").strip().upper()
+    if not sym:
+        return out
+    try:
+        old_px = float(out.get("price") or 0)
+    except (TypeError, ValueError):
+        old_px = 0.0
+
+    # 1) Quote đầy đủ không cache
+    try:
+        from scrapers.finance_scraper import ScraperError, get_stock_data
+
+        q = get_stock_data(sym, use_cache=False)
+        px = float((q or {}).get("price") or 0)
+        if px > 0:
+            out["price"] = px
+            out["price_source"] = f"request_live:{q.get('source', 'unknown')}"
+            out["price_fetched_at"] = datetime.now(timezone.utc).isoformat()
+            if old_px > 0 and abs(px - old_px) / max(old_px, px, 1e-6) > 0.03:
+                out["price_crosscheck_note_vi"] = (
+                    f"Đã làm mới giá live {px:,.0f} đ (kho/cache trước đó {old_px:,.0f} đ)."
+                )
+            return out
+    except Exception:
+        pass
+
+    # 2) Quote nhanh 1 provider
+    try:
+        from scrapers.finance_scraper import get_quote_price_fast
+
+        q2 = get_quote_price_fast(sym, budget_sec=3.0, max_providers=2)
+        px2 = float((q2 or {}).get("price") or 0)
+        if px2 > 0:
+            out["price"] = px2
+            out["price_source"] = f"request_live_fast:{q2.get('source', 'unknown')}"
+            out["price_fetched_at"] = datetime.now(timezone.utc).isoformat()
+            return out
+    except Exception:
+        pass
+
+    out.setdefault(
+        "price_crosscheck_note_vi",
+        "Không lấy được giá live lúc yêu cầu — tạm dùng giá trong snapshot (có thể cũ).",
+    )
+    return out
 
 
 def _snapshot_attach_live_enabled() -> bool:
@@ -56,23 +230,111 @@ def _align_price_with_ohlcv_enabled() -> bool:
     return v in ("1", "true", "yes", "on")
 
 
+def _snapshot_swr_enabled() -> bool:
+    # Mặc định bật: trả disk ngay + refresh nền — giảm cold-start ~20s khi TTL hết.
+    v = os.environ.get("II_SNAPSHOT_STALE_WHILE_REVALIDATE", "1").strip().lower()
+    return v in ("1", "true", "yes", "on")
+
+
+def _snapshot_swr_refresh_min_interval_sec() -> float:
+    try:
+        return max(10.0, float(os.environ.get("II_SNAPSHOT_SWR_MIN_REFRESH_SEC", "60")))
+    except ValueError:
+        return 60.0
+
+
+def _snapshot_swr_price_overlay_enabled() -> bool:
+    """
+    Trên đường SWR: thử cập nhật giá nhanh trước khi trả disk.
+    Mặc định tắt để first-paint gần như tức thì; bật khi cần giá tươi trong budget ngắn.
+    """
+    v = os.environ.get("II_SNAPSHOT_SWR_PRICE_OVERLAY", "0").strip().lower()
+    return v in ("1", "true", "yes", "on")
+
+
+def _snapshot_swr_price_budget_sec() -> float:
+    try:
+        return max(0.5, min(8.0, float(os.environ.get("II_SNAPSHOT_SWR_PRICE_BUDGET_SEC", "2.5"))))
+    except ValueError:
+        return 2.5
+
+
+def _overlay_live_price_fast(row: dict[str, Any], sym: str, *, budget_sec: float) -> bool:
+    """Cập nhật price từ quote nhanh; giữ nguyên fundamentals trên row. True nếu cập nhật được."""
+    try:
+        from scrapers.finance_scraper import get_quote_price_fast
+
+        # Chỉ 1 provider đầu (VNDirect) — nếu fail trả disk ngay, full refresh chạy nền.
+        q = get_quote_price_fast(sym, budget_sec=budget_sec, max_providers=1)
+        if not isinstance(q, dict):
+            return False
+        px = float(q.get("price") or 0)
+        if px <= 0:
+            return False
+        row["price"] = px
+        row["price_source"] = f"quote_fast:{q.get('source', 'unknown')}"
+        if q.get("pe_ratio") is not None and row.get("pe_ratio") in (None, 0, 0.0):
+            row["pe_ratio"] = q.get("pe_ratio")
+        if q.get("pb_ratio") is not None and row.get("pb_ratio") in (None, 0, 0.0):
+            row["pb_ratio"] = q.get("pb_ratio")
+        return True
+    except Exception:
+        return False
+
+
+def _launch_snapshot_refresh(sym: str) -> None:
+    now = time.time()
+    key = str(sym or "").strip().upper()
+    last = float(_SWR_REFRESH_LAST_TS.get(key, 0.0))
+    if (now - last) < _snapshot_swr_refresh_min_interval_sec():
+        return
+    _SWR_REFRESH_LAST_TS[key] = now
+
+    def _refresh() -> None:
+        try:
+            fetch_financial_snapshot(key, bypass_cache=True)
+        except Exception:
+            return
+
+    t = threading.Thread(target=_refresh, name=f"snapshot_swr_refresh_{key}", daemon=True)
+    t.start()
+
+
 def _load_mock_json() -> dict[str, Any]:
+    global _mock_cache_mtime, _mock_cache_data
+    mt = _mock_path_mtime()
+    if _mock_cache_data is not None and _mock_cache_mtime == mt:
+        return _mock_cache_data
     if not _MOCK_PATH.exists():
-        return {}
+        _mock_cache_mtime = mt
+        _mock_cache_data = {}
+        return _mock_cache_data
     with open(_MOCK_PATH, encoding="utf-8") as f:
         raw = json.load(f)
-    return raw if isinstance(raw, dict) else {}
+    payload = raw if isinstance(raw, dict) else {}
+    _mock_cache_mtime = mt
+    _mock_cache_data = payload
+    return payload
 
 
 def _load_stock_metadata() -> dict[str, Any]:
+    global _meta_cache_mtime, _meta_cache_data
+    mt = _meta_path_mtime()
+    if _meta_cache_data is not None and _meta_cache_mtime == mt:
+        return _meta_cache_data
     if not _META_PATH.exists():
-        return {}
+        _meta_cache_mtime = mt
+        _meta_cache_data = {}
+        return _meta_cache_data
     try:
         with open(_META_PATH, encoding="utf-8") as f:
             data = json.load(f)
-        return data if isinstance(data, dict) else {}
+        payload = data if isinstance(data, dict) else {}
     except (OSError, json.JSONDecodeError):
-        return {}
+        payload = {}
+    _meta_cache_mtime = mt
+    _meta_cache_data = payload
+    return _meta_cache_data
 
 
 def _merge_stock_metadata(row: dict[str, Any], sym: str) -> None:
@@ -91,56 +353,164 @@ def _merge_stock_metadata(row: dict[str, Any], sym: str) -> None:
         row["industry_subtype"] = str(block["industry_subtype"]).strip().lower()
 
 
-def _resolve_snapshot_market_price(row: dict[str, Any], sym: str) -> None:
+def _resolve_snapshot_market_price(
+    row: dict[str, Any],
+    sym: str,
+    *,
+    skip_duplicate_live_quote: bool = False,
+) -> None:
     """
     Chuẩn hóa giá cho MOS / P/E / P/B:
-    - Ưu tiên giá đóng cửa phiên gần nhất trên chuỗi OHLCV (cùng nguồn biểu đồ).
-    - Nếu II_SNAPSHOT_ATTACH_LIVE=1 và OHLCV không lấy được: fallback quote tươi (bỏ cache).
+    - Mặc định II_UNIFIED_LIVE_PRICE=1: không ghi đè `price` bằng OHLCV kho; ưu tiên quote tươi (get_stock_data, không cache).
+    - II_UNIFIED_LIVE_PRICE=0 + II_ALIGN_PRICE_WITH_OHLCV=1: có thể đồng bộ với đóng cửa OHLCV *chỉ khi nến còn tươi*.
+    - skip_duplicate_live_quote: khi vừa scrape live trong fetch_financial_snapshot, tránh gọi get_stock_data lần 2
+      (giảm treo Finder/scan nhiều mã).
+    - II_SNAPSHOT_ATTACH_LIVE=1: (khi không unified) sau OHLCV có thể fallback quote tươi.
     """
+    force_ohlcv = str(os.environ.get("II_SNAPSHOT_FORCE_OHLCV_CROSSCHECK", "0")).strip().lower() in (
+        "1",
+        "true",
+        "yes",
+        "on",
+    )
+    unified = _unified_live_price_enabled()
+    src_main = str(row.get("source") or "").strip().lower()
+    try:
+        qpx = float(row.get("price") or 0)
+    except (TypeError, ValueError):
+        qpx = 0.0
+    if (
+        not force_ohlcv
+        and not unified
+        and src_main.startswith("cafef")
+        and qpx > 0
+    ):
+        # Giữ giá CafeF; không ghi đè bằng OHLCV disk/store (dễ cũ hoặc lệch kỳ vọng "giá sàn").
+        return
+
     align = _align_price_with_ohlcv_enabled()
     attach = _snapshot_attach_live_enabled()
-    if not (align or attach):
+
+    if not (align or attach or unified):
         return
 
     quote_px = float(row.get("price") or 0)
 
-    try:
-        from scrapers.portal import fetch_ohlcv_history
+    if align and not unified:
+        try:
+            from scrapers.portal import fetch_ohlcv_history
 
-        ohlcv = fetch_ohlcv_history(sym, sessions=80)
-        if not ohlcv.empty:
-            close = float(ohlcv.iloc[-1].get("close") or 0)
-            if close > 0:
-                row["price"] = close
-                src = str(ohlcv.attrs.get("source", "live"))
-                row["price_source"] = f"ohlcv_session_close:{src}"
-                last_d = ohlcv.iloc[-1].get("date")
-                if last_d is not None:
-                    ts = pd.Timestamp(last_d)
-                    if pd.notna(ts):
-                        row["price_as_of"] = str(ts.date())
-                if quote_px > 0 and abs(close - quote_px) / quote_px > 0.08:
-                    row["price_crosscheck_note_vi"] = (
-                        f"Giá quote ({quote_px:,.0f}) lệch >8% so với đóng cửa OHLCV ({close:,.0f}); "
-                        "đã dùng OHLCV cho định giá."
-                    )
-                return
+            ohlcv = fetch_ohlcv_history(sym, sessions=80)
+            if not ohlcv.empty:
+                close = float(ohlcv.iloc[-1].get("close") or 0)
+                if close > 0:
+                    src = str(ohlcv.attrs.get("source", "live"))
+                    # Không bao giờ lấy OHLCV kho cũ làm "giá hiện tại" cho khách.
+                    if _ohlcv_frame_is_stale(ohlcv):
+                        last_d = ohlcv.iloc[-1].get("date")
+                        try:
+                            as_of = str(pd.Timestamp(last_d).date())
+                        except Exception:
+                            as_of = str(last_d)
+                        if quote_px > 0:
+                            row["price_crosscheck_note_vi"] = (
+                                f"OHLCV dừng ở {as_of} (đóng {close:,.0f}) — quá cũ; "
+                                "giữ giá quote và sẽ ưu tiên live nếu có."
+                            )
+                        else:
+                            row["price_crosscheck_note_vi"] = (
+                                f"OHLCV dừng ở {as_of} — quá cũ, không dùng làm giá hiện tại."
+                            )
+                        # Fall through → nhánh quote live (attach/unified) hoặc giữ quote.
+                    else:
+                        # Tránh ghi đè giá quote VND hợp lệ bằng OHLCV nhầm sàn (vd. ticker US trùng mã).
+                        ohlcv_suspect = False
+                        if quote_px <= 0 and close < 500:
+                            ohlcv_suspect = True
+                        elif quote_px >= 3000 and close < min(3000.0, quote_px * 0.05):
+                            ohlcv_suspect = True
+                        elif quote_px > 0 and close > 0:
+                            rel = abs(close - quote_px) / max(quote_px, close, 1e-6)
+                            if rel > 0.08 and quote_px >= 5000 and close < 5000 and close < quote_px * 0.1:
+                                ohlcv_suspect = True
+                        if ohlcv_suspect:
+                            if quote_px > 0:
+                                row["price_crosscheck_note_vi"] = (
+                                    f"Đóng cửa OHLCV ({close:,.4g}) không khớp thang giá VND với quote ({quote_px:,.0f}); "
+                                    "giữ giá quote cho hiển thị/định giá."
+                                )
+                                return
+                            row["price_crosscheck_note_vi"] = (
+                                f"Đóng cửa OHLCV ({close:,.4g}) không hợp lý cho cổ phiếu VN — có thể nhầm mã quốc tế; "
+                                "không dùng làm giá (thử nguồn live nếu bật)."
+                            )
+                            # Không return: cho phép nhánh get_stock_data bên dưới (attach live).
+                        else:
+                            row["price"] = close
+                            row["price_source"] = f"ohlcv_session_close:{src}"
+                            last_d = ohlcv.iloc[-1].get("date")
+                            if last_d is not None:
+                                ts = pd.Timestamp(last_d)
+                                if pd.notna(ts):
+                                    row["price_as_of"] = str(ts.date())
+                            if quote_px > 0 and abs(close - quote_px) / max(quote_px, close, 1e-6) > 0.08:
+                                row["price_crosscheck_note_vi"] = (
+                                    f"Giá quote ({quote_px:,.0f}) lệch >8% so với đóng cửa OHLCV ({close:,.0f}); "
+                                    "đã dùng OHLCV cho định giá."
+                                )
+                            return
+        except Exception:
+            pass
+
+    # Ưu tiên quote live cho giá khách (không dùng OHLCV kho cũ).
+    if attach or unified or align:
+        try:
+            from scrapers.finance_scraper import ScraperError, get_stock_data
+
+            if skip_duplicate_live_quote and unified:
+                try:
+                    px0 = float(row.get("price") or 0)
+                except (TypeError, ValueError):
+                    px0 = 0.0
+                if px0 > 0:
+                    row["price_source"] = f"quote_fresh:{row.get('source', 'unknown')}"
+                    return
+
+            q = get_stock_data(sym, use_cache=False)
+            px = float(q.get("price") or 0)
+            if px > 0:
+                row["price"] = px
+                row["price_source"] = f"quote_fresh:{q.get('source', 'unknown')}"
+        except (ValueError, ScraperError):
+            pass
+        except Exception:
+            pass
+
+
+def _enrich_snapshot_decision_fields(row: dict[str, Any], sym: str) -> dict[str, Any]:
+    """
+    Gộp fundamentals đã có trên disk + ước ROE/LNST — không gọi mạng.
+    Copy trước khi merge để không làm bẩn object trong mem-cache.
+    """
+    out = dict(row)
+    out.setdefault("symbol", sym)
+    try:
+        _merge_stock_metadata(out, sym)
     except Exception:
         pass
-
-    if not attach:
-        return
-
     try:
-        from scrapers.finance_scraper import ScraperError, get_stock_data
+        from core.financial_enrichment import merge_cached_fundamentals_into_snapshot, normalize_eps_in_snapshot
 
-        q = get_stock_data(sym, use_cache=False)
-        px = float(q.get("price") or 0)
-        if px > 0:
-            row["price"] = px
-            row["price_source"] = f"quote_fresh:{q.get('source', 'unknown')}"
-    except (ValueError, ScraperError):
+        eps_notes = normalize_eps_in_snapshot(out)
+        if eps_notes:
+            out.setdefault("fundamentals_merge_notes", [])
+            out["fundamentals_merge_notes"] = list(
+                dict.fromkeys(list(out.get("fundamentals_merge_notes") or []) + eps_notes)
+            )
+        merge_cached_fundamentals_into_snapshot(out)
+    except Exception:
         pass
+    return out
 
 
 def fetch_financial_snapshot(symbol: str, *, bypass_cache: bool = False) -> dict[str, Any] | None:
@@ -149,21 +519,57 @@ def fetch_financial_snapshot(symbol: str, *, bypass_cache: bool = False) -> dict
     symbol: mã không phân biệt hoa thường (VNM, fpt).
     """
     sym = symbol.strip().upper()
+    if str(os.environ.get("II_VN_SYMBOL_GUARD", "1")).strip().lower() not in ("0", "false", "no", "off"):
+        try:
+            from scrapers.vn_listing import is_tradable_vn_symbol
+
+            if not is_tradable_vn_symbol(sym):
+                return None
+        except Exception:
+            pass
     stale_disk: dict[str, Any] | None = None
     prefer_live = _prefer_live_snapshot()
     if not bypass_cache:
         hot = get_cached_snapshot(sym)
         if isinstance(hot, dict):
             hot_source = str(hot.get("source") or "").strip().lower()
-            # In preprod/prod, don't keep serving mock-only hot cache forever.
-            if not (prefer_live and "mock_json" in hot_source):
-                return hot
+            if prefer_live and "mock_json" in hot_source:
+                pass
+            elif _stale_ohlcv_disk_bypass_enabled() and _skip_disk_cache_for_fresh_cafef_quote(hot):
+                pass
+            else:
+                return _enrich_snapshot_decision_fields(hot, sym)
         if os.environ.get("II_READ_STALE_DISK", "1").strip().lower() in ("1", "true", "yes", "on"):
             stale_disk = get_disk_snapshot_any_age(sym)
             if isinstance(stale_disk, dict):
                 stale_source = str(stale_disk.get("source") or "").strip().lower()
                 if prefer_live and "mock_json" in stale_source:
                     stale_disk = None
+                elif _stale_ohlcv_disk_bypass_enabled() and _skip_disk_cache_for_fresh_cafef_quote(stale_disk):
+                    stale_disk = None
+        if prefer_live and stale_disk is not None and _snapshot_swr_enabled():
+            out_stale = dict(stale_disk)
+            price_ok = False
+            if _snapshot_swr_price_overlay_enabled():
+                price_ok = _overlay_live_price_fast(
+                    out_stale,
+                    sym,
+                    budget_sec=_snapshot_swr_price_budget_sec(),
+                )
+            src0 = str(out_stale.get("source") or "unknown")
+            # Tránh chồng suffix :swr nhiều lần khi đọc lại disk SWR.
+            base_src = src0[:-4] if src0.endswith(":swr") else src0
+            out_stale["source"] = f"{base_src}:swr"
+            if price_ok:
+                out_stale["snapshot_fundamentals_note_vi"] = (
+                    "Đang dùng fundamentals từ cache + giá live nhanh; làm mới đầy đủ chạy nền."
+                )
+            else:
+                out_stale["snapshot_fundamentals_note_vi"] = (
+                    "Đang dùng snapshot cache để phản hồi nhanh; dữ liệu live sẽ được làm mới nền."
+                )
+            _launch_snapshot_refresh(sym)
+            return _enrich_snapshot_decision_fields(out_stale, sym)
 
     data = _load_mock_json()
     mock_row: dict[str, Any] | None = None
@@ -175,7 +581,7 @@ def fetch_financial_snapshot(symbol: str, *, bypass_cache: bool = False) -> dict
         _resolve_snapshot_market_price(mock_row, sym)
         _merge_stock_metadata(mock_row, sym)
         put_snapshot(sym, mock_row)
-        return mock_row
+        return _enrich_snapshot_decision_fields(mock_row, sym)
 
     try:
         from scrapers.finance_scraper import ScraperError, get_stock_data
@@ -187,18 +593,22 @@ def fetch_financial_snapshot(symbol: str, *, bypass_cache: bool = False) -> dict
                 f"TTL cache cơ bản đã cũ ({ttl}s); đã làm mới giá live và giữ chế độ thận trọng."
             )
             scraped.setdefault("symbol", sym)
-        _resolve_snapshot_market_price(scraped, sym)
+        _resolve_snapshot_market_price(
+            scraped,
+            sym,
+            skip_duplicate_live_quote=bool(prefer_live and _unified_live_price_enabled()),
+        )
         _merge_stock_metadata(scraped, sym)
         put_snapshot(sym, scraped)
-        return scraped
+        return _enrich_snapshot_decision_fields(scraped, sym)
     except ScraperError:
         if mock_row is not None:
             _resolve_snapshot_market_price(mock_row, sym)
             _merge_stock_metadata(mock_row, sym)
             put_snapshot(sym, mock_row)
-            return mock_row
+            return _enrich_snapshot_decision_fields(mock_row, sym)
         if stale_disk is not None:
-            return stale_disk
+            return _enrich_snapshot_decision_fields(stale_disk, sym)
 
     # Stub: gọi API công khai (ví dụ Stooq / FMP)
     env_url = os.environ.get("VALUE_INVESTOR_FINANCIAL_API_URL")
@@ -212,7 +622,7 @@ def fetch_financial_snapshot(symbol: str, *, bypass_cache: bool = False) -> dict
             payload["source"] = "http_api"
             _merge_stock_metadata(payload, sym)
             put_snapshot(sym, payload)
-            return payload
+            return _enrich_snapshot_decision_fields(payload, sym)
         except (requests.RequestException, ValueError):
             pass
 
@@ -220,10 +630,37 @@ def fetch_financial_snapshot(symbol: str, *, bypass_cache: bool = False) -> dict
         _resolve_snapshot_market_price(mock_row, sym)
         _merge_stock_metadata(mock_row, sym)
         put_snapshot(sym, mock_row)
-        return mock_row
+        return _enrich_snapshot_decision_fields(mock_row, sym)
     if stale_disk is not None:
-        return stale_disk
+        return _enrich_snapshot_decision_fields(stale_disk, sym)
     return None
+
+
+def _cluster_bucket_key(c: Any) -> Any:
+    """Khóa nhóm cluster (hashable) — khớp so sánh `industry_cluster` trong metadata."""
+    try:
+        hash(c)
+        return c
+    except TypeError:
+        if isinstance(c, (dict, list)):
+            return ("__json__", json.dumps(c, sort_keys=True, default=str))
+        return ("__repr__", repr(c))
+
+
+def _build_peer_cluster_buckets(meta_all: dict[str, Any]) -> dict[Any, list[str]]:
+    """Một lần / mtime: symbol đã sắp theo mã (giống vòng lặp cũ)."""
+    buckets: dict[Any, list[str]] = {}
+    for k, v in sorted(meta_all.items(), key=lambda x: str(x[0]).upper()):
+        if not isinstance(v, dict):
+            continue
+        c = v.get("industry_cluster")
+        if not c:
+            continue
+        sym = str(k).strip().upper()
+        if not sym:
+            continue
+        buckets.setdefault(_cluster_bucket_key(c), []).append(sym)
+    return buckets
 
 
 def peer_symbols_same_cluster(symbol: str, limit: int = 8) -> list[str]:
@@ -239,11 +676,14 @@ def peer_symbols_same_cluster(symbol: str, limit: int = 8) -> list[str]:
         cluster = me.get("industry_cluster")
     if not cluster:
         return [sym_u]
-    peers: list[str] = []
-    for k, v in sorted(meta_all.items(), key=lambda x: str(x[0]).upper()):
-        if not isinstance(v, dict) or v.get("industry_cluster") != cluster:
-            continue
-        peers.append(str(k).strip().upper())
+
+    global _peer_buckets_mtime, _peer_buckets
+    mt = _meta_path_mtime()
+    if _peer_buckets is None or _peer_buckets_mtime != mt:
+        _peer_buckets = _build_peer_cluster_buckets(meta_all)
+        _peer_buckets_mtime = mt
+
+    peers = list(_peer_buckets.get(_cluster_bucket_key(cluster), []))
     ordered = [sym_u] + [p for p in peers if p != sym_u]
     return ordered[:limit]
 
@@ -291,11 +731,16 @@ def financials_to_dataframe(records: list[dict[str, Any]]) -> pd.DataFrame:
     return pd.DataFrame(records)
 
 
-def list_universe_symbols(limit: int | None = None) -> list[str]:
-    """Danh sách mã từ stock_metadata.json (dùng cho quét cơ hội)."""
-    meta_all = _load_stock_metadata()
-    syms = [str(k).strip().upper() for k in meta_all.keys() if str(k).strip()]
-    syms = sorted(set(syms))
+def list_universe_symbols(limit: int | None = None, offset: int = 0) -> list[str]:
+    """
+    Danh sách mã cho quét cơ hội.
+    Ưu tiên full listing VN (HOSE/HNX/UPCOM) + metadata/extra.
+    `offset` bỏ qua N mã đầu (dùng khi đã warm một đoạn đầu universe).
+    """
+    syms = list_tradable_vn_symbols(use_api=True)
+    o = max(0, int(offset or 0))
+    if o:
+        syms = syms[o:]
     if limit is not None and limit > 0:
         return syms[:limit]
     return syms
@@ -306,6 +751,10 @@ def universe_subtype_map() -> dict[str, str]:
     Map symbol -> industry_subtype from stock_metadata.json.
     Missing subtype defaults to 'other'.
     """
+    global _subtype_cache_mtime, _subtype_cache_data
+    mt = _meta_path_mtime()
+    if _subtype_cache_data is not None and _subtype_cache_mtime == mt:
+        return _subtype_cache_data
     meta_all = _load_stock_metadata()
     out: dict[str, str] = {}
     for k, v in meta_all.items():
@@ -313,4 +762,6 @@ def universe_subtype_map() -> dict[str, str]:
         if not sym or not isinstance(v, dict):
             continue
         out[sym] = str(v.get("industry_subtype") or "other").strip().lower()
+    _subtype_cache_mtime = mt
+    _subtype_cache_data = out
     return out

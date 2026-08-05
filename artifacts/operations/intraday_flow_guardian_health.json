@@ -1,0 +1,23 @@
+{
+  "tracked_symbols": 0,
+  "cooldown_minutes": 180,
+  "generated_at_utc": "2026-07-28T10:13:13.670521+00:00",
+  "checked": 3,
+  "alerts_eligible": 1,
+  "notified": 0,
+  "suppressed_cooldown": 0,
+  "skipped_no_data": 0,
+  "failures": 0,
+  "min_intensity": 6.0,
+  "min_intensity_source": {
+    "source": "default",
+    "value": 6.0,
+    "path": null
+  },
+  "symbols": [],
+  "dispatch_enabled": false,
+  "resolution": "D",
+  "primary_source": "vndirect",
+  "sector_adjust_enabled": true,
+  "sector_adjusted_count": 0
+}

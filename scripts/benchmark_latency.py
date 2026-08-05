@@ -23,9 +23,9 @@ def _fmt(sec: float) -> str:
 
 
 def main() -> None:
-    from scrapers.financial_data import fetch_financial_snapshot, snapshot_for_peer_compare
     from core.snapshot_disk_cache import disk_cache_enabled, get_disk_snapshot_any_age
     from core.valuation import value_investing_summary
+    from scrapers import financial_data as fd
 
     attach = os.environ.get("II_SNAPSHOT_ATTACH_LIVE", "1")
     print("=== Investment Intelligence latency benchmark ===\n")
@@ -38,23 +38,26 @@ def main() -> None:
         raw = get_disk_snapshot_any_age(sym)
         dt = time.perf_counter() - t0
         hit = isinstance(raw, dict) and bool(raw)
+        raw_dict = raw if isinstance(raw, dict) else {}
         ok = bool(
             hit
             and (
-                raw.get("price")
-                or (raw.get("eps") is not None if isinstance(raw, dict) else False)
+                raw_dict.get("price")
+                or (raw_dict.get("eps") is not None)
             )
         )
         print(f"get_disk_snapshot_any_age({sym}): {_fmt(dt)}  hit={hit} usable={ok}")
 
     sym = SYMS[0]
     t0 = time.perf_counter()
-    snap_full = fetch_financial_snapshot(sym)
+    snap_full = fd.fetch_financial_snapshot(sym)
     dt = time.perf_counter() - t0
     print(f"\nfetch_financial_snapshot({sym}) [full]: {_fmt(dt)}")
 
     t0 = time.perf_counter()
-    snapshot_for_peer_compare("MWG")
+    snapshot_for_peer_compare = getattr(fd, "snapshot_for_peer_compare", None)
+    if callable(snapshot_for_peer_compare):
+        snapshot_for_peer_compare("MWG")
     dt = time.perf_counter() - t0
     print(f"snapshot_for_peer_compare(MWG): {_fmt(dt)}")
 

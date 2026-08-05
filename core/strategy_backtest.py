@@ -16,9 +16,12 @@ from urllib.parse import quote
 
 import numpy as np
 import pandas as pd
-import requests
+import requests  # type: ignore[import-untyped]
 
-from core.engine import compute_technical_indicators, detect_market_phase_from_ohlcv
+from core.engine import (
+    compute_technical_indicators,
+    detect_market_phase_at_index,
+)
 from scrapers.finance_scraper import DEFAULT_HEADERS
 
 
@@ -39,12 +42,14 @@ def _yahoo_chart(symbol: str, range_str: str = "2y") -> pd.DataFrame:
     n = min(len(timestamps), len(opens), len(highs), len(lows), len(closes))
     rows: list[dict[str, Any]] = []
     for i in range(n):
-        o, h, l, c = opens[i], highs[i], lows[i], closes[i]
-        if o is None or h is None or l is None or c is None:
+        o, h, low, c = opens[i], highs[i], lows[i], closes[i]
+        if o is None or h is None or low is None or c is None:
             continue
         dt = datetime.fromtimestamp(int(timestamps[i]), tz=timezone.utc).date().isoformat()
         v = vols[i] if i < len(vols) and vols[i] is not None else 0.0
-        rows.append({"date": dt, "open": float(o), "high": float(h), "low": float(l), "close": float(c), "volume": float(v)})
+        rows.append(
+            {"date": dt, "open": float(o), "high": float(h), "low": float(low), "close": float(c), "volume": float(v)}
+        )
     if len(rows) < 80:
         raise ValueError(f"Không đủ dữ liệu Yahoo cho {symbol}")
     df = pd.DataFrame(rows)
@@ -136,6 +141,21 @@ def fetch_vn_benchmark_series(range_str: str = "max") -> tuple[pd.Series | None,
     return None, ""
 
 
+def fetch_specific_benchmark_series(symbol: str, range_str: str = "max") -> tuple[pd.Series | None, str]:
+    sym = str(symbol or "").strip()
+    if not sym:
+        return None, ""
+    try:
+        df = _yahoo_chart(sym, range_str)
+        s = pd.Series(df["close"].values, index=df["date"].dt.normalize())
+        s = s[~s.index.duplicated(keep="last")]
+        if len(s) >= 60:
+            return s, f"Benchmark cố định {sym}"
+    except Exception:
+        pass
+    return None, ""
+
+
 @dataclass
 class BacktestResult:
     dates: list[pd.Timestamp]
@@ -151,6 +171,7 @@ class BacktestResult:
     max_drawdown_pct: float
     benchmark_label: str
     note: str
+    trades: list[dict[str, Any]]
 
 
 def run_phase_signal_backtest(
@@ -161,6 +182,8 @@ def run_phase_signal_backtest(
     warmup: int = 60,
     buy_on_breakout: bool = True,
     skip_distribution_if_above_ma50: bool = True,
+    fee_bps: float = 0.0,
+    slippage_bps: float = 0.0,
 ) -> BacktestResult:
     """
     - Mua: pha **Tích lũy**; tùy chọn thêm **Bứt phá** (`buy_on_breakout`) để bám sóng tăng.
@@ -182,6 +205,7 @@ def run_phase_signal_backtest(
     invested = False
     entry_px = 0.0
     trades_pnl: list[float] = []
+    trades: list[dict[str, Any]] = []
 
     eq_app: list[float] = []
     eq_bench: list[float] = []
@@ -193,11 +217,18 @@ def run_phase_signal_backtest(
     px_start = float(df.iloc[warmup]["close"])
     buyhold_shares = initial_cash / px_start if px_start > 0 else 0.0
     eq_bh: list[float] = []
+    fee_rate = max(0.0, float(fee_bps)) / 10_000.0
+    slip_rate = max(0.0, float(slippage_bps)) / 10_000.0
+
+    # O(N): compute indicators once; phase per bar via detect_market_phase_at_index.
+    try:
+        indicators = compute_technical_indicators(df)
+    except Exception as exc:
+        raise ValueError(f"Không tính được chỉ báo kỹ thuật cho backtest: {exc}") from exc
 
     for i in range(warmup, len(df)):
-        window = df.iloc[: i + 1].copy()
         try:
-            ph = detect_market_phase_from_ohlcv(window).phase
+            ph = detect_market_phase_at_index(df, indicators, i).phase
         except Exception:
             ph = "neutral"
         row = df.iloc[i]
@@ -206,24 +237,44 @@ def run_phase_signal_backtest(
 
         want_buy = ph == "accumulation" or (buy_on_breakout and ph == "breakout")
         if want_buy and not invested and price > 0:
-            shares = cash / price
-            entry_px = price
+            buy_px = price * (1.0 + slip_rate)
+            gross_qty = cash / buy_px if buy_px > 0 else 0.0
+            shares = gross_qty * (1.0 - fee_rate)
+            entry_px = buy_px
             cash = 0.0
             invested = True
+            trades.append(
+                {
+                    "date": str(d.date()),
+                    "side": "BUY",
+                    "price": round(float(buy_px), 4),
+                    "shares": round(float(shares), 6),
+                    "phase": str(ph),
+                }
+            )
         elif ph == "distribution" and invested and price > 0:
             do_exit = True
-            if skip_distribution_if_above_ma50 and len(window) >= 55:
+            if skip_distribution_if_above_ma50 and i >= 54:
                 try:
-                    ti = compute_technical_indicators(window)
-                    ma50 = float(ti.iloc[-1]["ma50"])
+                    ma50 = float(indicators.iloc[i]["ma50"])
                     if pd.notna(ma50) and ma50 > 0 and price > ma50:
                         do_exit = False
                 except Exception:
                     do_exit = True
             if do_exit:
-                cash = shares * price
+                sell_px = price * (1.0 - slip_rate)
+                cash = shares * sell_px * (1.0 - fee_rate)
                 if shares > 0 and entry_px > 0:
-                    trades_pnl.append((price - entry_px) / entry_px * 100.0)
+                    trades_pnl.append((sell_px - entry_px) / entry_px * 100.0)
+                trades.append(
+                    {
+                        "date": str(d.date()),
+                        "side": "SELL",
+                        "price": round(float(sell_px), 4),
+                        "shares": round(float(shares), 6),
+                        "phase": str(ph),
+                    }
+                )
                 shares = 0.0
                 entry_px = 0.0
                 invested = False
@@ -265,7 +316,7 @@ def run_phase_signal_backtest(
         + ("+Bứt phá" if buy_on_breakout else "")
         + "; bán Phân phối"
         + (" (không bán nếu giá>MA50)" if skip_distribution_if_above_ma50 else "")
-        + ". Không phí/trượt. Không cam kết lợi nhuận."
+        + f". Phí={fee_bps:.1f}bps, trượt={slippage_bps:.1f}bps. Không cam kết lợi nhuận."
     )
     return BacktestResult(
         dates=out_dates,
@@ -280,6 +331,7 @@ def run_phase_signal_backtest(
         max_drawdown_pct=float(max_dd),
         benchmark_label="benchmark",
         note=note,
+        trades=trades,
     )
 
 
@@ -322,10 +374,16 @@ def run_full_backtest_for_ticker(
     yahoo_range: str | None = None,
     buy_on_breakout: bool = True,
     skip_distribution_if_above_ma50: bool = True,
+    fee_bps: float = 0.0,
+    slippage_bps: float = 0.0,
+    benchmark_symbol: str | None = None,
 ) -> tuple[BacktestResult, str]:
     sym_u = (ticker or "").strip().upper()
     ohlcv, rng_used = fetch_long_ohlcv_for_backtest(sym_u, range_preference=yahoo_range)
-    bench_series, bench_label = fetch_vn_benchmark_series(rng_used)
+    if benchmark_symbol:
+        bench_series, bench_label = fetch_specific_benchmark_series(benchmark_symbol, rng_used)
+    else:
+        bench_series, bench_label = fetch_vn_benchmark_series(rng_used)
     if bench_series is None or len(bench_series) < 60:
         bench_series = pd.Series(
             ohlcv["close"].values,
@@ -347,6 +405,8 @@ def run_full_backtest_for_ticker(
         warmup=60,
         buy_on_breakout=buy_on_breakout,
         skip_distribution_if_above_ma50=skip_distribution_if_above_ma50,
+        fee_bps=fee_bps,
+        slippage_bps=slippage_bps,
     )
     res.benchmark_label = bench_label
     res.note = res.note + f" Yahoo range={rng_used}. Benchmark: {bench_label}."

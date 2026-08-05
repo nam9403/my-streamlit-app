@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from core.alert_center import _dedupe_badges, BADGE_DUMP, BADGE_NEWS, BADGE_SUPPORT
+from core.alert_center import BADGE_DUMP, BADGE_NEWS, BADGE_SUPPORT, _dedupe_badges
 
 
 def test_dedupe_badges() -> None:

@@ -9,7 +9,6 @@ Exit code:
 from __future__ import annotations
 
 import re
-import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -62,6 +61,14 @@ ALLOWLIST_SUBSTRINGS = (
     "example.com",
 )
 
+FORBIDDEN_RUNTIME_PATH_PREFIXES = (
+    "data/reports/",
+)
+
+FORBIDDEN_RUNTIME_PATH_EXACT = (
+    "data/reports/logs/monthly_accountability_runs.jsonl",
+)
+
 
 def _is_text_candidate(path: Path) -> bool:
     if path.name in IGNORE_FILES:
@@ -88,6 +95,14 @@ def main() -> int:
     findings: list[str] = []
     for file_path in _iter_files():
         rel = file_path.relative_to(ROOT)
+        rel_posix = rel.as_posix()
+        if rel_posix in FORBIDDEN_RUNTIME_PATH_EXACT or any(
+            rel_posix.startswith(prefix) for prefix in FORBIDDEN_RUNTIME_PATH_PREFIXES
+        ):
+            findings.append(
+                f"{rel_posix}: runtime-generated report/log artifact should not be tracked in git"
+            )
+            continue
         try:
             content = file_path.read_text(encoding="utf-8", errors="ignore")
         except OSError:

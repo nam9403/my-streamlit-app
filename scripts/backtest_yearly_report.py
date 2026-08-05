@@ -15,10 +15,9 @@ sys.path.insert(0, str(ROOT))
 
 
 def main() -> None:
-    try:
-        sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
+    reconfigure = getattr(sys.stdout, "reconfigure", None)
+    if callable(reconfigure):
+        reconfigure(encoding="utf-8")
     sym = (sys.argv[1] if len(sys.argv) > 1 else "FPT").strip().upper()
     from core.strategy_backtest import equity_yearly_returns_pct, run_full_backtest_for_ticker
 

@@ -49,4 +49,31 @@ def test_opportunity_finder_cautious_case() -> None:
     out = evaluate_stock_opportunity_3m("HPG", ohlcv, valuation, financials)
     assert out.status in ("THẬN TRỌNG", "THEO DÕI")
     assert out.score <= 70
+    assert out.market_phase in ("accumulation", "breakout", "distribution", "neutral")
+    assert out.smart_money_bias in ("bullish", "bearish", "neutral")
+
+
+def test_opportunity_finder_smart_money_bullish_boost(monkeypatch) -> None:
+    ohlcv = _mock_ohlcv(uptrend=True)
+    valuation = {"piotroski_score": 6, "margin_of_safety_composite_pct": 10.0}
+    financials = {"debt_to_equity": 0.8, "revenue_growth_yoy": 5.0, "profit_growth_yoy": 6.0}
+
+    def _neutral_sm(news: list, **kwargs: object) -> dict:
+        return {"bias": "neutral", "score": 0.0, "signals": [], "label": "", "data_mode": "heuristic"}
+
+    def _bullish_sm(news: list, **kwargs: object) -> dict:
+        return {
+            "bias": "bullish",
+            "score": 4.0,
+            "signals": ["Khối ngoại mua ròng"],
+            "label": "Smart money nghiêng mua",
+            "data_mode": "heuristic",
+        }
+
+    monkeypatch.setattr("core.opportunity_finder.analyze_smart_money_flow", _neutral_sm)
+    base = evaluate_stock_opportunity_3m("FPT", ohlcv, valuation, financials)
+    monkeypatch.setattr("core.opportunity_finder.analyze_smart_money_flow", _bullish_sm)
+    boosted = evaluate_stock_opportunity_3m("FPT", ohlcv, valuation, financials)
+    assert boosted.smart_money_bias == "bullish"
+    assert boosted.score > base.score
 

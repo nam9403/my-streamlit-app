@@ -65,6 +65,7 @@ try {
     Invoke-Step -Name "Secret scan" -Command "python scripts/check_secrets.py"
     Invoke-Step -Name "Architecture gate strict" -Command "python scripts/architecture_gate.py --strict"
     Invoke-Step -Name "Release readiness strict" -Command "python scripts/release_readiness_summary.py --strict"
+    Invoke-Step -Name "DSS commercial gate strict" -Command "python scripts/dss_release_gate.py --symbol FPT --user-id default_user --strict"
     Invoke-Step -Name "Build timing dashboard (p50/p95)" -Command "python scripts/build_timing_dashboard.py --min-samples 1"
     Invoke-Step -Name "Quality gate strict static" -Command "python scripts/quality_gate.py --strict-static"
     Invoke-Step -Name "Production readiness (preprod policy)" -Command "python scripts/prod_readiness_check.py --env preprod --require-live-data --min-live-ratio 0.25"

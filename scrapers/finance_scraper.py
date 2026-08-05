@@ -1,9 +1,9 @@
 """
-Cào chỉ số định giá: Vietstock → VNDirect Finfo (API công khai) → CafeF.
+Cào chỉ số định giá: thứ tự nguồn giá cấu hình được (mặc định VNDirect → CafeF → Vietstock).
 Cache JSON cục bộ 24h để tra cứu lại cùng mã nhanh hơn.
 
 Lưu ý: SSI iBoard (web) chủ yếu là SPA — không có HTML chứa giá; Fast Connect cần API key.
-Nguồn dự phòng chính khi Vietstock lỗi/chặn là VNDirect finfo-api.
+Đổi thứ tự nguồn: biến II_QUOTE_PROVIDER_ORDER (vd: vndirect,cafef,vietstock).
 """
 
 from __future__ import annotations
@@ -12,18 +12,29 @@ import json
 import os
 import re
 import tempfile
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Callable
 from urllib.parse import quote
 
-import requests
+import requests  # type: ignore
 from bs4 import BeautifulSoup
 
 _ROOT = Path(__file__).resolve().parent.parent
 _CACHE_PATH = _ROOT / "data" / "scrape_cache.json"
 _CACHE_TTL = timedelta(hours=float(os.environ.get("VALUE_INVESTOR_CACHE_HOURS", "24")))
 _CACHE_DISABLED = os.environ.get("VALUE_INVESTOR_DISABLE_CACHE", "").lower() in ("1", "true", "yes")
+
+_SCRAPE_RAW_MEM: dict[str, Any] | None = None
+_SCRAPE_RAW_MTIME: float = -2.0
+_SCRAPE_CACHE_PATH_KEY: str | None = None
+
+
+def _invalidate_scrape_file_cache_mem() -> None:
+    global _SCRAPE_RAW_MEM, _SCRAPE_RAW_MTIME
+    _SCRAPE_RAW_MEM = None
+    _SCRAPE_RAW_MTIME = -2.0
 
 DEFAULT_HEADERS = {
     "User-Agent": (
@@ -49,6 +60,24 @@ def _request_timeout() -> float:
         return http_timeout_seconds()
     except Exception:
         return float(os.environ.get("VALUE_INVESTOR_SCRAPER_TIMEOUT", "18"))
+
+
+def _cafef_timeout() -> float:
+    """CafeF HTML chậm — timeout riêng ngắn hơn để fail-fast sang VNDirect/Vietstock."""
+    raw = os.environ.get("II_CAFEF_TIMEOUT", "").strip()
+    if raw:
+        try:
+            return max(1.5, float(raw))
+        except ValueError:
+            pass
+    return max(1.5, min(4.0, float(_request_timeout())))
+
+
+def _cafef_max_boards() -> int:
+    try:
+        return max(1, min(3, int(os.environ.get("II_CAFEF_MAX_BOARDS", "1"))))
+    except ValueError:
+        return 1
 
 # Thứ tự thử sau khi hết cache (mỗi hàm trả dict hoặc raise)
 ProviderFn = Callable[[str], dict[str, Any]]
@@ -189,14 +218,37 @@ def _extract_industry_vietstock(html: str) -> str | None:
 
 
 def _cache_read_all() -> dict[str, Any]:
-    if not _CACHE_PATH.exists():
+    if _CACHE_DISABLED:
         return {}
+    global _SCRAPE_RAW_MEM, _SCRAPE_RAW_MTIME, _SCRAPE_CACHE_PATH_KEY
+    ck = str(_CACHE_PATH.resolve())
+    if _SCRAPE_CACHE_PATH_KEY != ck:
+        _invalidate_scrape_file_cache_mem()
+        _SCRAPE_CACHE_PATH_KEY = ck
+    try:
+        mt = float(_CACHE_PATH.stat().st_mtime) if _CACHE_PATH.exists() else -1.0
+    except OSError:
+        mt = -1.0
+    if _SCRAPE_RAW_MEM is not None and _SCRAPE_RAW_MTIME == mt:
+        return _SCRAPE_RAW_MEM
+    if not _CACHE_PATH.exists():
+        empty: dict[str, Any] = {}
+        _SCRAPE_RAW_MEM = empty
+        _SCRAPE_RAW_MTIME = -1.0
+        return empty
     try:
         with open(_CACHE_PATH, encoding="utf-8") as f:
             raw = json.load(f)
-        return raw if isinstance(raw, dict) else {}
+        payload = raw if isinstance(raw, dict) else {}
     except (OSError, json.JSONDecodeError):
-        return {}
+        payload = {}
+    try:
+        mt = float(_CACHE_PATH.stat().st_mtime) if _CACHE_PATH.exists() else -1.0
+    except OSError:
+        mt = -1.0
+    _SCRAPE_RAW_MEM = payload
+    _SCRAPE_RAW_MTIME = mt
+    return payload
 
 
 def _cache_write_all(data: dict[str, Any]) -> None:
@@ -206,6 +258,14 @@ def _cache_write_all(data: dict[str, Any]) -> None:
         with os.fdopen(fd, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
         os.replace(tmp, _CACHE_PATH)
+        global _SCRAPE_RAW_MEM, _SCRAPE_RAW_MTIME, _SCRAPE_CACHE_PATH_KEY
+        try:
+            mt = float(_CACHE_PATH.stat().st_mtime)
+        except OSError:
+            mt = -1.0
+        _SCRAPE_RAW_MEM = data
+        _SCRAPE_RAW_MTIME = mt
+        _SCRAPE_CACHE_PATH_KEY = str(_CACHE_PATH.resolve())
     except OSError:
         if os.path.exists(tmp):
             os.unlink(tmp)
@@ -463,10 +523,13 @@ def _fetch_vndirect_finfo(ticker: str) -> dict[str, Any]:
 
 def _fetch_cafef_thong_tin_co_ban(ticker: str) -> dict[str, Any] | None:
     sym = ticker.strip().lower()
-    for board in ("hose", "hnx", "upcom"):
+    # HOSE trước (phần lớn thanh khoản); giới hạn số board để tránh chờ 3× timeout.
+    boards = ("hose", "hnx", "upcom")[: _cafef_max_boards()]
+    timeout = _cafef_timeout()
+    for board in boards:
         url = f"https://cafef.vn/du-lieu/{board}/{sym}-thong-tin-co-ban.chn"
         try:
-            r = requests.get(url, headers=DEFAULT_HEADERS, timeout=_request_timeout())
+            r = requests.get(url, headers=DEFAULT_HEADERS, timeout=timeout)
         except requests.RequestException:
             continue
         if r.status_code != 200 or len(r.text) < 5000:
@@ -508,9 +571,60 @@ def _fetch_cafef_thong_tin_co_ban(ticker: str) -> dict[str, Any] | None:
     return None
 
 
-def _try_providers(sym: str, providers: list[tuple[str, ProviderFn]]) -> dict[str, Any]:
+def _fetch_cafef_thong_tin_co_ban_or_raise(ticker: str) -> dict[str, Any]:
+    out = _fetch_cafef_thong_tin_co_ban(ticker)
+    if out is None:
+        raise TickerNotFoundError(f"CafeF: không đọc được giá thông tin cơ bản cho {ticker.strip().upper()}.")
+    return out
+
+
+def _quote_provider_order_tokens() -> list[str]:
+    # VNDirect API thường nhanh/ổn định hơn CafeF HTML — mặc định ưu tiên API.
+    raw = str(os.environ.get("II_QUOTE_PROVIDER_ORDER", "vndirect,cafef,vietstock") or "").strip().lower()
+    parts = [p.strip() for p in raw.replace(";", ",").split(",") if p.strip()]
+    return parts or ["vndirect", "cafef", "vietstock"]
+
+
+def _build_quote_providers() -> list[tuple[str, ProviderFn]]:
+    """Thứ tự thử nguồn giá — mặc định VNDirect → CafeF → Vietstock (tối ưu latency)."""
+    name_to_fn: dict[str, ProviderFn] = {
+        "cafef": _fetch_cafef_thong_tin_co_ban_or_raise,
+        "vndirect": _fetch_vndirect_finfo,
+        "vndirect_finfo": _fetch_vndirect_finfo,
+        "vietstock": _fetch_vietstock,
+    }
+    out: list[tuple[str, ProviderFn]] = []
+    seen: set[str] = set()
+    for tok in _quote_provider_order_tokens():
+        key = tok.strip().lower()
+        fn = name_to_fn.get(key)
+        if fn is None or key in seen:
+            continue
+        seen.add(key)
+        out.append((key, fn))
+    for key, fn in (
+        ("vndirect", _fetch_vndirect_finfo),
+        ("cafef", _fetch_cafef_thong_tin_co_ban_or_raise),
+        ("vietstock", _fetch_vietstock),
+    ):
+        if key not in seen:
+            out.append((key, fn))
+            seen.add(key)
+    return out
+
+
+def _try_providers(
+    sym: str,
+    providers: list[tuple[str, ProviderFn]],
+    *,
+    budget_sec: float | None = None,
+) -> dict[str, Any]:
     errors: list[str] = []
+    t0 = time.perf_counter()
     for label, fn in providers:
+        if budget_sec is not None and (time.perf_counter() - t0) >= float(budget_sec):
+            errors.append(f"budget_exhausted:{budget_sec}s")
+            break
         try:
             return fn(sym)
         except (TickerNotFoundError, ScraperBlockedError, ScraperParseError) as e:
@@ -520,24 +634,82 @@ def _try_providers(sym: str, providers: list[tuple[str, ProviderFn]]) -> dict[st
         except requests.RequestException as e:
             errors.append(f"{label}: {e}")
 
-    cafef = _fetch_cafef_thong_tin_co_ban(sym)
-    if cafef is not None:
-        return cafef
-
     raise ScraperError(
-        "Không lấy được dữ liệu từ mọi nguồn (Vietstock → VNDirect → CafeF). "
+        "Không lấy được dữ liệu từ mọi nguồn đã cấu hình (xem II_QUOTE_PROVIDER_ORDER). "
         "Chi tiết: "
         + " | ".join(errors)
     )
 
 
+def get_quote_price_fast(
+    ticker: str,
+    *,
+    budget_sec: float | None = None,
+    max_providers: int | None = None,
+) -> dict[str, Any] | None:
+    """
+    Chỉ cần giá tươi nhanh: thử providers theo thứ tự, tôn trọng budget.
+    Không đọc/ghi scrape-file cache. Trả None nếu hết budget/thất bại.
+    """
+    sym = ticker.strip().upper()
+    if not sym or not re.fullmatch(r"[A-Z0-9]{2,6}", sym):
+        return None
+    providers = _build_quote_providers()
+    if max_providers is not None:
+        providers = providers[: max(1, int(max_providers))]
+
+    # Siết timeout HTTP trong cửa sổ budget (tránh 1 provider nuốt hết ngân sách).
+    prev_http = os.environ.get("II_HTTP_TIMEOUT")
+    prev_scraper = os.environ.get("VALUE_INVESTOR_SCRAPER_TIMEOUT")
+    prev_cafef = os.environ.get("II_CAFEF_TIMEOUT")
+    try:
+        if budget_sec is not None:
+            per = max(1.2, min(3.0, float(budget_sec) / max(1, len(providers))))
+            os.environ["II_HTTP_TIMEOUT"] = str(per)
+            os.environ["VALUE_INVESTOR_SCRAPER_TIMEOUT"] = str(per)
+            os.environ["II_CAFEF_TIMEOUT"] = str(min(per, 2.5))
+            try:
+                from core.config import http_timeout_seconds
+
+                if hasattr(http_timeout_seconds, "cache_clear"):
+                    http_timeout_seconds.cache_clear()
+            except Exception:
+                pass
+        return _try_providers(sym, providers, budget_sec=budget_sec)
+    except ScraperError:
+        return None
+    finally:
+        if prev_http is None:
+            os.environ.pop("II_HTTP_TIMEOUT", None)
+        else:
+            os.environ["II_HTTP_TIMEOUT"] = prev_http
+        if prev_scraper is None:
+            os.environ.pop("VALUE_INVESTOR_SCRAPER_TIMEOUT", None)
+        else:
+            os.environ["VALUE_INVESTOR_SCRAPER_TIMEOUT"] = prev_scraper
+        if prev_cafef is None:
+            os.environ.pop("II_CAFEF_TIMEOUT", None)
+        else:
+            os.environ["II_CAFEF_TIMEOUT"] = prev_cafef
+        try:
+            from core.config import http_timeout_seconds
+
+            if hasattr(http_timeout_seconds, "cache_clear"):
+                http_timeout_seconds.cache_clear()
+        except Exception:
+            pass
+
+
 def get_stock_data(ticker: str, *, use_cache: bool = True) -> dict[str, Any]:
     """
-    Lấy dữ liệu: ưu tiên cache 24h; sau đó Vietstock → VNDirect Finfo → CafeF.
+    Lấy dữ liệu: ưu tiên cache 24h; sau đó các nguồn theo II_QUOTE_PROVIDER_ORDER
+    (mặc định: VNDirect → CafeF → Vietstock).
 
     Biến môi trường:
     - VALUE_INVESTOR_CACHE_HOURS: số giờ TTL cache (mặc định 24).
     - VALUE_INVESTOR_DISABLE_CACHE: 1/true để tắt cache.
+    - II_QUOTE_PROVIDER_ORDER: danh sách nguồn, ví dụ `vndirect,cafef,vietstock`.
+    - II_CAFEF_MAX_BOARDS / II_CAFEF_TIMEOUT: fail-fast CafeF HTML.
 
     use_cache=False: bỏ đọc/ghi cache file (dùng cho làm mới định kỳ watchlist).
 
@@ -552,11 +724,65 @@ def get_stock_data(ticker: str, *, use_cache: bool = True) -> dict[str, Any]:
         if cached is not None:
             return cached
 
-    providers: list[tuple[str, ProviderFn]] = [
-        ("vietstock", _fetch_vietstock),
-        ("vndirect_finfo", _fetch_vndirect_finfo),
-    ]
-    data = _try_providers(sym, providers)
+    providers = _build_quote_providers()
+    budget_sec: float | None = None
+    raw_budget = str(os.environ.get("II_SNAPSHOT_QUOTE_BUDGET_SEC") or "").strip()
+    fail_fast = str(os.environ.get("II_PORTAL_FAIL_FAST", "0") or "").strip().lower() in (
+        "1",
+        "true",
+        "yes",
+        "on",
+    )
+    if raw_budget:
+        try:
+            budget_sec = max(2.0, float(raw_budget))
+        except ValueError:
+            budget_sec = None
+    elif fail_fast:
+        try:
+            budget_sec = max(2.0, float(os.environ.get("II_PORTAL_FAIL_FAST_BUDGET_SEC", "8") or "8"))
+        except ValueError:
+            budget_sec = 8.0
+
+    prev_http = os.environ.get("II_HTTP_TIMEOUT")
+    prev_scraper = os.environ.get("VALUE_INVESTOR_SCRAPER_TIMEOUT")
+    prev_cafef = os.environ.get("II_CAFEF_TIMEOUT")
+    try:
+        if budget_sec is not None:
+            per = max(1.2, min(4.0, float(budget_sec) / max(1, len(providers))))
+            os.environ["II_HTTP_TIMEOUT"] = str(per)
+            os.environ["VALUE_INVESTOR_SCRAPER_TIMEOUT"] = str(per)
+            os.environ["II_CAFEF_TIMEOUT"] = str(min(per, 2.5))
+            try:
+                from core.config import http_timeout_seconds
+
+                if hasattr(http_timeout_seconds, "cache_clear"):
+                    http_timeout_seconds.cache_clear()
+            except Exception:
+                pass
+        data = _try_providers(sym, providers, budget_sec=budget_sec)
+    finally:
+        if budget_sec is not None:
+            if prev_http is None:
+                os.environ.pop("II_HTTP_TIMEOUT", None)
+            else:
+                os.environ["II_HTTP_TIMEOUT"] = prev_http
+            if prev_scraper is None:
+                os.environ.pop("VALUE_INVESTOR_SCRAPER_TIMEOUT", None)
+            else:
+                os.environ["VALUE_INVESTOR_SCRAPER_TIMEOUT"] = prev_scraper
+            if prev_cafef is None:
+                os.environ.pop("II_CAFEF_TIMEOUT", None)
+            else:
+                os.environ["II_CAFEF_TIMEOUT"] = prev_cafef
+            try:
+                from core.config import http_timeout_seconds
+
+                if hasattr(http_timeout_seconds, "cache_clear"):
+                    http_timeout_seconds.cache_clear()
+            except Exception:
+                pass
+
     data.setdefault("cache_hit", False)
     if use_cache:
         _cache_set(sym, data)
@@ -565,13 +791,17 @@ def get_stock_data(ticker: str, *, use_cache: bool = True) -> dict[str, Any]:
 
 def clear_scrape_cache(symbol: str | None = None) -> None:
     """Xóa toàn bộ cache hoặc một mã (tiện cho test / admin)."""
-    if _CACHE_DISABLED or not _CACHE_PATH.exists():
+    if _CACHE_DISABLED:
+        return
+    if not _CACHE_PATH.exists():
+        _invalidate_scrape_file_cache_mem()
         return
     if symbol is None:
         try:
             _CACHE_PATH.unlink(missing_ok=True)
         except OSError:
             pass
+        _invalidate_scrape_file_cache_mem()
         return
     all_c = _cache_read_all()
     all_c.pop(symbol.strip().upper(), None)

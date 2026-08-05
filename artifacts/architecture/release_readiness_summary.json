@@ -1,0 +1,22 @@
+{
+  "generated_at_utc": "2026-05-01T10:08:10.268652+00:00",
+  "decision": "GO",
+  "failed_checks": [],
+  "metrics": {
+    "app_line_count": 615,
+    "test_case_count": 204,
+    "dependency_module_count": 19,
+    "dependency_total_import_edges": 138,
+    "queue_high_retry_ratio": 0.0,
+    "queue_oldest_pending_age_minutes": 0.0
+  },
+  "checks": {
+    "app_size_under_900": true,
+    "has_100_plus_tests": true,
+    "has_dependency_map": true,
+    "dependency_edges_available": true,
+    "dependency_modules_available": true,
+    "queue_high_retry_ratio_under_0_6": true,
+    "queue_oldest_pending_under_360m": true
+  }
+}

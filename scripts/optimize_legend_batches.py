@@ -42,10 +42,9 @@ def _chunked(items: list[str], batch_size: int) -> list[list[str]]:
 
 
 def main() -> None:
-    try:
-        sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
+    reconfigure = getattr(sys.stdout, "reconfigure", None)
+    if callable(reconfigure):
+        reconfigure(encoding="utf-8")
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--limit", type=int, default=22)

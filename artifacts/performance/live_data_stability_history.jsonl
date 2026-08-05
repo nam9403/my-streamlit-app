@@ -1,0 +1,3 @@
+{"generated_at_utc": "2026-05-07T13:37:38.746325+00:00", "tickers": ["FPT", "VNM"], "live_ratio": 0.0, "available_ratio": 1.0, "counts": {"live": 0, "cache": 0, "mock": 2, "unknown": 0, "none": 0}}
+{"generated_at_utc": "2026-05-07T14:01:17.199075+00:00", "tickers": ["FPT", "VNM", "HPG", "VCB"], "live_ratio": 1.0, "available_ratio": 1.0, "counts": {"live": 4, "cache": 0, "mock": 0, "unknown": 0, "none": 0}}
+{"generated_at_utc": "2026-05-07T14:12:33.162509+00:00", "tickers": ["FPT", "VNM", "HPG", "VCB"], "live_ratio": 1.0, "available_ratio": 1.0, "counts": {"live": 4, "cache": 0, "mock": 0, "unknown": 0, "none": 0}}

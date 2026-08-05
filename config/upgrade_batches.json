@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "batches": {
+    "week1": {
+      "description": "Scale foundation and baseline health checks.",
+      "commands": [
+        "python scripts/quality_gate.py --strict-static",
+        "python scripts/architecture_gate.py --strict",
+        "python scripts/prod_readiness_check.py --require-go",
+        "python scripts/release_readiness_summary.py --strict"
+      ]
+    },
+    "week2": {
+      "description": "Reliability and coverage progress checks.",
+      "commands": [
+        "python -m pytest -q",
+        "python scripts/quality_gate.py --strict-static",
+        "python scripts/generate_engineering_scorecard.py",
+        "python scripts/update_engineering_scorecard_history.py"
+      ]
+    },
+    "week3": {
+      "description": "Security and production hardening checks.",
+      "commands": [
+        "python scripts/preflight_check.py --prod",
+        "python scripts/sanitize_runtime_artifacts.py",
+        "python scripts/check_secrets.py",
+        "python scripts/prod_readiness_check.py --require-go"
+      ]
+    },
+    "week4": {
+      "description": "Growth instrumentation and release snapshot.",
+      "commands": [
+        "python scripts/export_pilot_kpi_snapshot.py",
+        "python scripts/release_readiness_summary.py --strict",
+        "python scripts/quality_gate.py --strict-static"
+      ]
+    }
+  }
+}
+

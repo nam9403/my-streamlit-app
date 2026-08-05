@@ -8,6 +8,8 @@ Exit code:
 """
 from __future__ import annotations
 
+import argparse
+import importlib.util
 import os
 import sys
 from pathlib import Path
@@ -20,7 +22,15 @@ def _print(title: str, ok: bool, message: str) -> None:
     print(f"[{status}] {title}: {message}")
 
 
+def _is_truthy_env(name: str, default: str = "0") -> bool:
+    return str(os.environ.get(name, default)).strip().lower() in ("1", "true", "yes", "on")
+
+
 def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--prod", action="store_true", help="Enable strict production preflight gates.")
+    args = ap.parse_args()
+
     hard_fail = False
 
     py_ok = sys.version_info >= (3, 11)
@@ -39,6 +49,7 @@ def main() -> int:
         ROOT / "CHANGELOG.md",
         ROOT / "SECURITY.md",
         ROOT / "RELEASE_CHECKLIST.md",
+        ROOT / "pyproject.toml",
     ]
     for f in required_files:
         ok = f.exists()
@@ -58,6 +69,27 @@ def main() -> int:
 
     has_app_secret = bool((os.environ.get("II_APP_SECRET_KEY") or "").strip())
     _print("App secret", has_app_secret, "II_APP_SECRET_KEY is set (recommended for production)")
+
+    db_url = str(os.environ.get("II_DB_URL") or "").strip().lower()
+    uses_postgres = db_url.startswith("postgres://") or db_url.startswith("postgresql://")
+    has_pg_driver = importlib.util.find_spec("psycopg") is not None or importlib.util.find_spec("psycopg2") is not None
+    if uses_postgres:
+        _print("DB driver", has_pg_driver, "PostgreSQL URL detected; require psycopg/psycopg2 installed")
+        if args.prod and not has_pg_driver:
+            hard_fail = True
+
+    if args.prod:
+        require_key_flag = _is_truthy_env("II_REQUIRE_APP_SECRET_KEY", "0")
+        _print("Prod gate", True, "Strict production checks are enabled (--prod)")
+        _print("Prod secret gate", require_key_flag, "II_REQUIRE_APP_SECRET_KEY=1")
+        if not require_key_flag:
+            hard_fail = True
+        if not has_app_secret:
+            hard_fail = True
+        log_json_on = str(os.environ.get("II_LOG_JSON", "1")).strip().lower() not in ("0", "false", "no", "off")
+        _print("Prod logging", log_json_on, "II_LOG_JSON should stay enabled for structured logs")
+        if not log_json_on:
+            hard_fail = True
 
     if hard_fail:
         print("\nPreflight failed. Fix hard failures before release.")

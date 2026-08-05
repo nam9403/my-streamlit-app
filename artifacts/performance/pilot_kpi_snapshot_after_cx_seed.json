@@ -1,0 +1,162 @@
+{
+  "generated_at_utc": "2026-04-25T13:35:32.426327+00:00",
+  "window_days": {
+    "admin": 30,
+    "cx": 14
+  },
+  "admin": {
+    "users_total": 2,
+    "active_users_period": 2,
+    "events_period": 128,
+    "alerts_total": 1,
+    "holdings_total": 0,
+    "decisions_total": 4,
+    "trades_total": 2,
+    "plans": [
+      {
+        "plan_id": "pro",
+        "count": 2
+      }
+    ],
+    "events_by_type": [
+      {
+        "event": "action_center_viewed",
+        "count": 55
+      },
+      {
+        "event": "analysis_completed",
+        "count": 36
+      },
+      {
+        "event": "analysis_started",
+        "count": 35
+      },
+      {
+        "event": "decision_added",
+        "count": 1
+      },
+      {
+        "event": "upgrade_success",
+        "count": 1
+      }
+    ],
+    "notification_queue": [
+      {
+        "status": "done",
+        "count": 2
+      }
+    ],
+    "notification_observability": {
+      "fail_reasons": [],
+      "retry_tiers": [
+        {
+          "status": "done",
+          "retry_tier": "t0",
+          "count": 1
+        },
+        {
+          "status": "done",
+          "retry_tier": "t3_4",
+          "count": 1
+        }
+      ],
+      "runtime_health": {
+        "pending_jobs": 0,
+        "failed_jobs": 0,
+        "high_retry_jobs": 0,
+        "high_retry_ratio": 0.0,
+        "oldest_pending_age_minutes": 0.0
+      }
+    }
+  },
+  "cx": {
+    "window_days": 14,
+    "avg_score": 78.28571428571429,
+    "samples": 28,
+    "bands": [
+      {
+        "band": "Good",
+        "count": 17
+      },
+      {
+        "band": "Needs tuning",
+        "count": 11
+      }
+    ],
+    "trend": [
+      {
+        "score_date": "2026-04-25",
+        "avg_score": 71.5,
+        "samples": 2
+      },
+      {
+        "score_date": "2026-04-24",
+        "avg_score": 76.5,
+        "samples": 2
+      },
+      {
+        "score_date": "2026-04-23",
+        "avg_score": 75.0,
+        "samples": 2
+      },
+      {
+        "score_date": "2026-04-22",
+        "avg_score": 78.5,
+        "samples": 2
+      },
+      {
+        "score_date": "2026-04-21",
+        "avg_score": 71.0,
+        "samples": 2
+      },
+      {
+        "score_date": "2026-04-20",
+        "avg_score": 71.5,
+        "samples": 2
+      },
+      {
+        "score_date": "2026-04-19",
+        "avg_score": 86.5,
+        "samples": 2
+      },
+      {
+        "score_date": "2026-04-18",
+        "avg_score": 82.5,
+        "samples": 2
+      },
+      {
+        "score_date": "2026-04-17",
+        "avg_score": 87.0,
+        "samples": 2
+      },
+      {
+        "score_date": "2026-04-16",
+        "avg_score": 80.5,
+        "samples": 2
+      },
+      {
+        "score_date": "2026-04-15",
+        "avg_score": 78.0,
+        "samples": 2
+      },
+      {
+        "score_date": "2026-04-14",
+        "avg_score": 80.5,
+        "samples": 2
+      },
+      {
+        "score_date": "2026-04-13",
+        "avg_score": 82.0,
+        "samples": 2
+      },
+      {
+        "score_date": "2026-04-12",
+        "avg_score": 75.0,
+        "samples": 2
+      }
+    ]
+  },
+  "priority_actions": [
+    "P1: Có hàng đợi retry cao (t3+), cần giảm nguyên nhân lỗi gốc để tránh burn retry."
+  ]
+}

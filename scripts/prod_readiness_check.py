@@ -71,6 +71,16 @@ def main() -> int:
     ap.add_argument("--require-live-data", action="store_true", help="Block if live data gate does not return GO.")
     ap.add_argument("--min-live-ratio", type=float, default=None, help="Minimum live snapshot source ratio.")
     ap.add_argument("--min-cx-samples", type=int, default=0, help="Minimum CX samples required by scale/slo gates.")
+    ap.add_argument(
+        "--seed-cx-staging",
+        action="store_true",
+        help="Force-seed baseline CX data before gates (recommended for staging/preprod only).",
+    )
+    ap.add_argument(
+        "--skip-cx-seed",
+        action="store_true",
+        help="Skip automatic CX baseline seed even in preprod/staging.",
+    )
     ap.add_argument("--dry-run", action="store_true", help="Print steps only, do not execute.")
     args = ap.parse_args()
 
@@ -81,6 +91,7 @@ def main() -> int:
         else _default_live_ratio(env_name)
     )
     require_live_data = bool(args.require_live_data or env_name in ("preprod", "prod"))
+    auto_seed_cx = bool((env_name == "preprod" or args.seed_cx_staging) and not args.skip_cx_seed)
 
     env = os.environ.copy()
     env.setdefault("II_LOG_JSON", "1")
@@ -103,9 +114,10 @@ def main() -> int:
         [sys.executable, str(ROOT / "scripts" / "sanitize_runtime_artifacts.py")],
         [sys.executable, str(ROOT / "scripts" / "check_secrets.py")],
         [sys.executable, str(ROOT / "scripts" / "stabilize_runtime_reliability.py")],
-        scale_cmd,
-        slo_cmd,
     ]
+    if auto_seed_cx:
+        steps.append([sys.executable, str(ROOT / "scripts" / "seed_cx_baseline.py")])
+    steps.extend([scale_cmd, slo_cmd])
 
     if not args.skip_audit:
         pip_audit_bin = shutil.which("pip-audit")
@@ -132,6 +144,7 @@ def main() -> int:
     print(
         f"[INFO] Live data policy: env={env_name} min_live_ratio={min_live_ratio:.2f} require_min_live={require_live_data}"
     )
+    print(f"[INFO] CX seed policy: env={env_name} auto_seed_cx={auto_seed_cx}")
     steps.append(live_gate_cmd)
 
     for cmd in steps:

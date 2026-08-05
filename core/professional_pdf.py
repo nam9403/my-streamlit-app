@@ -43,8 +43,9 @@ def _register_unicode_font() -> str:
     except Exception:
         pass
     try:
-        from matplotlib import get_data_path
         from pathlib import Path
+
+        from matplotlib import get_data_path
 
         p = Path(get_data_path()) / "fonts" / "ttf" / "DejaVuSans.ttf"
         if p.is_file():

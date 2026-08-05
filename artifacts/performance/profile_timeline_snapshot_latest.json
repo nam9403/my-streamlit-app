@@ -1,0 +1,80 @@
+{
+  "generated_at": "2026-05-04T14:56:12.684159+00:00",
+  "symbol": "FPT",
+  "stages": [
+    {
+      "name": "fetch_financial_snapshot",
+      "seconds": 0.026591,
+      "ok": true,
+      "meta": "source=mock_json price_source=None"
+    },
+    {
+      "name": "value_investing_summary(no_elite)",
+      "seconds": 0.001027,
+      "ok": true,
+      "meta": ""
+    },
+    {
+      "name": "value_investing_summary(elite)",
+      "seconds": 0.012377,
+      "ok": true,
+      "meta": ""
+    },
+    {
+      "name": "fetch_ohlcv_history(80)",
+      "seconds": 0.019287,
+      "ok": true,
+      "meta": "source=ohlcv_store_fastpath rows=80"
+    },
+    {
+      "name": "fetch_financial_indicators",
+      "seconds": 0.00256,
+      "ok": true,
+      "meta": ""
+    },
+    {
+      "name": "fetch_latest_news(5)",
+      "seconds": 0.003257,
+      "ok": true,
+      "meta": "items=5"
+    },
+    {
+      "name": "generate_strategic_report(no_llm)",
+      "seconds": 0.064998,
+      "ok": true,
+      "meta": "final_action=AVOID"
+    }
+  ],
+  "slowest_top5": [
+    {
+      "name": "generate_strategic_report(no_llm)",
+      "seconds": 0.064998,
+      "ok": true,
+      "meta": "final_action=AVOID"
+    },
+    {
+      "name": "fetch_financial_snapshot",
+      "seconds": 0.026591,
+      "ok": true,
+      "meta": "source=mock_json price_source=None"
+    },
+    {
+      "name": "fetch_ohlcv_history(80)",
+      "seconds": 0.019287,
+      "ok": true,
+      "meta": "source=ohlcv_store_fastpath rows=80"
+    },
+    {
+      "name": "value_investing_summary(elite)",
+      "seconds": 0.012377,
+      "ok": true,
+      "meta": ""
+    },
+    {
+      "name": "fetch_latest_news(5)",
+      "seconds": 0.003257,
+      "ok": true,
+      "meta": "items=5"
+    }
+  ]
+}

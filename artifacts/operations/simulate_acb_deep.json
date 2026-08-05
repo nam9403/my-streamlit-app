@@ -1,0 +1,235 @@
+{
+  "ran_at": "2026-07-24T14:05:53.631353+00:00",
+  "ticker": "ACB",
+  "stages": [
+    {
+      "stage": "snapshot",
+      "seconds": 0.037,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "financial_indicators",
+      "seconds": 0.007,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "valuation",
+      "seconds": 0.011,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "ohlcv",
+      "seconds": 1.926,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "news",
+      "seconds": 0.81,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "macro",
+      "seconds": 0.001,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "catalyst",
+      "seconds": 0.021,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "strategic_report",
+      "seconds": 0.056,
+      "ok": true,
+      "error": ""
+    }
+  ],
+  "total_seconds": 2.869,
+  "snapshot": {
+    "price": 22400.0,
+    "eps": 3258.0,
+    "pe_ratio": 7.01,
+    "pb_ratio": 1.19,
+    "roe": 16.9467,
+    "debt_to_equity": null,
+    "current_ratio": null,
+    "growth_rate_pct": 23.51,
+    "source": "vietstock:swr",
+    "is_bank": null,
+    "fundamentals_merge_notes": [
+      "Tăng trưởng từ YoY (fireant_finance_api:disk_cache:fastpath)"
+    ]
+  },
+  "financials_source": "fireant_finance_api:disk_cache:fastpath",
+  "financials_core": {
+    "roe": null,
+    "debt_to_equity": null,
+    "current_ratio": null,
+    "net_income": 4320388000000.0,
+    "operating_cash_flow": null,
+    "revenue_growth_yoy": 26.764073428175006,
+    "profit_growth_yoy": 17.457193144813342,
+    "data_quality_score": 4
+  },
+  "valuation": {
+    "instant_conclusion": "Mua mạnh",
+    "piotroski_score": 2,
+    "mos_pct": 53.21410881938512,
+    "target": 47877.68157183494,
+    "safe_buy_price": 33514.37710028446,
+    "legend_scorecard": {
+      "graham_pass": true,
+      "buffett_pass": true,
+      "lynch_pass": true
+    },
+    "legend_data_ready": {
+      "has_graham_inputs": true,
+      "de_available": false,
+      "cr_available": false,
+      "roe_available": true
+    },
+    "industry_display_vi": "Ngân hàng",
+    "industry_subtype_label_vi": "Ngân hàng",
+    "is_bank_sector": true,
+    "value_trap_warning": "Không thấy bẫy giá trị lớn theo bộ lọc hiện tại.",
+    "advice": "Kết luận: Mua mạnh. Giá mua an toàn <= 33,514 VND. Pass/Fail: Graham=Đạt, Buffett=Đạt, Lynch=Đạt. Cảnh báo: Không thấy bẫy giá trị lớn theo bộ lọc hiện tại."
+  },
+  "phase": {
+    "phase": "neutral",
+    "reason": "Chưa xuất hiện tín hiệu tích lũy/bùng nổ/phân phối rõ.",
+    "metrics": {
+      "close": 23500.0,
+      "day_change_pct": 0.0,
+      "range_pct_10": 714610.2505747376,
+      "volume": 8936800.0,
+      "vol_ma20": 9465450.0,
+      "vol_multiple": 0.9441495121732194,
+      "ma20": 22475.175499999525,
+      "ma50": 22172.22059999943,
+      "rsi14": 100.0,
+      "vol_std20": 4354012.219176337
+    }
+  },
+  "ohlcv_rows": 80,
+  "news_count": 8,
+  "news_sample": [
+    {
+      "title": "NHNN đang hoàn thiện những bước cuối cùng để thay thế Thông tư quan trọng bậc nhất ngành ngân hàng: VietinBank, Vietcombank, BIDV, Techcombank, MB, ACB, VIB… nói gì?",
+      "source": "cafef"
+    },
+    {
+      "title": "ACB đạt lợi nhuận hơn 10.700 tỷ đồng trong 6 tháng đầu năm 2026, bán lẻ và SME hồi phục tích cực",
+      "source": "cafef"
+    },
+    {
+      "title": "Chủ tịch ACB Trần Hùng Huy bất ngờ khoe cơ bụng 6 múi, “than thở” 1 điều",
+      "source": "cafef"
+    },
+    {
+      "title": "Cổ phiếu ngân hàng hồi phục ngoạn mục phiên 16/7: HDB, STB, ACB dẫn đầu tăng giá",
+      "source": "cafef"
+    },
+    {
+      "title": "Doanh nghiệp nào có cơ hội tiếp cận ưu đãi lãi suất đến 2% từ ACB?",
+      "source": "cafef"
+    }
+  ],
+  "macro": {
+    "source": "policy_env+open_er_api",
+    "market_bias": 0.0,
+    "usd_vnd": 26250.538817,
+    "policy_rate_pct": 4.5
+  },
+  "catalyst": {
+    "score": 0.6,
+    "caption": "News/Macro Bias **ACB**: `+0.60` (macro_src=policy_env+open_er_api; P0 heuristic)"
+  },
+  "earnings_quality": {
+    "label": "Ổn",
+    "severity": "low",
+    "warning": false,
+    "net_income": 4320388000000.0,
+    "operating_cash_flow": null,
+    "notes": []
+  },
+  "smart_money": {
+    "bias": "neutral",
+    "score": 0.0,
+    "label": "Chưa đủ dữ liệu smart money",
+    "data_mode": "heuristic"
+  },
+  "risk_plan": {
+    "entry_price": 22400.0,
+    "buy_zone_low": 21728.0,
+    "buy_zone_high": 23072.0,
+    "stop_loss_price": 20832.0,
+    "take_profit_price": 27888.0,
+    "allocated_capital_vnd": 20000000.0
+  },
+  "forecast": {
+    "summary": "Dự phóng 90 ngày: expected return 21.60% (bull 30% / base 45% / bear 25%). Monte Carlo range P10/P50/P90: 6,429/16,251/40,923 VND | P(đạt target)=6.7%.",
+    "expected_return_pct": 21.6,
+    "expected_price": 27238.4,
+    "horizon_days": 90
+  },
+  "recommendation": {
+    "final_action": "WATCH",
+    "confidence_score": 76.0,
+    "analysis_verdict": "CAUTION",
+    "decision_readiness": "MEDIUM",
+    "decision_alignment": {
+      "legend_view": "Mua mạnh",
+      "action_view": "WATCH",
+      "unified_action": "WATCH",
+      "alignment": "valuation_vs_timing",
+      "note_vi": "Định giá hấp dẫn (Mua mạnh) nhưng pha/gate kỹ thuật (neutral) chưa ủng hộ giải ngân — ưu tiên WATCH."
+    },
+    "whys": [
+      "Hồ sơ nhà đầu tư: Tăng trưởng; tổng vốn giả định 100,000,000 VND.",
+      "Why 1 (xu hướng): Pha thị trường hiện tại là neutral (Chưa xuất hiện tín hiệu tích lũy/bùng nổ/phân phối rõ.).",
+      "Why 2 (dòng tiền): Volume multiple ~0.94.",
+      "Why 3 (nội tại): F-Score=2/9, D/E=None.",
+      "Why 4 (tăng trưởng): Rev YoY=26.764073428175006, Profit YoY=17.457193144813342.",
+      "Why 5 (định giá ngành): Hybrid Legend: Graham Đạt, Buffett Đạt, Lynch Đạt · PEG=0.29 (Cực kỳ hấp dẫn) · Ngành: Ngân hàng.",
+      "Why 6 (tin tức): Headline dẫn dắt gần nhất: NHNN đang hoàn thiện những bước cuối cùng để thay thế Thông tư quan trọng bậc nhất ngành ngân hàng: VietinBank, Vietcombank, BIDV, Techcombank, MB, ACB, VIB… nói gì?"
+    ],
+    "do_not_act_reasons": []
+  },
+  "dss": {
+    "decision": "NEAR_READY",
+    "commercial_score": 80.0,
+    "missing_items": [
+      "smart_money_structured_available",
+      "backtesting_sample_sufficient"
+    ],
+    "backtesting_source": "engine_action_backtest_fallback",
+    "summary_vi": "DSS commercial score=80.00. Trạng thái=NEAR_READY. Cần bổ sung một số hạng mục trước khi scale trả phí."
+  },
+  "data_gaps": {
+    "missing": [
+      "cfo"
+    ],
+    "fields": {
+      "price": 22400.0,
+      "eps": 3258.0,
+      "pe": 7.01,
+      "pb": 1.19,
+      "roe": 16.9467,
+      "de": 0.0,
+      "cr": 0.0,
+      "ni": 4320388000000.0,
+      "cfo": null,
+      "rev_yoy": 26.764073428175006,
+      "profit_yoy": 17.457193144813342,
+      "ohlcv": 80,
+      "news_n": 8
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "profiles": {
+    "dev": {
+      "required_min_samples": 30,
+      "max_violations_for_hold": 2,
+      "flows": {
+        "product_layer.get_admin_kpi": {
+          "p95_ms": 30.0,
+          "p99_ms": 120.0
+        },
+        "product_layer.process_notification_queue": {
+          "p95_ms": 15.0,
+          "p99_ms": 50.0
+        },
+        "product_layer.get_notification_queue_diagnostics": {
+          "p95_ms": 15.0,
+          "p99_ms": 40.0
+        },
+        "product_layer.retry_failed_notifications": {
+          "p95_ms": 15.0,
+          "p99_ms": 40.0
+        },
+        "product_layer.get_kpi_dashboard": {
+          "p95_ms": 20.0,
+          "p99_ms": 40.0
+        }
+      }
+    },
+    "prod": {
+      "required_min_samples": 30,
+      "max_violations_for_hold": 1,
+      "flows": {
+        "product_layer.get_admin_kpi": {
+          "p95_ms": 20.0,
+          "p99_ms": 40.0
+        },
+        "product_layer.process_notification_queue": {
+          "p95_ms": 10.0,
+          "p99_ms": 20.0
+        },
+        "product_layer.get_notification_queue_diagnostics": {
+          "p95_ms": 10.0,
+          "p99_ms": 20.0
+        },
+        "product_layer.retry_failed_notifications": {
+          "p95_ms": 10.0,
+          "p99_ms": 20.0
+        },
+        "product_layer.get_kpi_dashboard": {
+          "p95_ms": 15.0,
+          "p99_ms": 30.0
+        }
+      }
+    }
+  }
+}

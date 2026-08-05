@@ -1,0 +1,22 @@
+{
+  "generated_at_utc": "2026-08-02T09:35:41.876151+00:00",
+  "decision": "NEAR_READY",
+  "commercial_score": 74.0,
+  "checks": {
+    "forecast_range_available": false,
+    "forecast_probability_available": false,
+    "portfolio_optimizer_available": true,
+    "stress_test_available": true,
+    "earnings_quality_guard_available": true,
+    "smart_money_bias_available": true,
+    "smart_money_structured_available": true,
+    "backtesting_winloss_available": true,
+    "backtesting_sample_sufficient": true
+  },
+  "missing_items": [
+    "forecast_range_available",
+    "forecast_probability_available"
+  ],
+  "backtesting_source": "forecast_accountability",
+  "summary_vi": "DSS commercial score=74.00. Trạng thái=NEAR_READY. Cần bổ sung một số hạng mục trước khi scale trả phí."
+}

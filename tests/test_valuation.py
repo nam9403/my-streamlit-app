@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import pytest
-
 from core.valuation import benjamin_graham_value, margin_of_safety_pct, value_investing_summary
 
 

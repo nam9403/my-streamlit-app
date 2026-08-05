@@ -1,6 +1,11 @@
-"""Smoke test — chạy: python scripts/smoke_test.py (từ thư mục gốc dự án)."""
+"""Smoke test — chạy: python scripts/smoke_test.py [--offline] (từ thư mục gốc dự án).
+
+--offline hoặc II_SMOKE_OFFLINE=1: không gọi mạng (phù hợp CI/air-gapped).
+"""
 from __future__ import annotations
 
+import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -21,17 +26,27 @@ def fail(name: str, e: BaseException) -> None:
     print(f"FAIL {name}: {e}")
 
 
-def main() -> None:
-    try:
-        sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
+def _minimal_snapshot(symbol: str) -> dict:
+    return {
+        "symbol": symbol,
+        "name": "SmokeCo",
+        "price": 55.0,
+        "currency": "VND",
+        "eps": 2.0,
+        "growth_rate_pct": 5.0,
+        "book_value_per_share": 20.0,
+        "bond_yield_pct": 4.4,
+        "source": "mock_json",
+        "piotroski": {"f_score": 5},
+    }
+
+
+def _section_core_valuation() -> None:
     print("=== Core valuation ===")
     try:
         from core.valuation import (
             benjamin_graham_value,
             margin_of_safety_pct,
-            piotroski_f_score,
             value_investing_summary,
         )
 
@@ -40,11 +55,6 @@ def main() -> None:
         mos = margin_of_safety_pct(v, 8000)
         assert mos is not None and mos > 0
         ok("benjamin_graham + mos")
-    except Exception as e:
-        fail("core valuation", e)
-
-    try:
-        from core.valuation import value_investing_summary
 
         snap = {
             "symbol": "T",
@@ -62,8 +72,10 @@ def main() -> None:
         assert "intrinsic_value_graham" in s
         ok("value_investing_summary minimal snapshot")
     except Exception as e:
-        fail("value_investing_summary", e)
+        fail("core valuation", e)
 
+
+def _section_engine() -> None:
     print("\n=== Core engine (technical/phase) ===")
     try:
         from core.engine import compute_technical_indicators, detect_market_phase_from_ohlcv
@@ -90,6 +102,8 @@ def main() -> None:
     except Exception as e:
         fail("core.engine", e)
 
+
+def _section_financial_data(*, offline: bool) -> None:
     print("\n=== Scrapers / financial_data ===")
     try:
         from scrapers.financial_data import (
@@ -99,14 +113,22 @@ def main() -> None:
             peer_symbols_same_cluster,
         )
 
-        m = fetch_financial_snapshot("VNM")
-        assert m is not None and m.get("symbol") == "VNM"
-        assert m.get("source") == "mock_json"
-        ok("fetch_financial_snapshot VNM mock")
+        if offline:
+            m = _minimal_snapshot("VNM")
+            assert m.get("symbol") == "VNM"
+            ok("fetch_financial_snapshot VNM (offline synthetic)")
+            m_hpg = _minimal_snapshot("HPG")
+            assert m_hpg.get("symbol") == "HPG"
+            ok("fetch_financial_snapshot HPG (offline synthetic)")
+        else:
+            m = fetch_financial_snapshot("VNM")
+            assert m is not None and m.get("symbol") == "VNM"
+            assert str(m.get("source") or "").strip() != ""
+            ok("fetch_financial_snapshot VNM available source")
 
-        m_hpg = fetch_financial_snapshot("HPG")
-        assert m_hpg is not None and m_hpg.get("symbol") == "HPG"
-        ok("fetch_financial_snapshot HPG mock")
+            m_hpg = fetch_financial_snapshot("HPG")
+            assert m_hpg is not None and m_hpg.get("symbol") == "HPG"
+            ok("fetch_financial_snapshot HPG mock")
 
         none = fetch_financial_snapshot("NOTREALZZZ")
         assert none is None
@@ -115,9 +137,13 @@ def main() -> None:
         financials_to_dataframe([{"a": 1}])
         ok("financials_to_dataframe")
 
-        peers = peer_symbols_same_cluster("VNM", limit=5)
-        assert "VNM" in peers and len(peers) >= 1
-        df, failed = build_peer_comparison_dataframe(peers)
+        if offline:
+            peers = ["VNM", "HPG"]
+            df, failed = build_peer_comparison_dataframe(peers)
+        else:
+            peers = peer_symbols_same_cluster("VNM", limit=5)
+            assert "VNM" in peers and len(peers) >= 1
+            df, failed = build_peer_comparison_dataframe(peers)
         assert not df.empty
         ok("peer_symbols_same_cluster + build_peer_comparison_dataframe")
 
@@ -132,20 +158,21 @@ def main() -> None:
     except Exception as e:
         fail("financial_data", e)
 
-    print("\n=== finance_scraper (mạng, có thể lỗi mạng) ===")
+
+def _section_finance_scraper(*, offline: bool) -> None:
+    print("\n=== finance_scraper ===")
     try:
         from scrapers.finance_scraper import ScraperError, get_stock_data
 
-        d = get_stock_data("VNM")
-        assert d.get("price", 0) > 0
-        ok("get_stock_data VNM live")
-    except ScraperError as e:
-        print(f"SKIP/WARN scraper live VNM: {e}")
-    except Exception as e:
-        fail("get_stock_data VNM", e)
-
-    try:
-        from scrapers.finance_scraper import ScraperError, get_stock_data
+        if not offline:
+            try:
+                d = get_stock_data("VNM")
+                assert d.get("price", 0) > 0
+                ok("get_stock_data VNM live")
+            except ScraperError as e:
+                print(f"SKIP/WARN scraper live VNM: {e}")
+        else:
+            print("SKIP offline: get_stock_data VNM live")
 
         try:
             get_stock_data("NOTREALZZZ")
@@ -155,7 +182,12 @@ def main() -> None:
     except Exception as e:
         fail("get_stock_data invalid", e)
 
-    print("\n=== Portal module (mạng, có thể SKIP) ===")
+
+def _section_portal(*, offline: bool) -> None:
+    print("\n=== Portal module ===")
+    if offline:
+        print("SKIP offline: portal fetch_ohlcv / indicators / news")
+        return
     try:
         from scrapers.portal import (
             PortalDataError,
@@ -187,22 +219,29 @@ def main() -> None:
     except Exception as e:
         fail("portal module", e)
 
+
+def _section_ai_logic(*, offline: bool) -> None:
     print("\n=== AI logic (fallback) ===")
     try:
         from core.ai_logic import generate_strategic_report
         from scrapers.financial_data import fetch_financial_snapshot
 
-        snap = fetch_financial_snapshot("VNM")
-        assert snap is not None
+        if offline:
+            snap_raw = _minimal_snapshot("VNM")
+        else:
+            snap_raw = fetch_financial_snapshot("VNM")
+            assert isinstance(snap_raw, dict)
         try:
-            rep = generate_strategic_report("VNM", snap, preferred_llm="auto")
+            rep = generate_strategic_report("VNM", snap_raw, preferred_llm="auto")
             assert "whys_steps" in rep
             ok("ai_logic generate_strategic_report")
         except Exception as e:
-            print(f"SKIP/WARN ai_logic online pipeline: {e}")
+            print(f"SKIP/WARN ai_logic pipeline: {e}")
     except Exception as e:
         fail("ai_logic", e)
 
+
+def _section_scrapers_package() -> None:
     print("\n=== Package import scrapers ===")
     try:
         import scrapers
@@ -215,6 +254,8 @@ def main() -> None:
     except Exception as e:
         fail("scrapers package", e)
 
+
+def _section_app_compile() -> None:
     print("\n=== app.py syntax (không chạy Streamlit) ===")
     app_path = ROOT / "app.py"
     try:
@@ -223,15 +264,45 @@ def main() -> None:
     except Exception as e:
         fail("app.py compile", e)
 
+
+def main() -> int:
+    reconfigure = getattr(sys.stdout, "reconfigure", None)
+    if callable(reconfigure):
+        reconfigure(encoding="utf-8")
+
+    ap = argparse.ArgumentParser(description="Smoke test core paths.")
+    ap.add_argument(
+        "--offline",
+        action="store_true",
+        help="Không gọi mạng (dùng snapshot tổng hợp + bỏ portal/live scraper).",
+    )
+    args = ap.parse_args()
+    offline = bool(args.offline) or os.environ.get("II_SMOKE_OFFLINE", "").strip() in ("1", "true", "yes")
+
+    if offline:
+        print("Chế độ OFFLINE (II_SMOKE_OFFLINE / --offline)\n")
+
+    _section_core_valuation()
+    _section_engine()
+    _section_financial_data(offline=offline)
+    _section_finance_scraper(offline=offline)
+    _section_portal(offline=offline)
+    _section_ai_logic(offline=offline)
+    _section_scrapers_package()
+    _section_app_compile()
+
     print("\n=== Kết quả ===")
     if errors:
         print(f"Có {len(errors)} lỗi:")
         for x in errors:
             print(" -", x)
-        sys.exit(1)
-    print("Tất cả smoke test đạt (trừ scraper mạng nếu bị SKIP).")
-    sys.exit(0)
+        return 1
+    if offline:
+        print("Tất cả smoke test đạt (offline, không phụ thuộc mạng).")
+    else:
+        print("Tất cả smoke test đạt (trừ scraper/portal nếu bị SKIP/WARN).")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

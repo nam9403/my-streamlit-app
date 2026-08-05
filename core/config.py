@@ -61,6 +61,13 @@ def get_settings() -> AppSettings:
     Refresh nền: scripts/snapshot_disk_refresh.py, snapshot_disk_refresh_loop.py, start_data_tank.bat (II_REFRESH_INTERVAL_SEC).
 
     UI tự làm mới khi đĩa đổi: II_UI_DISK_POLL_SEC (giây, mặc định 45) — fragment soi cached_at, không cần F5.
+
+    Scanner (core/scanner_service): II_SCAN_MAX_WORKERS (default 4, max 8), II_SCAN_PREFILTER_MAX_WORKERS
+    (default 4, max 8), II_SCAN_SYMBOL_BATCH_SIZE, II_SCAN_PRESELECT_LIMIT_CAP — giới hạn song song
+    và số mã sau prefilter (giảm timeout/rate-limit Vietcap khi quét song song).
+
+    Luân phiên universe: II_UNIVERSE_AUTO_ROTATE=1 (mặc định) — dịch cửa sổ quét trên full listing theo ngày
+    (Auto Pilot, scan cơ hội, prefetch nền) thay vì luôn lấy N mã đầu danh sách.
     """
     raw = os.environ.get("II_DEFAULT_BOND_YIELD_PCT") or os.environ.get("BOND_YIELD_PCT")
     return AppSettings(

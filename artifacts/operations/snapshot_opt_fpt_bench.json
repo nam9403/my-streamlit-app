@@ -1,0 +1,13 @@
+{
+  "hot_ttl_s": 0.038,
+  "hot_source": "vietstock",
+  "swr_ttl_miss_s": 0.001,
+  "swr_source": "vietstock:swr",
+  "swr_price": 64600.0,
+  "full_scrape_s": 7.654,
+  "full_source": "vietstock",
+  "baseline_cold_s": 19.6,
+  "baseline_warm_s": 4.5,
+  "improvement_swr_vs_cold": "19600.0x",
+  "improvement_full_vs_cold": "2.6x"
+}

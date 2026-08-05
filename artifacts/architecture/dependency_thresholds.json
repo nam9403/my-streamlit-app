@@ -1,0 +1,23 @@
+{
+  "max_total_edge_delta": 15,
+  "max_module_edge_delta_default": 8,
+  "max_baseline_age_days": 30,
+  "risk_tier_thresholds": {
+    "critical": 3,
+    "high": 5,
+    "normal": 8
+  },
+  "module_tiers": {
+    "app.py": "critical",
+    "core/app_analysis_tab_primary.py": "high",
+    "core/app_analysis_tabs_secondary.py": "high",
+    "core/app_analysis_orchestration.py": "high"
+  },
+  "module_overrides": {
+    "app.py": 5,
+    "core/app_analysis_tab_primary.py": 4,
+    "core/app_analysis_tabs_secondary.py": 4,
+    "core/app_analysis_orchestration.py": 4
+  }
+}
+

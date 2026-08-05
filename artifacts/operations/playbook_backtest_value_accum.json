@@ -1,0 +1,1991 @@
+{
+  "symbols_ok": 10,
+  "symbols_total": 10,
+  "pooled_trades": 25,
+  "pooled_summary": {
+    "samples": 25,
+    "by_horizon": {
+      "20": {
+        "samples": 25,
+        "hit_rate_pct": 56.0,
+        "avg_return_pct": -2.557,
+        "median_return_pct": 1.271,
+        "avg_excess_vs_bench_pct": -0.578,
+        "expectancy_pct": -2.557
+      },
+      "60": {
+        "samples": 25,
+        "hit_rate_pct": 44.0,
+        "avg_return_pct": -1.675,
+        "median_return_pct": -3.119,
+        "avg_excess_vs_bench_pct": -3.614,
+        "expectancy_pct": -1.675
+      },
+      "90": {
+        "samples": 25,
+        "hit_rate_pct": 48.0,
+        "avg_return_pct": -0.969,
+        "median_return_pct": -0.868,
+        "avg_excess_vs_bench_pct": -10.468,
+        "expectancy_pct": -0.969
+      }
+    },
+    "by_action": {
+      "CONDITIONAL_BUY": 20,
+      "BUY": 5
+    }
+  },
+  "watch_control_summary": {
+    "samples": 1107,
+    "by_horizon": {
+      "20": {
+        "samples": 1103,
+        "hit_rate_pct": 55.85,
+        "avg_return_pct": 0.915,
+        "median_return_pct": 1.004,
+        "avg_excess_vs_bench_pct": 3.334,
+        "expectancy_pct": 0.915
+      },
+      "60": {
+        "samples": 1103,
+        "hit_rate_pct": 55.03,
+        "avg_return_pct": 2.95,
+        "median_return_pct": 1.839,
+        "avg_excess_vs_bench_pct": 5.394,
+        "expectancy_pct": 2.95
+      },
+      "90": {
+        "samples": 1105,
+        "hit_rate_pct": 52.4,
+        "avg_return_pct": 3.378,
+        "median_return_pct": 0.839,
+        "avg_excess_vs_bench_pct": 1.106,
+        "expectancy_pct": 3.378
+      }
+    },
+    "by_action": {
+      "WATCH": 564,
+      "HOLD": 543
+    }
+  },
+  "entry_vs_watch": {
+    "horizons": [
+      {
+        "horizon_d": 20,
+        "entry_avg": -2.557,
+        "watch_avg": 0.915,
+        "entry_hit": 56.0,
+        "watch_hit": 55.85,
+        "entry_samples": 25,
+        "beats_watch_avg": false,
+        "beats_watch_hit": true
+      },
+      {
+        "horizon_d": 60,
+        "entry_avg": -1.675,
+        "watch_avg": 2.95,
+        "entry_hit": 44.0,
+        "watch_hit": 55.03,
+        "entry_samples": 25,
+        "beats_watch_avg": false,
+        "beats_watch_hit": false
+      },
+      {
+        "horizon_d": 90,
+        "entry_avg": -0.969,
+        "watch_avg": 3.378,
+        "entry_hit": 48.0,
+        "watch_hit": 52.4,
+        "entry_samples": 25,
+        "beats_watch_avg": false,
+        "beats_watch_hit": false
+      }
+    ],
+    "compared": 3,
+    "wins_avg": 0,
+    "entry_beats_watch": false,
+    "note_vi": "Entry thắng WATCH nếu hơn nửa horizon có avg_return cao hơn (min 8 samples/horizon)."
+  },
+  "per_symbol": [
+    {
+      "symbol": "ACB",
+      "ok": true,
+      "n_trades": 5,
+      "action_counts": {
+        "WATCH": 53,
+        "AVOID": 103,
+        "CONDITIONAL_BUY": 18,
+        "HOLD": 44,
+        "BUY": 1
+      },
+      "summary": {
+        "samples": 5,
+        "by_horizon": {
+          "20": {
+            "samples": 5,
+            "hit_rate_pct": 40.0,
+            "avg_return_pct": -3.622,
+            "median_return_pct": -7.602,
+            "avg_excess_vs_bench_pct": -7.151,
+            "expectancy_pct": -3.622
+          },
+          "60": {
+            "samples": 5,
+            "hit_rate_pct": 40.0,
+            "avg_return_pct": 2.416,
+            "median_return_pct": -9.484,
+            "avg_excess_vs_bench_pct": -5.433,
+            "expectancy_pct": 2.416
+          },
+          "90": {
+            "samples": 5,
+            "hit_rate_pct": 40.0,
+            "avg_return_pct": 3.022,
+            "median_return_pct": -6.014,
+            "avg_excess_vs_bench_pct": -9.889,
+            "expectancy_pct": 3.022
+          }
+        },
+        "by_action": {
+          "CONDITIONAL_BUY": 5
+        }
+      }
+    },
+    {
+      "symbol": "BCM",
+      "ok": true,
+      "n_trades": 2,
+      "action_counts": {
+        "AVOID": 81,
+        "WATCH": 65,
+        "HOLD": 63,
+        "CONDITIONAL_BUY": 8,
+        "BUY": 1
+      },
+      "summary": {
+        "samples": 2,
+        "by_horizon": {
+          "20": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": -3.25,
+            "median_return_pct": -3.25,
+            "avg_excess_vs_bench_pct": 4.181,
+            "expectancy_pct": -3.25
+          },
+          "60": {
+            "samples": 2,
+            "hit_rate_pct": 0.0,
+            "avg_return_pct": -16.263,
+            "median_return_pct": -16.263,
+            "avg_excess_vs_bench_pct": -4.524,
+            "expectancy_pct": -16.263
+          },
+          "90": {
+            "samples": 2,
+            "hit_rate_pct": 0.0,
+            "avg_return_pct": -16.326,
+            "median_return_pct": -16.326,
+            "avg_excess_vs_bench_pct": -12.848,
+            "expectancy_pct": -16.326
+          }
+        },
+        "by_action": {
+          "CONDITIONAL_BUY": 2
+        }
+      }
+    },
+    {
+      "symbol": "BID",
+      "ok": true,
+      "n_trades": 2,
+      "action_counts": {
+        "AVOID": 98,
+        "WATCH": 70,
+        "HOLD": 39,
+        "CONDITIONAL_BUY": 10,
+        "BUY": 1
+      },
+      "summary": {
+        "samples": 2,
+        "by_horizon": {
+          "20": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": -1.37,
+            "median_return_pct": -1.37,
+            "avg_excess_vs_bench_pct": -5.426,
+            "expectancy_pct": -1.37
+          },
+          "60": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": 2.183,
+            "median_return_pct": 2.183,
+            "avg_excess_vs_bench_pct": -14.672,
+            "expectancy_pct": 2.183
+          },
+          "90": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": -2.24,
+            "median_return_pct": -2.24,
+            "avg_excess_vs_bench_pct": -28.318,
+            "expectancy_pct": -2.24
+          }
+        },
+        "by_action": {
+          "BUY": 1,
+          "CONDITIONAL_BUY": 1
+        }
+      }
+    },
+    {
+      "symbol": "BVH",
+      "ok": true,
+      "n_trades": 2,
+      "action_counts": {
+        "WATCH": 66,
+        "HOLD": 66,
+        "AVOID": 72,
+        "CONDITIONAL_BUY": 14
+      },
+      "summary": {
+        "samples": 2,
+        "by_horizon": {
+          "20": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": -1.113,
+            "median_return_pct": -1.113,
+            "avg_excess_vs_bench_pct": 6.317,
+            "expectancy_pct": -1.113
+          },
+          "60": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": 0.011,
+            "median_return_pct": 0.011,
+            "avg_excess_vs_bench_pct": 11.75,
+            "expectancy_pct": 0.011
+          },
+          "90": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": -1.142,
+            "median_return_pct": -1.142,
+            "avg_excess_vs_bench_pct": 2.336,
+            "expectancy_pct": -1.142
+          }
+        },
+        "by_action": {
+          "CONDITIONAL_BUY": 2
+        }
+      }
+    },
+    {
+      "symbol": "CTG",
+      "ok": true,
+      "n_trades": 1,
+      "action_counts": {
+        "AVOID": 140,
+        "WATCH": 50,
+        "HOLD": 26,
+        "CONDITIONAL_BUY": 3
+      },
+      "summary": {
+        "samples": 1,
+        "by_horizon": {
+          "20": {
+            "samples": 1,
+            "hit_rate_pct": 0.0,
+            "avg_return_pct": -26.849,
+            "median_return_pct": -26.849,
+            "avg_excess_vs_bench_pct": -26.849,
+            "expectancy_pct": -26.849
+          },
+          "60": {
+            "samples": 1,
+            "hit_rate_pct": 0.0,
+            "avg_return_pct": -3.309,
+            "median_return_pct": -3.309,
+            "avg_excess_vs_bench_pct": 4.438,
+            "expectancy_pct": -3.309
+          },
+          "90": {
+            "samples": 1,
+            "hit_rate_pct": 100.0,
+            "avg_return_pct": 0.762,
+            "median_return_pct": 0.762,
+            "avg_excess_vs_bench_pct": 6.612,
+            "expectancy_pct": 0.762
+          }
+        },
+        "by_action": {
+          "CONDITIONAL_BUY": 1
+        }
+      }
+    },
+    {
+      "symbol": "FPT",
+      "ok": true,
+      "n_trades": 4,
+      "action_counts": {
+        "HOLD": 56,
+        "BUY": 2,
+        "WATCH": 46,
+        "AVOID": 105,
+        "CONDITIONAL_BUY": 10
+      },
+      "summary": {
+        "samples": 4,
+        "by_horizon": {
+          "20": {
+            "samples": 4,
+            "hit_rate_pct": 75.0,
+            "avg_return_pct": 4.206,
+            "median_return_pct": 3.875,
+            "avg_excess_vs_bench_pct": 4.071,
+            "expectancy_pct": 4.206
+          },
+          "60": {
+            "samples": 4,
+            "hit_rate_pct": 75.0,
+            "avg_return_pct": 2.577,
+            "median_return_pct": 2.456,
+            "avg_excess_vs_bench_pct": -8.991,
+            "expectancy_pct": 2.577
+          },
+          "90": {
+            "samples": 4,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": 1.307,
+            "median_return_pct": -2.349,
+            "avg_excess_vs_bench_pct": -17.123,
+            "expectancy_pct": 1.307
+          }
+        },
+        "by_action": {
+          "BUY": 2,
+          "CONDITIONAL_BUY": 2
+        }
+      }
+    },
+    {
+      "symbol": "GAS",
+      "ok": true,
+      "n_trades": 7,
+      "action_counts": {
+        "AVOID": 48,
+        "WATCH": 54,
+        "HOLD": 86,
+        "CONDITIONAL_BUY": 30,
+        "BUY": 1
+      },
+      "summary": {
+        "samples": 7,
+        "by_horizon": {
+          "20": {
+            "samples": 7,
+            "hit_rate_pct": 71.43,
+            "avg_return_pct": -2.883,
+            "median_return_pct": 1.271,
+            "avg_excess_vs_bench_pct": 4.321,
+            "expectancy_pct": -2.883
+          },
+          "60": {
+            "samples": 7,
+            "hit_rate_pct": 42.86,
+            "avg_return_pct": -1.865,
+            "median_return_pct": -3.119,
+            "avg_excess_vs_bench_pct": 4.451,
+            "expectancy_pct": -1.865
+          },
+          "90": {
+            "samples": 7,
+            "hit_rate_pct": 57.14,
+            "avg_return_pct": -1.052,
+            "median_return_pct": 0.887,
+            "avg_excess_vs_bench_pct": -5.305,
+            "expectancy_pct": -1.052
+          }
+        },
+        "by_action": {
+          "CONDITIONAL_BUY": 6,
+          "BUY": 1
+        }
+      }
+    },
+    {
+      "symbol": "GVR",
+      "ok": true,
+      "n_trades": 0,
+      "action_counts": {
+        "WATCH": 58,
+        "HOLD": 68,
+        "CONDITIONAL_BUY": 10,
+        "AVOID": 81,
+        "BUY": 1
+      },
+      "summary": {
+        "samples": 0,
+        "by_horizon": {},
+        "by_action": {}
+      }
+    },
+    {
+      "symbol": "HDB",
+      "ok": true,
+      "n_trades": 0,
+      "action_counts": {
+        "WATCH": 40,
+        "AVOID": 137,
+        "HOLD": 39,
+        "CONDITIONAL_BUY": 3,
+        "BUY": 1
+      },
+      "summary": {
+        "samples": 0,
+        "by_horizon": {},
+        "by_action": {}
+      }
+    },
+    {
+      "symbol": "HPG",
+      "ok": true,
+      "n_trades": 2,
+      "action_counts": {
+        "HOLD": 56,
+        "WATCH": 62,
+        "BUY": 2,
+        "CONDITIONAL_BUY": 4,
+        "AVOID": 95
+      },
+      "summary": {
+        "samples": 2,
+        "by_horizon": {
+          "20": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": -2.064,
+            "median_return_pct": -2.064,
+            "avg_excess_vs_bench_pct": -4.264,
+            "expectancy_pct": -2.064
+          },
+          "60": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": -9.873,
+            "median_return_pct": -9.873,
+            "avg_excess_vs_bench_pct": -23.963,
+            "expectancy_pct": -9.873
+          },
+          "90": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": 0.736,
+            "median_return_pct": 0.736,
+            "avg_excess_vs_bench_pct": -17.794,
+            "expectancy_pct": 0.736
+          }
+        },
+        "by_action": {
+          "CONDITIONAL_BUY": 1,
+          "BUY": 1
+        }
+      }
+    }
+  ],
+  "generated_at_utc": "2026-08-02T11:45:58.629120+00:00",
+  "disclaimer_vi": "Backtest học tập — valuation proxy + fundamentals cache, không cam kết lợi nhuận tương lai. So sánh excess vs VNINDEX/ETF (nếu có). Paper live vẫn cần để xác nhận.",
+  "method_note_vi": "Replay playbook P1 tuned; entry_style=value_accum; ARMED+READY+filters; cost=0.3% round-trip; stride=5.",
+  "config": {
+    "symbols": [
+      "ACB",
+      "BCM",
+      "BID",
+      "BVH",
+      "CTG",
+      "FPT",
+      "GAS",
+      "GVR",
+      "HDB",
+      "HPG"
+    ],
+    "sessions": 520,
+    "min_history": 120,
+    "stride": 5,
+    "horizons": [
+      20,
+      60,
+      90
+    ],
+    "cost_pct": 0.3,
+    "entry_style": "value_accum",
+    "benchmark_source": "yahoo_E1VFVN30:5y",
+    "benchmark_bars": 725
+  },
+  "results": [
+    {
+      "symbol": "ACB",
+      "ok": true,
+      "n_trades": 5,
+      "action_counts": {
+        "WATCH": 53,
+        "AVOID": 103,
+        "CONDITIONAL_BUY": 18,
+        "HOLD": 44,
+        "BUY": 1
+      },
+      "summary": {
+        "samples": 5,
+        "by_horizon": {
+          "20": {
+            "samples": 5,
+            "hit_rate_pct": 40.0,
+            "avg_return_pct": -3.622,
+            "median_return_pct": -7.602,
+            "avg_excess_vs_bench_pct": -7.151,
+            "expectancy_pct": -3.622
+          },
+          "60": {
+            "samples": 5,
+            "hit_rate_pct": 40.0,
+            "avg_return_pct": 2.416,
+            "median_return_pct": -9.484,
+            "avg_excess_vs_bench_pct": -5.433,
+            "expectancy_pct": 2.416
+          },
+          "90": {
+            "samples": 5,
+            "hit_rate_pct": 40.0,
+            "avg_return_pct": 3.022,
+            "median_return_pct": -6.014,
+            "avg_excess_vs_bench_pct": -9.889,
+            "expectancy_pct": 3.022
+          }
+        },
+        "by_action": {
+          "CONDITIONAL_BUY": 5
+        }
+      },
+      "watch_summary": {
+        "samples": 97,
+        "by_horizon": {
+          "20": {
+            "samples": 97,
+            "hit_rate_pct": 59.79,
+            "avg_return_pct": 0.894,
+            "median_return_pct": 0.91,
+            "avg_excess_vs_bench_pct": 2.64,
+            "expectancy_pct": 0.894
+          },
+          "60": {
+            "samples": 97,
+            "hit_rate_pct": 58.76,
+            "avg_return_pct": 3.336,
+            "median_return_pct": 2.875,
+            "avg_excess_vs_bench_pct": 4.664,
+            "expectancy_pct": 3.336
+          },
+          "90": {
+            "samples": 97,
+            "hit_rate_pct": 60.82,
+            "avg_return_pct": 5.248,
+            "median_return_pct": 4.381,
+            "avg_excess_vs_bench_pct": 2.93,
+            "expectancy_pct": 5.248
+          }
+        },
+        "by_action": {
+          "WATCH": 53,
+          "HOLD": 44
+        }
+      },
+      "trades_sample": [
+        {
+          "symbol": "ACB",
+          "date": "2022-08-22",
+          "signal_index": 275,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 16.61,
+          "rsi": 49.68,
+          "price": 14343.1640625,
+          "fwd_20d_pct": -7.6022,
+          "hit_20d": false,
+          "raw_20d_pct": -7.3022,
+          "fwd_60d_pct": -17.9471,
+          "hit_60d": false,
+          "raw_60d_pct": -17.6471,
+          "fwd_90d_pct": -10.6448,
+          "hit_90d": false,
+          "raw_90d_pct": -10.3448,
+          "bench_fwd_20d_pct": 0.0,
+          "bench_fwd_60d_pct": -7.5099,
+          "bench_fwd_90d_pct": -4.1897,
+          "excess_20d_pct": -7.6022,
+          "excess_60d_pct": -10.4372,
+          "excess_90d_pct": -6.4551
+        },
+        {
+          "symbol": "ACB",
+          "date": "2022-08-29",
+          "signal_index": 280,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 17.08,
+          "rsi": 46.59,
+          "price": 14284.9765625,
+          "fwd_20d_pct": -9.8723,
+          "hit_20d": false,
+          "raw_20d_pct": -9.5723,
+          "fwd_60d_pct": -16.3896,
+          "hit_60d": false,
+          "raw_60d_pct": -16.0896,
+          "fwd_90d_pct": -11.0943,
+          "hit_90d": false,
+          "raw_90d_pct": -10.7943,
+          "bench_fwd_20d_pct": 0.0,
+          "bench_fwd_60d_pct": -7.4308,
+          "bench_fwd_90d_pct": -4.9802,
+          "excess_20d_pct": -9.8723,
+          "excess_60d_pct": -8.9588,
+          "excess_90d_pct": -6.1141
+        },
+        {
+          "symbol": "ACB",
+          "date": "2022-09-05",
+          "signal_index": 285,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 17.24,
+          "rsi": 45.16,
+          "price": 14255.8828125,
+          "fwd_20d_pct": -12.1367,
+          "hit_20d": false,
+          "raw_20d_pct": -11.8367,
+          "fwd_60d_pct": -9.4837,
+          "hit_60d": false,
+          "raw_60d_pct": -9.1837,
+          "fwd_90d_pct": -6.0143,
+          "hit_90d": false,
+          "raw_90d_pct": -5.7143,
+          "bench_fwd_20d_pct": 0.0,
+          "bench_fwd_60d_pct": -7.4704,
+          "bench_fwd_90d_pct": -4.5455,
+          "excess_20d_pct": -12.1367,
+          "excess_60d_pct": -2.0133,
+          "excess_90d_pct": -1.4688
+        },
+        {
+          "symbol": "ACB",
+          "date": "2025-06-11",
+          "signal_index": 1005,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 18.65,
+          "rsi": 44.47,
+          "price": 18539.822265625,
+          "fwd_20d_pct": 5.9053,
+          "hit_20d": true,
+          "raw_20d_pct": 6.2053,
+          "fwd_60d_pct": 30.9649,
+          "hit_60d": true,
+          "raw_60d_pct": 31.2649,
+          "fwd_90d_pct": 25.237,
+          "hit_90d": true,
+          "raw_90d_pct": 25.537,
+          "bench_fwd_20d_pct": 6.9063,
+          "bench_fwd_60d_pct": 32.7948,
+          "bench_fwd_90d_pct": 43.336,
+          "excess_20d_pct": -1.001,
+          "excess_60d_pct": -1.8299,
+          "excess_90d_pct": -18.099
+        },
+        {
+          "symbol": "ACB",
+          "date": "2025-06-18",
+          "signal_index": 1010,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 12.27,
+          "rsi": 47.74,
+          "price": 18761.0625,
+          "fwd_20d_pct": 5.5962,
+          "hit_20d": true,
+          "raw_20d_pct": 5.8962,
+          "fwd_60d_pct": 24.9359,
+          "hit_60d": true,
+          "raw_60d_pct": 25.2359,
+          "fwd_90d_pct": 17.6245,
+          "hit_90d": true,
+          "raw_90d_pct": 17.9245,
+          "bench_fwd_20d_pct": 10.7385,
+          "bench_fwd_60d_pct": 28.8623,
+          "bench_fwd_90d_pct": 34.9301,
+          "excess_20d_pct": -5.1423,
+          "excess_60d_pct": -3.9264,
+          "excess_90d_pct": -17.3056
+        }
+      ]
+    },
+    {
+      "symbol": "BCM",
+      "ok": true,
+      "n_trades": 2,
+      "action_counts": {
+        "AVOID": 81,
+        "WATCH": 65,
+        "HOLD": 63,
+        "CONDITIONAL_BUY": 8,
+        "BUY": 1
+      },
+      "summary": {
+        "samples": 2,
+        "by_horizon": {
+          "20": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": -3.25,
+            "median_return_pct": -3.25,
+            "avg_excess_vs_bench_pct": 4.181,
+            "expectancy_pct": -3.25
+          },
+          "60": {
+            "samples": 2,
+            "hit_rate_pct": 0.0,
+            "avg_return_pct": -16.263,
+            "median_return_pct": -16.263,
+            "avg_excess_vs_bench_pct": -4.524,
+            "expectancy_pct": -16.263
+          },
+          "90": {
+            "samples": 2,
+            "hit_rate_pct": 0.0,
+            "avg_return_pct": -16.326,
+            "median_return_pct": -16.326,
+            "avg_excess_vs_bench_pct": -12.848,
+            "expectancy_pct": -16.326
+          }
+        },
+        "by_action": {
+          "CONDITIONAL_BUY": 2
+        }
+      },
+      "watch_summary": {
+        "samples": 128,
+        "by_horizon": {
+          "20": {
+            "samples": 128,
+            "hit_rate_pct": 46.88,
+            "avg_return_pct": 0.905,
+            "median_return_pct": -0.461,
+            "avg_excess_vs_bench_pct": 3.734,
+            "expectancy_pct": 0.905
+          },
+          "60": {
+            "samples": 128,
+            "hit_rate_pct": 53.12,
+            "avg_return_pct": 2.868,
+            "median_return_pct": 1.326,
+            "avg_excess_vs_bench_pct": 5.331,
+            "expectancy_pct": 2.868
+          },
+          "90": {
+            "samples": 127,
+            "hit_rate_pct": 46.46,
+            "avg_return_pct": -0.523,
+            "median_return_pct": -1.063,
+            "avg_excess_vs_bench_pct": -3.449,
+            "expectancy_pct": -0.523
+          }
+        },
+        "by_action": {
+          "WATCH": 65,
+          "HOLD": 63
+        }
+      },
+      "trades_sample": [
+        {
+          "symbol": "BCM",
+          "date": "2023-05-30",
+          "signal_index": 475,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 12.91,
+          "rsi": 48.0,
+          "price": 78000.0,
+          "fwd_20d_pct": 3.5462,
+          "hit_20d": true,
+          "raw_20d_pct": 3.8462,
+          "fwd_60d_pct": -12.4795,
+          "hit_60d": false,
+          "raw_60d_pct": -12.1795,
+          "fwd_90d_pct": -12.4795,
+          "hit_90d": false,
+          "raw_90d_pct": -12.1795,
+          "bench_fwd_20d_pct": -7.4308,
+          "bench_fwd_60d_pct": -11.7391,
+          "bench_fwd_90d_pct": -3.4783,
+          "excess_20d_pct": 10.977,
+          "excess_60d_pct": -0.7404,
+          "excess_90d_pct": -9.0012
+        },
+        {
+          "symbol": "BCM",
+          "date": "2023-08-01",
+          "signal_index": 520,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 14.45,
+          "rsi": 46.56,
+          "price": 79000.0,
+          "fwd_20d_pct": -10.0468,
+          "hit_20d": false,
+          "raw_20d_pct": -9.7468,
+          "fwd_60d_pct": -20.0468,
+          "hit_60d": false,
+          "raw_60d_pct": -19.7468,
+          "fwd_90d_pct": -20.1734,
+          "hit_90d": false,
+          "raw_90d_pct": -19.8734,
+          "bench_fwd_20d_pct": -7.4308,
+          "bench_fwd_60d_pct": -11.7391,
+          "bench_fwd_90d_pct": -3.4783,
+          "excess_20d_pct": -2.616,
+          "excess_60d_pct": -8.3077,
+          "excess_90d_pct": -16.6951
+        }
+      ]
+    },
+    {
+      "symbol": "BID",
+      "ok": true,
+      "n_trades": 2,
+      "action_counts": {
+        "AVOID": 98,
+        "WATCH": 70,
+        "HOLD": 39,
+        "CONDITIONAL_BUY": 10,
+        "BUY": 1
+      },
+      "summary": {
+        "samples": 2,
+        "by_horizon": {
+          "20": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": -1.37,
+            "median_return_pct": -1.37,
+            "avg_excess_vs_bench_pct": -5.426,
+            "expectancy_pct": -1.37
+          },
+          "60": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": 2.183,
+            "median_return_pct": 2.183,
+            "avg_excess_vs_bench_pct": -14.672,
+            "expectancy_pct": 2.183
+          },
+          "90": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": -2.24,
+            "median_return_pct": -2.24,
+            "avg_excess_vs_bench_pct": -28.318,
+            "expectancy_pct": -2.24
+          }
+        },
+        "by_action": {
+          "BUY": 1,
+          "CONDITIONAL_BUY": 1
+        }
+      },
+      "watch_summary": {
+        "samples": 109,
+        "by_horizon": {
+          "20": {
+            "samples": 109,
+            "hit_rate_pct": 64.22,
+            "avg_return_pct": 2.762,
+            "median_return_pct": 2.596,
+            "avg_excess_vs_bench_pct": 4.333,
+            "expectancy_pct": 2.762
+          },
+          "60": {
+            "samples": 109,
+            "hit_rate_pct": 70.64,
+            "avg_return_pct": 7.982,
+            "median_return_pct": 6.549,
+            "avg_excess_vs_bench_pct": 8.945,
+            "expectancy_pct": 7.982
+          },
+          "90": {
+            "samples": 108,
+            "hit_rate_pct": 59.26,
+            "avg_return_pct": 7.636,
+            "median_return_pct": 3.372,
+            "avg_excess_vs_bench_pct": 4.181,
+            "expectancy_pct": 7.636
+          }
+        },
+        "by_action": {
+          "WATCH": 70,
+          "HOLD": 39
+        }
+      },
+      "trades_sample": [
+        {
+          "symbol": "BID",
+          "date": "2025-03-14",
+          "signal_index": 935,
+          "action": "BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "risk_on",
+          "mos_proxy": 19.69,
+          "rsi": 45.62,
+          "price": 40400.0,
+          "fwd_20d_pct": -8.7158,
+          "hit_20d": false,
+          "raw_20d_pct": -8.4158,
+          "fwd_60d_pct": -13.0475,
+          "hit_60d": false,
+          "raw_60d_pct": -12.7475,
+          "fwd_90d_pct": -5.9931,
+          "hit_90d": false,
+          "raw_90d_pct": -5.6931,
+          "bench_fwd_20d_pct": -5.9406,
+          "bench_fwd_60d_pct": 3.1353,
+          "bench_fwd_90d_pct": 17.203,
+          "excess_20d_pct": -2.7752,
+          "excess_60d_pct": -16.1828,
+          "excess_90d_pct": -23.1961
+        },
+        {
+          "symbol": "BID",
+          "date": "2025-06-23",
+          "signal_index": 1005,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 23.04,
+          "rsi": 51.68,
+          "price": 35850.0,
+          "fwd_20d_pct": 5.9762,
+          "hit_20d": true,
+          "raw_20d_pct": 6.2762,
+          "fwd_60d_pct": 17.4127,
+          "hit_60d": true,
+          "raw_60d_pct": 17.7127,
+          "fwd_90d_pct": 1.5131,
+          "hit_90d": true,
+          "raw_90d_pct": 1.8131,
+          "bench_fwd_20d_pct": 14.0525,
+          "bench_fwd_60d_pct": 30.5732,
+          "bench_fwd_90d_pct": 34.9522,
+          "excess_20d_pct": -8.0763,
+          "excess_60d_pct": -13.1605,
+          "excess_90d_pct": -33.4391
+        }
+      ]
+    },
+    {
+      "symbol": "BVH",
+      "ok": true,
+      "n_trades": 2,
+      "action_counts": {
+        "WATCH": 66,
+        "HOLD": 66,
+        "AVOID": 72,
+        "CONDITIONAL_BUY": 14
+      },
+      "summary": {
+        "samples": 2,
+        "by_horizon": {
+          "20": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": -1.113,
+            "median_return_pct": -1.113,
+            "avg_excess_vs_bench_pct": 6.317,
+            "expectancy_pct": -1.113
+          },
+          "60": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": 0.011,
+            "median_return_pct": 0.011,
+            "avg_excess_vs_bench_pct": 11.75,
+            "expectancy_pct": 0.011
+          },
+          "90": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": -1.142,
+            "median_return_pct": -1.142,
+            "avg_excess_vs_bench_pct": 2.336,
+            "expectancy_pct": -1.142
+          }
+        },
+        "by_action": {
+          "CONDITIONAL_BUY": 2
+        }
+      },
+      "watch_summary": {
+        "samples": 132,
+        "by_horizon": {
+          "20": {
+            "samples": 132,
+            "hit_rate_pct": 59.09,
+            "avg_return_pct": 1.868,
+            "median_return_pct": 0.748,
+            "avg_excess_vs_bench_pct": 5.736,
+            "expectancy_pct": 1.868
+          },
+          "60": {
+            "samples": 132,
+            "hit_rate_pct": 59.85,
+            "avg_return_pct": 3.859,
+            "median_return_pct": 1.508,
+            "avg_excess_vs_bench_pct": 9.242,
+            "expectancy_pct": 3.859
+          },
+          "90": {
+            "samples": 132,
+            "hit_rate_pct": 49.24,
+            "avg_return_pct": 3.339,
+            "median_return_pct": -0.576,
+            "avg_excess_vs_bench_pct": 3.346,
+            "expectancy_pct": 3.339
+          }
+        },
+        "by_action": {
+          "WATCH": 66,
+          "HOLD": 66
+        }
+      },
+      "trades_sample": [
+        {
+          "symbol": "BVH",
+          "date": "2023-04-10",
+          "signal_index": 440,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 13.63,
+          "rsi": 50.3,
+          "price": 48900.0,
+          "fwd_20d_pct": -6.2305,
+          "hit_20d": false,
+          "raw_20d_pct": -5.9305,
+          "fwd_60d_pct": -9.298,
+          "hit_60d": false,
+          "raw_60d_pct": -8.998,
+          "fwd_90d_pct": -4.39,
+          "hit_90d": false,
+          "raw_90d_pct": -4.09,
+          "bench_fwd_20d_pct": -7.4308,
+          "bench_fwd_60d_pct": -11.7391,
+          "bench_fwd_90d_pct": -3.4783,
+          "excess_20d_pct": 1.2003,
+          "excess_60d_pct": 2.4411,
+          "excess_90d_pct": -0.9117
+        },
+        {
+          "symbol": "BVH",
+          "date": "2024-01-01",
+          "signal_index": 630,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 25.76,
+          "rsi": 46.66,
+          "price": 39500.0,
+          "fwd_20d_pct": 4.0038,
+          "hit_20d": true,
+          "raw_20d_pct": 4.3038,
+          "fwd_60d_pct": 9.3203,
+          "hit_60d": true,
+          "raw_60d_pct": 9.6203,
+          "fwd_90d_pct": 2.1051,
+          "hit_90d": true,
+          "raw_90d_pct": 2.4051,
+          "bench_fwd_20d_pct": -7.4308,
+          "bench_fwd_60d_pct": -11.7391,
+          "bench_fwd_90d_pct": -3.4783,
+          "excess_20d_pct": 11.4346,
+          "excess_60d_pct": 21.0594,
+          "excess_90d_pct": 5.5834
+        }
+      ]
+    },
+    {
+      "symbol": "CTG",
+      "ok": true,
+      "n_trades": 1,
+      "action_counts": {
+        "AVOID": 140,
+        "WATCH": 50,
+        "HOLD": 26,
+        "CONDITIONAL_BUY": 3
+      },
+      "summary": {
+        "samples": 1,
+        "by_horizon": {
+          "20": {
+            "samples": 1,
+            "hit_rate_pct": 0.0,
+            "avg_return_pct": -26.849,
+            "median_return_pct": -26.849,
+            "avg_excess_vs_bench_pct": -26.849,
+            "expectancy_pct": -26.849
+          },
+          "60": {
+            "samples": 1,
+            "hit_rate_pct": 0.0,
+            "avg_return_pct": -3.309,
+            "median_return_pct": -3.309,
+            "avg_excess_vs_bench_pct": 4.438,
+            "expectancy_pct": -3.309
+          },
+          "90": {
+            "samples": 1,
+            "hit_rate_pct": 100.0,
+            "avg_return_pct": 0.762,
+            "median_return_pct": 0.762,
+            "avg_excess_vs_bench_pct": 6.612,
+            "expectancy_pct": 0.762
+          }
+        },
+        "by_action": {
+          "CONDITIONAL_BUY": 1
+        }
+      },
+      "watch_summary": {
+        "samples": 76,
+        "by_horizon": {
+          "20": {
+            "samples": 76,
+            "hit_rate_pct": 63.16,
+            "avg_return_pct": 1.786,
+            "median_return_pct": 2.038,
+            "avg_excess_vs_bench_pct": 5.302,
+            "expectancy_pct": 1.786
+          },
+          "60": {
+            "samples": 76,
+            "hit_rate_pct": 71.05,
+            "avg_return_pct": 6.646,
+            "median_return_pct": 8.858,
+            "avg_excess_vs_bench_pct": 11.662,
+            "expectancy_pct": 6.646
+          },
+          "90": {
+            "samples": 76,
+            "hit_rate_pct": 65.79,
+            "avg_return_pct": 9.296,
+            "median_return_pct": 8.186,
+            "avg_excess_vs_bench_pct": 10.215,
+            "expectancy_pct": 9.296
+          }
+        },
+        "by_action": {
+          "WATCH": 50,
+          "HOLD": 26
+        }
+      },
+      "trades_sample": [
+        {
+          "symbol": "CTG",
+          "date": "2022-09-06",
+          "signal_index": 285,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 12.64,
+          "rsi": 51.11,
+          "price": 17479.37109375,
+          "fwd_20d_pct": -26.8487,
+          "hit_20d": false,
+          "raw_20d_pct": -26.5487,
+          "fwd_60d_pct": -3.3088,
+          "hit_60d": false,
+          "raw_60d_pct": -3.0088,
+          "fwd_90d_pct": 0.7619,
+          "hit_90d": true,
+          "raw_90d_pct": 1.0619,
+          "bench_fwd_20d_pct": 0.0,
+          "bench_fwd_60d_pct": -7.747,
+          "bench_fwd_90d_pct": -5.8498,
+          "excess_20d_pct": -26.8487,
+          "excess_60d_pct": 4.4382,
+          "excess_90d_pct": 6.6117
+        }
+      ]
+    },
+    {
+      "symbol": "FPT",
+      "ok": true,
+      "n_trades": 4,
+      "action_counts": {
+        "HOLD": 56,
+        "BUY": 2,
+        "WATCH": 46,
+        "AVOID": 105,
+        "CONDITIONAL_BUY": 10
+      },
+      "summary": {
+        "samples": 4,
+        "by_horizon": {
+          "20": {
+            "samples": 4,
+            "hit_rate_pct": 75.0,
+            "avg_return_pct": 4.206,
+            "median_return_pct": 3.875,
+            "avg_excess_vs_bench_pct": 4.071,
+            "expectancy_pct": 4.206
+          },
+          "60": {
+            "samples": 4,
+            "hit_rate_pct": 75.0,
+            "avg_return_pct": 2.577,
+            "median_return_pct": 2.456,
+            "avg_excess_vs_bench_pct": -8.991,
+            "expectancy_pct": 2.577
+          },
+          "90": {
+            "samples": 4,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": 1.307,
+            "median_return_pct": -2.349,
+            "avg_excess_vs_bench_pct": -17.123,
+            "expectancy_pct": 1.307
+          }
+        },
+        "by_action": {
+          "BUY": 2,
+          "CONDITIONAL_BUY": 2
+        }
+      },
+      "watch_summary": {
+        "samples": 102,
+        "by_horizon": {
+          "20": {
+            "samples": 102,
+            "hit_rate_pct": 50.98,
+            "avg_return_pct": -0.507,
+            "median_return_pct": 0.225,
+            "avg_excess_vs_bench_pct": 0.367,
+            "expectancy_pct": -0.507
+          },
+          "60": {
+            "samples": 102,
+            "hit_rate_pct": 43.14,
+            "avg_return_pct": -0.964,
+            "median_return_pct": -1.87,
+            "avg_excess_vs_bench_pct": -2.281,
+            "expectancy_pct": -0.964
+          },
+          "90": {
+            "samples": 102,
+            "hit_rate_pct": 49.02,
+            "avg_return_pct": -1.841,
+            "median_return_pct": -0.24,
+            "avg_excess_vs_bench_pct": -7.075,
+            "expectancy_pct": -1.841
+          }
+        },
+        "by_action": {
+          "HOLD": 56,
+          "WATCH": 46
+        }
+      },
+      "trades_sample": [
+        {
+          "symbol": "FPT",
+          "date": "2022-02-15",
+          "signal_index": 140,
+          "action": "BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "risk_on",
+          "mos_proxy": 17.19,
+          "rsi": 53.34,
+          "price": 49861.6484375,
+          "fwd_20d_pct": -0.3,
+          "hit_20d": false,
+          "raw_20d_pct": 0.0,
+          "fwd_60d_pct": 7.8319,
+          "hit_60d": true,
+          "raw_60d_pct": 8.1319,
+          "fwd_90d_pct": 17.1945,
+          "hit_90d": true,
+          "raw_90d_pct": 17.4945,
+          "bench_fwd_20d_pct": -2.6923,
+          "bench_fwd_60d_pct": -2.6923,
+          "bench_fwd_90d_pct": -2.6923,
+          "excess_20d_pct": 2.3923,
+          "excess_60d_pct": 10.5242,
+          "excess_90d_pct": 19.8868
+        },
+        {
+          "symbol": "FPT",
+          "date": "2022-12-27",
+          "signal_index": 365,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 13.92,
+          "rsi": 52.23,
+          "price": 50299.9921875,
+          "fwd_20d_pct": 9.3732,
+          "hit_20d": true,
+          "raw_20d_pct": 9.6732,
+          "fwd_60d_pct": 1.7915,
+          "hit_60d": true,
+          "raw_60d_pct": 2.0915,
+          "fwd_90d_pct": 1.0072,
+          "hit_90d": true,
+          "raw_90d_pct": 1.3072,
+          "bench_fwd_20d_pct": -7.4308,
+          "bench_fwd_60d_pct": -11.7391,
+          "bench_fwd_90d_pct": -3.4783,
+          "excess_20d_pct": 16.804,
+          "excess_60d_pct": 13.5306,
+          "excess_90d_pct": 4.4855
+        },
+        {
+          "symbol": "FPT",
+          "date": "2025-06-03",
+          "signal_index": 1000,
+          "action": "BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "risk_on",
+          "mos_proxy": 24.57,
+          "rsi": 47.88,
+          "price": 100956.5234375,
+          "fwd_20d_pct": 1.5088,
+          "hit_20d": true,
+          "raw_20d_pct": 1.8088,
+          "fwd_60d_pct": -2.4361,
+          "hit_60d": false,
+          "raw_60d_pct": -2.1361,
+          "fwd_90d_pct": -5.7048,
+          "hit_90d": false,
+          "raw_90d_pct": -5.4048,
+          "bench_fwd_20d_pct": 4.4005,
+          "bench_fwd_60d_pct": 28.1792,
+          "bench_fwd_90d_pct": 37.061,
+          "excess_20d_pct": -2.8917,
+          "excess_60d_pct": -30.6153,
+          "excess_90d_pct": -42.7658
+        },
+        {
+          "symbol": "FPT",
+          "date": "2025-06-10",
+          "signal_index": 1005,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 24.05,
+          "rsi": 47.87,
+          "price": 101043.4765625,
+          "fwd_20d_pct": 6.2404,
+          "hit_20d": true,
+          "raw_20d_pct": 6.5404,
+          "fwd_60d_pct": 3.1208,
+          "hit_60d": true,
+          "raw_60d_pct": 3.4208,
+          "fwd_90d_pct": -7.2707,
+          "hit_90d": false,
+          "raw_90d_pct": -6.9707,
+          "bench_fwd_20d_pct": 6.2626,
+          "bench_fwd_60d_pct": 32.5253,
+          "bench_fwd_90d_pct": 42.8283,
+          "excess_20d_pct": -0.0222,
+          "excess_60d_pct": -29.4045,
+          "excess_90d_pct": -50.099
+        }
+      ]
+    },
+    {
+      "symbol": "GAS",
+      "ok": true,
+      "n_trades": 7,
+      "action_counts": {
+        "AVOID": 48,
+        "WATCH": 54,
+        "HOLD": 86,
+        "CONDITIONAL_BUY": 30,
+        "BUY": 1
+      },
+      "summary": {
+        "samples": 7,
+        "by_horizon": {
+          "20": {
+            "samples": 7,
+            "hit_rate_pct": 71.43,
+            "avg_return_pct": -2.883,
+            "median_return_pct": 1.271,
+            "avg_excess_vs_bench_pct": 4.321,
+            "expectancy_pct": -2.883
+          },
+          "60": {
+            "samples": 7,
+            "hit_rate_pct": 42.86,
+            "avg_return_pct": -1.865,
+            "median_return_pct": -3.119,
+            "avg_excess_vs_bench_pct": 4.451,
+            "expectancy_pct": -1.865
+          },
+          "90": {
+            "samples": 7,
+            "hit_rate_pct": 57.14,
+            "avg_return_pct": -1.052,
+            "median_return_pct": 0.887,
+            "avg_excess_vs_bench_pct": -5.305,
+            "expectancy_pct": -1.052
+          }
+        },
+        "by_action": {
+          "CONDITIONAL_BUY": 6,
+          "BUY": 1
+        }
+      },
+      "watch_summary": {
+        "samples": 140,
+        "by_horizon": {
+          "20": {
+            "samples": 138,
+            "hit_rate_pct": 53.62,
+            "avg_return_pct": 0.969,
+            "median_return_pct": 0.328,
+            "avg_excess_vs_bench_pct": 4.427,
+            "expectancy_pct": 0.969
+          },
+          "60": {
+            "samples": 136,
+            "hit_rate_pct": 40.44,
+            "avg_return_pct": 0.833,
+            "median_return_pct": -1.849,
+            "avg_excess_vs_bench_pct": 5.329,
+            "expectancy_pct": 0.833
+          },
+          "90": {
+            "samples": 140,
+            "hit_rate_pct": 41.43,
+            "avg_return_pct": 3.617,
+            "median_return_pct": -2.453,
+            "avg_excess_vs_bench_pct": 1.662,
+            "expectancy_pct": 3.617
+          }
+        },
+        "by_action": {
+          "WATCH": 54,
+          "HOLD": 86
+        }
+      },
+      "trades_sample": [
+        {
+          "symbol": "GAS",
+          "date": "2023-01-24",
+          "signal_index": 385,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 19.76,
+          "rsi": 48.75,
+          "price": 82889.140625,
+          "fwd_20d_pct": 3.3364,
+          "hit_20d": true,
+          "raw_20d_pct": 3.6364,
+          "fwd_60d_pct": -7.6684,
+          "hit_60d": false,
+          "raw_60d_pct": -7.3684,
+          "fwd_90d_pct": -11.4005,
+          "hit_90d": false,
+          "raw_90d_pct": -11.1005,
+          "bench_fwd_20d_pct": -7.4308,
+          "bench_fwd_60d_pct": -11.7391,
+          "bench_fwd_90d_pct": -3.4783,
+          "excess_20d_pct": 10.7672,
+          "excess_60d_pct": 4.0707,
+          "excess_90d_pct": -7.9222
+        },
+        {
+          "symbol": "GAS",
+          "date": "2023-07-04",
+          "signal_index": 500,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 19.39,
+          "rsi": 51.69,
+          "price": 75433.0859375,
+          "fwd_20d_pct": 5.5885,
+          "hit_20d": true,
+          "raw_20d_pct": 5.8885,
+          "fwd_60d_pct": 11.7505,
+          "hit_60d": true,
+          "raw_60d_pct": 12.0505,
+          "fwd_90d_pct": -0.8678,
+          "hit_90d": false,
+          "raw_90d_pct": -0.5678,
+          "bench_fwd_20d_pct": -7.4308,
+          "bench_fwd_60d_pct": -11.7391,
+          "bench_fwd_90d_pct": -3.4783,
+          "excess_20d_pct": 13.0193,
+          "excess_60d_pct": 23.4896,
+          "excess_90d_pct": 2.6105
+        },
+        {
+          "symbol": "GAS",
+          "date": "2024-01-30",
+          "signal_index": 650,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 21.03,
+          "rsi": 51.87,
+          "price": 72720.3515625,
+          "fwd_20d_pct": 1.2707,
+          "hit_20d": true,
+          "raw_20d_pct": 1.5707,
+          "fwd_60d_pct": -3.1796,
+          "hit_60d": false,
+          "raw_60d_pct": -2.8796,
+          "fwd_90d_pct": 5.4592,
+          "hit_90d": true,
+          "raw_90d_pct": 5.7592,
+          "bench_fwd_20d_pct": -7.4308,
+          "bench_fwd_60d_pct": -11.7391,
+          "bench_fwd_90d_pct": -3.4783,
+          "excess_20d_pct": 8.7015,
+          "excess_60d_pct": 8.5595,
+          "excess_90d_pct": 8.9375
+        },
+        {
+          "symbol": "GAS",
+          "date": "2024-02-13",
+          "signal_index": 660,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 22.67,
+          "rsi": 48.08,
+          "price": 72054.0625,
+          "fwd_20d_pct": 2.6062,
+          "hit_20d": true,
+          "raw_20d_pct": 2.9062,
+          "fwd_60d_pct": 0.4926,
+          "hit_60d": true,
+          "raw_60d_pct": 0.7926,
+          "fwd_90d_pct": 2.7383,
+          "hit_90d": true,
+          "raw_90d_pct": 3.0383,
+          "bench_fwd_20d_pct": -7.4308,
+          "bench_fwd_60d_pct": -11.7391,
+          "bench_fwd_90d_pct": -3.4783,
+          "excess_20d_pct": 10.037,
+          "excess_60d_pct": 12.2317,
+          "excess_90d_pct": 6.2166
+        },
+        {
+          "symbol": "GAS",
+          "date": "2025-01-21",
+          "signal_index": 905,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 26.17,
+          "rsi": 42.22,
+          "price": 65145.6328125,
+          "fwd_20d_pct": 1.0413,
+          "hit_20d": true,
+          "raw_20d_pct": 1.3413,
+          "fwd_60d_pct": -13.5638,
+          "hit_60d": false,
+          "raw_60d_pct": -13.2638,
+          "fwd_90d_pct": -6.4103,
+          "hit_90d": false,
+          "raw_90d_pct": -6.1103,
+          "bench_fwd_20d_pct": 1.4744,
+          "bench_fwd_60d_pct": -1.1275,
+          "bench_fwd_90d_pct": 7.1119,
+          "excess_20d_pct": -0.4331,
+          "excess_60d_pct": -12.4363,
+          "excess_90d_pct": -13.5222
+        },
+        {
+          "symbol": "GAS",
+          "date": "2025-03-11",
+          "signal_index": 940,
+          "action": "BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "risk_on",
+          "mos_proxy": 23.29,
+          "rsi": 42.7,
+          "price": 65436.89453125,
+          "fwd_20d_pct": -19.2911,
+          "hit_20d": false,
+          "raw_20d_pct": -18.9911,
+          "fwd_60d_pct": -3.119,
+          "hit_60d": false,
+          "raw_60d_pct": -2.819,
+          "fwd_90d_pct": 0.8869,
+          "hit_90d": true,
+          "raw_90d_pct": 1.1869,
+          "bench_fwd_20d_pct": -14.4563,
+          "bench_fwd_60d_pct": 2.0181,
+          "bench_fwd_90d_pct": 14.4975,
+          "excess_20d_pct": -4.8348,
+          "excess_60d_pct": -5.1371,
+          "excess_90d_pct": -13.6106
+        },
+        {
+          "symbol": "GAS",
+          "date": "2025-03-25",
+          "signal_index": 950,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 23.52,
+          "rsi": 42.11,
+          "price": 65242.71875,
+          "fwd_20d_pct": -14.7345,
+          "hit_20d": false,
+          "raw_20d_pct": -14.4345,
+          "fwd_60d_pct": 2.2298,
+          "hit_60d": true,
+          "raw_60d_pct": 2.5298,
+          "fwd_90d_pct": 2.2298,
+          "hit_90d": true,
+          "raw_90d_pct": 2.5298,
+          "bench_fwd_20d_pct": -7.7271,
+          "bench_fwd_60d_pct": 1.8496,
+          "bench_fwd_90d_pct": 22.0715,
+          "excess_20d_pct": -7.0074,
+          "excess_60d_pct": 0.3802,
+          "excess_90d_pct": -19.8417
+        }
+      ]
+    },
+    {
+      "symbol": "GVR",
+      "ok": true,
+      "n_trades": 0,
+      "action_counts": {
+        "WATCH": 58,
+        "HOLD": 68,
+        "CONDITIONAL_BUY": 10,
+        "AVOID": 81,
+        "BUY": 1
+      },
+      "summary": {
+        "samples": 0,
+        "by_horizon": {},
+        "by_action": {}
+      },
+      "watch_summary": {
+        "samples": 126,
+        "by_horizon": {
+          "20": {
+            "samples": 125,
+            "hit_rate_pct": 50.4,
+            "avg_return_pct": -0.277,
+            "median_return_pct": 0.194,
+            "avg_excess_vs_bench_pct": 1.071,
+            "expectancy_pct": -0.277
+          },
+          "60": {
+            "samples": 126,
+            "hit_rate_pct": 47.62,
+            "avg_return_pct": 1.299,
+            "median_return_pct": -1.199,
+            "avg_excess_vs_bench_pct": 1.551,
+            "expectancy_pct": 1.299
+          },
+          "90": {
+            "samples": 126,
+            "hit_rate_pct": 47.62,
+            "avg_return_pct": 1.846,
+            "median_return_pct": -1.35,
+            "avg_excess_vs_bench_pct": -1.475,
+            "expectancy_pct": 1.846
+          }
+        },
+        "by_action": {
+          "WATCH": 58,
+          "HOLD": 68
+        }
+      },
+      "trades_sample": []
+    },
+    {
+      "symbol": "HDB",
+      "ok": true,
+      "n_trades": 0,
+      "action_counts": {
+        "WATCH": 40,
+        "AVOID": 137,
+        "HOLD": 39,
+        "CONDITIONAL_BUY": 3,
+        "BUY": 1
+      },
+      "summary": {
+        "samples": 0,
+        "by_horizon": {},
+        "by_action": {}
+      },
+      "watch_summary": {
+        "samples": 79,
+        "by_horizon": {
+          "20": {
+            "samples": 79,
+            "hit_rate_pct": 59.49,
+            "avg_return_pct": 0.767,
+            "median_return_pct": 1.874,
+            "avg_excess_vs_bench_pct": 2.694,
+            "expectancy_pct": 0.767
+          },
+          "60": {
+            "samples": 79,
+            "hit_rate_pct": 60.76,
+            "avg_return_pct": 4.338,
+            "median_return_pct": 5.656,
+            "avg_excess_vs_bench_pct": 5.392,
+            "expectancy_pct": 4.338
+          },
+          "90": {
+            "samples": 79,
+            "hit_rate_pct": 62.03,
+            "avg_return_pct": 7.444,
+            "median_return_pct": 9.456,
+            "avg_excess_vs_bench_pct": 4.468,
+            "expectancy_pct": 7.444
+          }
+        },
+        "by_action": {
+          "WATCH": 40,
+          "HOLD": 39
+        }
+      },
+      "trades_sample": []
+    },
+    {
+      "symbol": "HPG",
+      "ok": true,
+      "n_trades": 2,
+      "action_counts": {
+        "HOLD": 56,
+        "WATCH": 62,
+        "BUY": 2,
+        "CONDITIONAL_BUY": 4,
+        "AVOID": 95
+      },
+      "summary": {
+        "samples": 2,
+        "by_horizon": {
+          "20": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": -2.064,
+            "median_return_pct": -2.064,
+            "avg_excess_vs_bench_pct": -4.264,
+            "expectancy_pct": -2.064
+          },
+          "60": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": -9.873,
+            "median_return_pct": -9.873,
+            "avg_excess_vs_bench_pct": -23.963,
+            "expectancy_pct": -9.873
+          },
+          "90": {
+            "samples": 2,
+            "hit_rate_pct": 50.0,
+            "avg_return_pct": 0.736,
+            "median_return_pct": 0.736,
+            "avg_excess_vs_bench_pct": -17.794,
+            "expectancy_pct": 0.736
+          }
+        },
+        "by_action": {
+          "CONDITIONAL_BUY": 1,
+          "BUY": 1
+        }
+      },
+      "watch_summary": {
+        "samples": 118,
+        "by_horizon": {
+          "20": {
+            "samples": 117,
+            "hit_rate_pct": 56.41,
+            "avg_return_pct": 0.129,
+            "median_return_pct": 1.028,
+            "avg_excess_vs_bench_pct": 2.694,
+            "expectancy_pct": 0.129
+          },
+          "60": {
+            "samples": 118,
+            "hit_rate_pct": 55.08,
+            "avg_return_pct": 1.334,
+            "median_return_pct": 1.953,
+            "avg_excess_vs_bench_pct": 5.219,
+            "expectancy_pct": 1.334
+          },
+          "90": {
+            "samples": 118,
+            "hit_rate_pct": 55.08,
+            "avg_return_pct": 1.518,
+            "median_return_pct": 2.179,
+            "avg_excess_vs_bench_pct": 0.238,
+            "expectancy_pct": 1.518
+          }
+        },
+        "by_action": {
+          "HOLD": 56,
+          "WATCH": 62
+        }
+      },
+      "trades_sample": [
+        {
+          "symbol": "HPG",
+          "date": "2022-03-29",
+          "signal_index": 170,
+          "action": "CONDITIONAL_BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "neutral",
+          "mos_proxy": 16.42,
+          "rsi": 43.65,
+          "price": 24290.103515625,
+          "fwd_20d_pct": -10.4418,
+          "hit_20d": false,
+          "raw_20d_pct": -10.1418,
+          "fwd_60d_pct": -41.3251,
+          "hit_60d": false,
+          "raw_60d_pct": -41.0251,
+          "fwd_90d_pct": -35.3709,
+          "hit_90d": false,
+          "raw_90d_pct": -35.0709,
+          "bench_fwd_20d_pct": 0.0,
+          "bench_fwd_60d_pct": 0.0,
+          "bench_fwd_90d_pct": 0.0,
+          "excess_20d_pct": -10.4418,
+          "excess_60d_pct": -41.3251,
+          "excess_90d_pct": -35.3709
+        },
+        {
+          "symbol": "HPG",
+          "date": "2025-06-03",
+          "signal_index": 1000,
+          "action": "BUY",
+          "phase": "accumulation",
+          "thesis": "A",
+          "setup": "ARMED",
+          "trigger": "READY",
+          "regime": "risk_on",
+          "mos_proxy": 17.57,
+          "rsi": 48.11,
+          "price": 19356.060546875,
+          "fwd_20d_pct": 6.3145,
+          "hit_20d": true,
+          "raw_20d_pct": 6.6145,
+          "fwd_60d_pct": 21.5787,
+          "hit_60d": true,
+          "raw_60d_pct": 21.8787,
+          "fwd_90d_pct": 36.8429,
+          "hit_90d": true,
+          "raw_90d_pct": 37.1429,
+          "bench_fwd_20d_pct": 4.4005,
+          "bench_fwd_60d_pct": 28.1792,
+          "bench_fwd_90d_pct": 37.061,
+          "excess_20d_pct": 1.914,
+          "excess_60d_pct": -6.6005,
+          "excess_90d_pct": -0.2181
+        }
+      ]
+    }
+  ]
+}

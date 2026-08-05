@@ -8,30 +8,34 @@ import hashlib
 import json
 import logging
 import os
+import re
 import smtplib
 import sqlite3
-import secrets
 from datetime import datetime, timedelta, timezone
 from email.mime.text import MIMEText
 from pathlib import Path
 from typing import Any
 
 import requests  # type: ignore
-from scrapers.financial_data import fetch_financial_snapshot
-from core import auth_service
-from core import admin_runtime_service
-from core import analytics_service
+
+from core import (
+    admin_runtime_service,
+    analytics_service,
+    auth_service,
+    decision_service,
+    dss_release_service,
+    forecast_accountability_service,
+    forecast_service,
+    notification_queue_repository as notif_queue_repo,
+    plan_usage_service,
+    secret_repository,
+    secret_service,
+    trade_journal_service,
+)
 from core.db_connection_factory import connect_runtime_db
-from core.db_runtime import require_sqlite_backend, resolve_db_runtime
-from core import decision_service
-from core import forecast_accountability_service
-from core import forecast_service
-from core import notification_queue_repository as notif_queue_repo
+from core.db_runtime import resolve_db_runtime
 from core.observability import log_timing
-from core import plan_usage_service
-from core import secret_repository
-from core import secret_service
-from core import trade_journal_service
+from scrapers.financial_data import fetch_financial_snapshot
 
 ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = ROOT / "data" / "app_state.db"
@@ -45,9 +49,39 @@ PIN_HASH_PREFIX = "pbkdf2_sha256"
 PIN_HASH_ITERATIONS = 210_000
 
 PLAN_FEATURES = {
-    "free": {"scan_limit": 20, "llm_live": False, "alerts": 3, "analysis_per_day": 30},
-    "pro": {"scan_limit": 80, "llm_live": True, "alerts": 20, "analysis_per_day": 200},
-    "expert": {"scan_limit": 200, "llm_live": True, "alerts": 100, "analysis_per_day": 1000},
+    "free": {
+        "scan_limit": 20,
+        "llm_live": False,
+        "alerts": 3,
+        "analysis_per_day": 30,
+        "journal_one_click_per_day": 3,
+        "edge_detail": False,
+        "morning_digest": False,
+        "paper_weekly": False,
+        "trade_plan_full": False,
+    },
+    "pro": {
+        "scan_limit": 800,
+        "llm_live": True,
+        "alerts": 20,
+        "analysis_per_day": 200,
+        "journal_one_click_per_day": 50,
+        "edge_detail": True,
+        "morning_digest": True,
+        "paper_weekly": True,
+        "trade_plan_full": True,
+    },
+    "expert": {
+        "scan_limit": 4000,
+        "llm_live": True,
+        "alerts": 100,
+        "analysis_per_day": 1000,
+        "journal_one_click_per_day": 500,
+        "edge_detail": True,
+        "morning_digest": True,
+        "paper_weekly": True,
+        "trade_plan_full": True,
+    },
 }
 
 
@@ -356,6 +390,26 @@ def _init_db_postgres() -> None:
                 PRIMARY KEY (user_id, score_date)
             )
             """,
+            """
+            CREATE TABLE IF NOT EXISTS ii_async_jobs (
+                idempotency_key TEXT PRIMARY KEY,
+                job_type TEXT NOT NULL,
+                payload_json JSONB NOT NULL,
+                status TEXT NOT NULL,
+                locked_until TIMESTAMPTZ,
+                worker_id TEXT,
+                result_pickle BYTEA,
+                result_json JSONB,
+                error_text TEXT,
+                created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+                updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+            )
+            """,
+            """
+            CREATE INDEX IF NOT EXISTS ii_async_jobs_status_created_idx
+                ON ii_async_jobs (status, created_at)
+            """,
+            "ALTER TABLE ii_async_jobs ADD COLUMN IF NOT EXISTS result_json JSONB",
         ]
         for stmt in ddl_statements:
             c.execute(stmt)
@@ -405,7 +459,23 @@ def _apply_schema_migrations(c: sqlite3.Connection) -> None:
         )
 
 
-_init_db()
+_DB_INITIALIZED = False
+
+
+def initialize_database_connection(*, force: bool = False) -> None:
+    """
+    Explicit DB schema bootstrap — call from app/worker bootstrap only.
+
+    Not invoked at import time (avoids side effects / connection storms on import).
+    Tests that monkeypatch DB_PATH should call this (or ``_init_db``) after the patch.
+    For PostgreSQL schema versioning, prefer ``alembic upgrade head`` in deploy;
+    this helper still runs CREATE IF NOT EXISTS for zero-friction bootstrap.
+    """
+    global _DB_INITIALIZED
+    if _DB_INITIALIZED and not force:
+        return
+    _init_db()
+    _DB_INITIALIZED = True
 
 
 def get_plan_features(plan_id: str) -> dict[str, Any]:
@@ -477,7 +547,7 @@ def _verify_pin_hash(stored_hash: str, pin: str) -> bool:
     return auth_service.verify_pin_hash(stored_hash, pin, prefix=PIN_HASH_PREFIX)
 
 
-def register_user_pin(user_id: str, pin: str) -> tuple[bool, str]:
+def register_user_pin(user_id: str, pin: str, referrer_code: str = "") -> tuple[bool, str]:
     return auth_service.register_user_pin(
         conn_factory=_conn,
         utcnow_iso=_utcnow_iso,
@@ -485,6 +555,7 @@ def register_user_pin(user_id: str, pin: str) -> tuple[bool, str]:
         pin=pin,
         prefix=PIN_HASH_PREFIX,
         iterations=PIN_HASH_ITERATIONS,
+        referrer_code=referrer_code,
     )
 
 
@@ -604,6 +675,20 @@ def can_use_feature(user_id: str, feature: str, requested: int = 1, plan_id: str
     )
 
 
+def require_feature(user_id: str, feature: str, requested: int = 1, plan_id: str | None = None) -> None:
+    """Raise InsufficientQuotaError when plan quota is exhausted."""
+    plan_usage_service.require_feature(
+        user_id=user_id,
+        feature=feature,
+        requested=requested,
+        plan_id=plan_id,
+        get_user_plan_func=get_user_plan,
+        get_plan_features_func=get_plan_features,
+        get_usage_today_func=get_usage_today,
+        list_alerts_func=list_alerts,
+    )
+
+
 def log_event(user_id: str, event_type: str, meta: dict[str, Any] | None = None) -> None:
     analytics_service.log_event(
         conn_factory=_conn,
@@ -671,8 +756,88 @@ def record_forecast_snapshot(user_id: str, symbol: str, report: dict[str, Any]) 
 
 
 def _refresh_matured_forecasts(user_id: str, symbol: str) -> None:
+    import os
+
+    from core.forecast_metrics import settle_realized_price_on_due_date
+    from core.ohlcv_store import get_close_on_or_before, upsert_ohlcv
+
     def _fetch_snapshot_for_forecast(sym: str) -> dict[str, Any]:
         return fetch_financial_snapshot(sym) or {}
+
+    def _fetch_ohlcv_for_settle(sym: str, sessions: int = 80):
+        """
+        Backfill lịch sử cho nghiệm thu forecast.
+        Tránh portal.fetch_ohlcv_history (nhánh incremental store → VNDirect có thể treo connect).
+        """
+        from scrapers.portal import PortalDataError
+        from scrapers.vnstock_provider import VnstockProviderError, fetch_ohlcv_history as vn_fetch
+
+        last_err: Exception | None = None
+        try:
+            out = vn_fetch(sym, sessions=sessions)
+            if out is not None and not getattr(out, "empty", True):
+                return out
+        except (VnstockProviderError, Exception) as e:
+            last_err = e
+            logger.warning(
+                "settle_ohlcv_provider_failed symbol=%s provider=vnstock err=%r",
+                sym,
+                e,
+                exc_info=True,
+            )
+        try:
+            from scrapers import portal as _portal
+
+            for fn_name in (
+                "_fetch_ohlcv_fireant_uncached",
+                "_fetch_ohlcv_yahoo_uncached",
+                "_fetch_ohlcv_yfinance_uncached",
+            ):
+                fn = getattr(_portal, fn_name, None)
+                if fn is None:
+                    continue
+                try:
+                    out = fn(sym, sessions=sessions)
+                    if out is not None and not getattr(out, "empty", True):
+                        return out
+                except Exception as e:
+                    last_err = e
+                    logger.warning(
+                        "settle_ohlcv_provider_failed symbol=%s provider=%s err=%r",
+                        sym,
+                        fn_name,
+                        e,
+                        exc_info=True,
+                    )
+        except Exception as e:
+            last_err = e
+            logger.warning(
+                "settle_ohlcv_fallback_chain_failed symbol=%s err=%r",
+                sym,
+                e,
+                exc_info=True,
+            )
+        from core.exceptions import DataProviderError
+
+        # DataProviderError for Safety Gate; also subclass-compatible via chaining to PortalDataError.
+        err = DataProviderError(f"settle OHLCV unavailable for {sym}: {last_err}")
+        raise PortalDataError(str(err)) from err
+
+    allow_live_backfill = str(os.environ.get("II_FORECAST_SETTLE_LIVE_BACKFILL", "1") or "1").strip().lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
+
+    def _settle(*, symbol: str, due_at):
+        return settle_realized_price_on_due_date(
+            symbol=symbol,
+            due_at=due_at,
+            get_close_on_or_before=get_close_on_or_before,
+            fetch_ohlcv_history=_fetch_ohlcv_for_settle if allow_live_backfill else None,
+            upsert_ohlcv=upsert_ohlcv if allow_live_backfill else None,
+        )
 
     forecast_service.refresh_matured_forecasts(
         conn_factory=_conn,
@@ -680,6 +845,7 @@ def _refresh_matured_forecasts(user_id: str, symbol: str) -> None:
         fetch_financial_snapshot_func=_fetch_snapshot_for_forecast,
         user_id=user_id,
         symbol=symbol,
+        settle_realized_price_func=_settle,
     )
 
 
@@ -758,6 +924,24 @@ def get_forecast_regime_dashboard(user_id: str, lookback_days: int = 720) -> dic
     )
 
 
+def get_forecast_backtesting_report(user_id: str, lookback_days: int = 365) -> dict[str, Any]:
+    return forecast_accountability_service.get_forecast_backtesting_report(
+        conn_factory=_conn,
+        user_id=user_id,
+        lookback_days=lookback_days,
+    )
+
+
+def get_dss_readiness_report(report: dict[str, Any], user_id: str, lookback_days: int = 365) -> dict[str, Any]:
+    backtesting = get_forecast_backtesting_report(user_id, lookback_days=lookback_days)
+    engine_bt = (report or {}).get("backtest_summary") if isinstance(report, dict) else None
+    return dss_release_service.evaluate_dss_readiness(
+        report,
+        backtesting,
+        engine_backtest=engine_bt if isinstance(engine_bt, dict) else None,
+    )
+
+
 def get_forecast_drift_streak(user_id: str, symbol: str, checks: int = 3) -> dict[str, Any]:
     return forecast_service.get_forecast_drift_streak(
         get_forecast_drift_signal_func=get_forecast_drift_signal,
@@ -829,12 +1013,22 @@ def send_monthly_accountability_email(
 
 
 def get_kpi_dashboard(user_id: str, days: int = 30) -> dict[str, Any]:
-    return analytics_service.get_kpi_dashboard(
+    started_at = datetime.now(timezone.utc)
+    out = analytics_service.get_kpi_dashboard(
         conn_factory=_conn,
         user_id=user_id,
         days=days,
         get_user_plan_func=lambda uid: get_user_plan(uid),
     )
+    duration_ms = (datetime.now(timezone.utc) - started_at).total_seconds() * 1000.0
+    log_timing(
+        "product_layer.get_kpi_dashboard",
+        duration_ms,
+        user_id=str(user_id or ""),
+        days=int(days),
+        events_30d=int(out.get("events_30d") or 0),
+    )
+    return out
 
 
 def list_known_user_ids(limit: int = 500) -> list[str]:
@@ -1131,6 +1325,135 @@ def dispatch_external_notifications(
     return {"sent": sent, "failed": failed}
 
 
+def get_deep_analysis(
+    symbol: str,
+    *,
+    profile: str = "growth",
+    total_capital_vnd: float = 200_000_000.0,
+    quick_mode: bool = True,
+    llm_live: bool = False,
+) -> dict[str, Any]:
+    """
+    Phân tích sâu cho Telegram / automation — fail-soft, không phụ thuộc Streamlit cache.
+
+    Trả về ``{symbol, snapshot, report, company_name, error?, partial_error?}``.
+    """
+    sym = str(symbol or "").strip().upper()
+    out: dict[str, Any] = {
+        "symbol": sym,
+        "snapshot": {},
+        "report": {},
+        "company_name": "",
+        "error": None,
+        "partial_error": None,
+    }
+    if not re.fullmatch(r"[A-Z0-9]{2,6}", sym or ""):
+        out["error"] = "invalid_symbol"
+        return out
+
+    snap: dict[str, Any] = {}
+    try:
+        from core.analysis_runtime_service import _snapshot_impl
+
+        snap = _snapshot_impl(sym) or {}
+    except Exception as exc:
+        logger.warning("get_deep_analysis snapshot failed symbol=%s err=%s", sym, exc.__class__.__name__)
+        out["partial_error"] = f"snapshot:{exc.__class__.__name__}"
+        try:
+            snap = fetch_financial_snapshot(sym) or {}
+        except Exception as exc2:
+            out["error"] = f"snapshot_unavailable:{exc2.__class__.__name__}"
+            # Minimal card: giá live lúc yêu cầu — không lấy đóng cửa OHLCV kho.
+            try:
+                from scrapers.finance_scraper import get_stock_data
+
+                q = get_stock_data(sym, use_cache=False) or {}
+                px = float(q.get("price") or 0)
+                if px > 0:
+                    out["snapshot"] = {
+                        "symbol": sym,
+                        "price": px,
+                        "price_source": f"request_live:{q.get('source', 'unknown')}",
+                    }
+                    out["report"] = {
+                        "symbol": sym,
+                        "final_action": "WATCH",
+                        "valuation": {
+                            "price": px,
+                            "margin_of_safety_composite_pct": None,
+                            "piotroski_score": None,
+                        },
+                        "phase": {"phase": "unknown"},
+                        "risk_plan": {},
+                    }
+                    out["error"] = None
+                    out["partial_error"] = "valuation_skipped"
+            except Exception:
+                pass
+            return out
+
+    if not isinstance(snap, dict):
+        snap = {}
+    try:
+        from scrapers.financial_data import ensure_request_time_live_price
+
+        snap = ensure_request_time_live_price(dict(snap), sym)
+    except Exception:
+        snap = dict(snap)
+    out["snapshot"] = snap
+    out["company_name"] = str(snap.get("name") or snap.get("industry") or "")
+
+    try:
+        from core.analysis_runtime_service import _strategic_report_impl
+
+        rep = _strategic_report_impl(
+            sym,
+            snap,
+            str(profile or "growth"),
+            float(total_capital_vnd or 200_000_000.0),
+            quick_mode=bool(quick_mode),
+            llm_live=bool(llm_live),
+        )
+        out["report"] = rep if isinstance(rep, dict) else {}
+        # Đồng bộ giá live lên valuation
+        try:
+            px = float(snap.get("price") or 0)
+            if px > 0 and isinstance(out["report"].get("valuation"), dict):
+                out["report"] = dict(out["report"])
+                val = dict(out["report"]["valuation"])
+                val["price"] = px
+                out["report"]["valuation"] = val
+                out["report"]["snapshot"] = snap
+        except Exception:
+            pass
+    except Exception as exc:
+        logger.warning("get_deep_analysis report failed symbol=%s err=%s", sym, exc.__class__.__name__)
+        out["partial_error"] = f"report:{exc.__class__.__name__}"
+        # Fail-soft: valuation tối thiểu từ snapshot
+        try:
+            from core.valuation import value_investing_summary
+
+            val = value_investing_summary(snap, include_extensions=False)
+            out["report"] = {
+                "symbol": sym,
+                "final_action": "WATCH",
+                "valuation": val,
+                "phase": {"phase": "unknown"},
+                "risk_plan": {},
+                "instant_conclusion": val.get("instant_conclusion"),
+            }
+        except Exception as exc2:
+            out["error"] = f"analysis_failed:{exc2.__class__.__name__}"
+            out["report"] = {
+                "symbol": sym,
+                "final_action": "WATCH",
+                "valuation": {"price": snap.get("price"), "piotroski_score": None},
+                "phase": {"phase": "unknown"},
+                "risk_plan": {},
+            }
+    return out
+
+
 def dispatch_text_notifications(
     text: str,
     telegram_bot_token: str = "",
@@ -1203,6 +1526,29 @@ def enqueue_notification(user_id: str, kind: str, payload: dict[str, Any], delay
     )
 
 
+def resolve_notification_channels(user_id: str) -> dict[str, Any]:
+    """
+    Truy vấn ngược cấu hình kênh gửi từ kho secret mã hóa (Fernet) theo user_id.
+    Đây là nguồn credential DUY NHẤT khi worker gửi job trong hàng đợi —
+    payload của job không bao giờ chứa token/mật khẩu.
+    """
+    try:
+        smtp_port = int(load_secret(user_id, "smtp_port", "587") or 587)
+    except (TypeError, ValueError):
+        smtp_port = 587
+    return {
+        "telegram_bot_token": load_secret(user_id, "telegram_bot_token", ""),
+        "telegram_chat_id": load_secret(user_id, "telegram_chat_id", ""),
+        "webhook_url": load_secret(user_id, "alert_webhook_url", ""),
+        "email_to": load_secret(user_id, "alert_email_to", ""),
+        "smtp_host": load_secret(user_id, "smtp_host", ""),
+        "smtp_port": smtp_port,
+        "smtp_user": load_secret(user_id, "smtp_user", ""),
+        "smtp_password": load_secret(user_id, "smtp_password", ""),
+        "smtp_from": load_secret(user_id, "smtp_from", ""),
+    }
+
+
 def process_notification_queue(max_jobs: int = 20) -> dict[str, int]:
     started_at = datetime.now(timezone.utc)
     stat = notif_queue_repo.process_notification_queue(
@@ -1211,7 +1557,9 @@ def process_notification_queue(max_jobs: int = 20) -> dict[str, int]:
         short_error=_short_error,
         dispatch_text_notifications=dispatch_text_notifications,
         dispatch_alert_notifications=dispatch_alert_notifications,
+        resolve_channels=resolve_notification_channels,
         max_jobs=max_jobs,
+        backend=_db_backend(),
     )
     duration_ms = (datetime.now(timezone.utc) - started_at).total_seconds() * 1000.0
     log_timing(
@@ -1235,15 +1583,33 @@ def get_admin_kpi(days: int = 30) -> dict[str, Any]:
 
 
 def get_notification_queue_diagnostics(limit: int = 20) -> list[dict[str, Any]]:
-    return notif_queue_repo.get_notification_queue_diagnostics(conn_factory=_conn, limit=limit)
+    started_at = datetime.now(timezone.utc)
+    out = notif_queue_repo.get_notification_queue_diagnostics(conn_factory=_conn, limit=limit)
+    duration_ms = (datetime.now(timezone.utc) - started_at).total_seconds() * 1000.0
+    log_timing(
+        "product_layer.get_notification_queue_diagnostics",
+        duration_ms,
+        limit=int(limit),
+        rows=int(len(out)),
+    )
+    return out
 
 
 def retry_failed_notifications(max_rows: int = 20) -> int:
-    return notif_queue_repo.retry_failed_notifications(
+    started_at = datetime.now(timezone.utc)
+    out = notif_queue_repo.retry_failed_notifications(
         conn_factory=_conn,
         utcnow_iso=_utcnow_iso,
         max_rows=max_rows,
     )
+    duration_ms = (datetime.now(timezone.utc) - started_at).total_seconds() * 1000.0
+    log_timing(
+        "product_layer.retry_failed_notifications",
+        duration_ms,
+        max_rows=int(max_rows),
+        retried=int(out),
+    )
+    return out
 
 
 def get_notification_fail_reason_summary(days: int = 14, limit: int = 10) -> list[dict[str, Any]]:

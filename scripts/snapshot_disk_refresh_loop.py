@@ -16,6 +16,12 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+
+# Nạp .env vào os.environ để subprocess refresh thừa hưởng cấu hình (timeout, nguồn giá, ...).
+import env_bootstrap
+
+env_bootstrap.init_app_environment()
 
 
 def main() -> None:

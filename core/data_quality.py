@@ -92,8 +92,12 @@ def compute_bctc_readiness(snapshot: dict[str, Any]) -> dict[str, Any]:
     else:
         checks.append({"name": "Tăng trưởng / EPS forward", "ok": False, "detail": "Đang 0 hoặc thiếu"})
 
-    pio = snapshot.get("piotroski") if isinstance(snapshot.get("piotroski"), dict) else {}
-    hit = sum(1 for k in _PIOTROSKI_VALUATION_KEYS if pio.get(k) is not None)
+    pio_raw = snapshot.get("piotroski")
+    pio: dict[str, Any] = pio_raw if isinstance(pio_raw, dict) else {}
+    hit = 0
+    for key in _PIOTROSKI_VALUATION_KEYS:
+        if pio.get(key) is not None:
+            hit += 1
     if hit >= 6:
         score += 15
         checks.append({"name": "Khối BCTC (Piotroski)", "ok": True, "detail": f"{hit} trường chính"})

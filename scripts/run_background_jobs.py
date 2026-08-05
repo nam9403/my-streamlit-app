@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import sys
 from pathlib import Path
 
@@ -15,9 +16,12 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from core.background_jobs import run_background_cycle
+from core.observability import configure_observability
 
 
 def main() -> int:
+    correlation_id = configure_observability("run_background_jobs")
+    logger = logging.getLogger(__name__)
     parser = argparse.ArgumentParser()
     parser.add_argument("--watchlist", default="FPT,HPG,VNM")
     parser.add_argument("--universe-limit", type=int, default=30)
@@ -29,6 +33,13 @@ def main() -> int:
         universe_limit=max(0, int(args.universe_limit)),
         watchlist=watch,
         queue_jobs=max(1, int(args.queue_jobs)),
+    )
+    out["correlation_id"] = correlation_id
+    logger.info(
+        "run_background_jobs completed watchlist_count=%s universe_limit=%s queue_jobs=%s",
+        len(watch),
+        int(args.universe_limit),
+        int(args.queue_jobs),
     )
     print(json.dumps(out, ensure_ascii=False, indent=2))
     return 0

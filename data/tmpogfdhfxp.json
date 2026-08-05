@@ -1,0 +1,4969 @@
+{
+  "HPG": {
+    "saved_at": "2026-04-13T14:10:43.707106+00:00",
+    "data": {
+      "symbol": "HPG",
+      "name": "HPG",
+      "price": 27800.0,
+      "eps": 2203.0,
+      "pe_ratio": 12.71,
+      "pb_ratio": 1.64,
+      "book_value_per_share": 17096.0,
+      "shareholders_equity": 131219763784172.66,
+      "market_cap_billion_vnd": 213377.95,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-04-13T14:10:43.707106+00:00",
+      "piotroski": {}
+    }
+  },
+  "VNM": {
+    "saved_at": "2026-05-13T13:19:41.106193+00:00",
+    "data": {
+      "symbol": "VNM",
+      "name": "VNM",
+      "price": 59300.0,
+      "eps": 4914.0,
+      "pe_ratio": 12.23,
+      "pb_ratio": 3.42,
+      "book_value_per_share": 17554.0,
+      "shareholders_equity": 36687078506576.73,
+      "market_cap_billion_vnd": 123934.36,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T13:19:41.106193+00:00",
+      "piotroski": {}
+    }
+  },
+  "ACB": {
+    "saved_at": "2026-08-02T09:39:09.384167+00:00",
+    "data": {
+      "symbol": "ACB",
+      "name": "ACB",
+      "price": 21900.0,
+      "eps": 3051.0,
+      "pe_ratio": 7.33,
+      "pb_ratio": 1.31,
+      "book_value_per_share": 17110.0,
+      "shareholders_equity": 99313659013698.62,
+      "market_cap_billion_vnd": 127116.84,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:39:09.384167+00:00",
+      "piotroski": {
+        "net_income": 5137052000000.0,
+        "net_income_prior": 6009937000000.0,
+        "operating_cash_flow": 11905177000000.0,
+        "operating_cash_flow_prior": 5814902000000.0
+      }
+    }
+  },
+  "MBB": {
+    "saved_at": "2026-08-02T09:39:51.593582+00:00",
+    "data": {
+      "symbol": "MBB",
+      "name": "MBB",
+      "price": 22500.0,
+      "eps": 3913.0,
+      "pe_ratio": 5.75,
+      "pb_ratio": 1.16,
+      "book_value_per_share": 19462.0,
+      "shareholders_equity": 156766410000000.0,
+      "market_cap_billion_vnd": 181237.5,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:39:51.593582+00:00",
+      "piotroski": {
+        "net_income": 31519140861779.996
+      }
+    }
+  },
+  "MWG": {
+    "saved_at": "2026-08-02T09:37:40.095998+00:00",
+    "data": {
+      "symbol": "MWG",
+      "name": "MWG",
+      "price": 69900.0,
+      "eps": 6690.0,
+      "pe_ratio": 10.43,
+      "pb_ratio": 2.82,
+      "book_value_per_share": 24755.0,
+      "shareholders_equity": 36532579042918.45,
+      "market_cap_billion_vnd": 103156.02,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:37:40.095998+00:00",
+      "piotroski": {
+        "net_income": 9872856421190.625
+      }
+    }
+  },
+  "VIC": {
+    "saved_at": "2026-08-02T09:36:44.641736+00:00",
+    "data": {
+      "symbol": "VIC",
+      "name": "VIC",
+      "price": 214100.0,
+      "eps": 3192.0,
+      "pe_ratio": 68.92,
+      "pb_ratio": 9.41,
+      "book_value_per_share": 23367.0,
+      "shareholders_equity": 181379009800887.44,
+      "market_cap_billion_vnd": 1661884.11,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:36:44.641736+00:00",
+      "piotroski": {
+        "net_income": 24776916875830.63
+      }
+    }
+  },
+  "VCB": {
+    "saved_at": "2026-08-02T09:36:43.453683+00:00",
+    "data": {
+      "symbol": "VCB",
+      "name": "VCB",
+      "price": 59300.0,
+      "eps": 4985.0,
+      "pe_ratio": 11.34,
+      "pb_ratio": 1.9,
+      "book_value_per_share": 29739.0,
+      "shareholders_equity": 248489420078752.1,
+      "market_cap_billion_vnd": 495491.53,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:36:43.453683+00:00",
+      "piotroski": {
+        "net_income": 41653039040700.82
+      }
+    }
+  },
+  "REE": {
+    "saved_at": "2026-05-13T14:20:42.078052+00:00",
+    "data": {
+      "symbol": "REE",
+      "name": "REE",
+      "price": 60900.0,
+      "eps": 5058.0,
+      "pe_ratio": 12.1,
+      "pb_ratio": 1.33,
+      "book_value_per_share": 46045.0,
+      "shareholders_equity": 24940648507389.168,
+      "market_cap_billion_vnd": 32986.98,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:20:42.078052+00:00",
+      "piotroski": {}
+    }
+  },
+  "VHM": {
+    "saved_at": "2026-08-02T09:36:44.311974+00:00",
+    "data": {
+      "symbol": "VHM",
+      "name": "VHM",
+      "price": 148100.0,
+      "eps": 19245.0,
+      "pe_ratio": 7.69,
+      "pb_ratio": 2.22,
+      "book_value_per_share": 66710.0,
+      "shareholders_equity": 274005455781228.9,
+      "market_cap_billion_vnd": 608307.72,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:36:44.311974+00:00",
+      "piotroski": {
+        "net_income": 79047011921959.38
+      }
+    }
+  },
+  "PVB": {
+    "saved_at": "2026-05-01T06:01:44.304062+00:00",
+    "data": {
+      "symbol": "PVB",
+      "name": "PVB",
+      "price": 26900.0,
+      "eps": 3512.0,
+      "pe_ratio": 7.63,
+      "pb_ratio": 1.27,
+      "book_value_per_share": 21020.0,
+      "shareholders_equity": 454032000000.0,
+      "market_cap_billion_vnd": 581.04,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T06:01:44.304062+00:00",
+      "piotroski": {}
+    }
+  },
+  "TCB": {
+    "saved_at": "2026-08-02T09:37:39.880794+00:00",
+    "data": {
+      "symbol": "TCB",
+      "name": "TCB",
+      "price": 28950.0,
+      "eps": 3828.0,
+      "pe_ratio": 7.65,
+      "pb_ratio": 1.1,
+      "book_value_per_share": 26671.0,
+      "shareholders_equity": 188997118095336.8,
+      "market_cap_billion_vnd": 205146.66,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:37:39.880794+00:00",
+      "piotroski": {
+        "net_income": 27126189368869.41
+      }
+    }
+  },
+  "BID": {
+    "saved_at": "2026-08-02T09:39:08.507382+00:00",
+    "data": {
+      "symbol": "BID",
+      "name": "BID",
+      "price": 38000.0,
+      "eps": 4572.0,
+      "pe_ratio": 8.15,
+      "pb_ratio": 1.36,
+      "book_value_per_share": 27304.0,
+      "shareholders_equity": 198774901945263.16,
+      "market_cap_billion_vnd": 276642.48,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:39:08.507382+00:00",
+      "piotroski": {
+        "net_income": 7480028000000.0,
+        "net_income_prior": 8547757000000.0,
+        "operating_cash_flow": 21468071000000.0,
+        "operating_cash_flow_prior": 33744863000000.0
+      }
+    }
+  },
+  "BSR": {
+    "saved_at": "2026-05-01T05:33:33.357480+00:00",
+    "data": {
+      "symbol": "BSR",
+      "name": "BSR",
+      "price": 23600.0,
+      "eps": 1539.0,
+      "pe_ratio": 15.2,
+      "pb_ratio": 1.94,
+      "book_value_per_share": 12079.0,
+      "shareholders_equity": 60483171581779.664,
+      "market_cap_billion_vnd": 118172.27,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:33.357480+00:00",
+      "piotroski": {}
+    }
+  },
+  "BCM": {
+    "saved_at": "2026-08-02T09:39:09.380165+00:00",
+    "data": {
+      "symbol": "BCM",
+      "name": "BCM",
+      "price": 35700.0,
+      "eps": 2066.0,
+      "pe_ratio": 17.57,
+      "pb_ratio": 1.67,
+      "book_value_per_share": 21694.0,
+      "shareholders_equity": 22453290000000.0,
+      "market_cap_billion_vnd": 36949.5,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:39:09.380165+00:00",
+      "piotroski": {
+        "net_income": 2311771208696.0,
+        "net_income_prior": 2630885732938.0,
+        "operating_cash_flow": 659446948807.0,
+        "operating_cash_flow_prior": 2932359235472.0
+      }
+    }
+  },
+  "BVH": {
+    "saved_at": "2026-08-02T09:38:52.152140+00:00",
+    "data": {
+      "symbol": "BVH",
+      "name": "BVH",
+      "price": 60100.0,
+      "eps": 4662.0,
+      "pe_ratio": 13.11,
+      "pb_ratio": 1.66,
+      "book_value_per_share": 36809.0,
+      "shareholders_equity": 27324159773710.484,
+      "market_cap_billion_vnd": 44613.6,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:38:52.152140+00:00",
+      "piotroski": {
+        "net_income": 1174508216165.0,
+        "net_income_prior": 1242704619582.0,
+        "operating_cash_flow": 7703073141458.0,
+        "operating_cash_flow_prior": 9267692504934.0
+      }
+    }
+  },
+  "CTG": {
+    "saved_at": "2026-08-02T09:38:25.529159+00:00",
+    "data": {
+      "symbol": "CTG",
+      "name": "CTG",
+      "price": 30800.0,
+      "eps": 6209.0,
+      "pe_ratio": 4.9,
+      "pb_ratio": 1.18,
+      "book_value_per_share": 25778.0,
+      "shareholders_equity": 200216294818831.2,
+      "market_cap_billion_vnd": 239221.89,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:38:25.529159+00:00",
+      "piotroski": {
+        "net_income": 48224897635242.96
+      }
+    }
+  },
+  "CMG": {
+    "saved_at": "2026-05-01T05:36:01.819686+00:00",
+    "data": {
+      "symbol": "CMG",
+      "name": "CMG",
+      "price": 27800.0,
+      "eps": 1933.0,
+      "pe_ratio": 14.3,
+      "pb_ratio": 1.47,
+      "book_value_per_share": 18850.0,
+      "shareholders_equity": 4390185341726.6187,
+      "market_cap_billion_vnd": 6474.65,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:36:01.819686+00:00",
+      "piotroski": {}
+    }
+  },
+  "CII": {
+    "saved_at": "2026-05-01T05:35:29.855905+00:00",
+    "data": {
+      "symbol": "CII",
+      "name": "CII",
+      "price": 19300.0,
+      "eps": 252.0,
+      "pe_ratio": 75.48,
+      "pb_ratio": 0.99,
+      "book_value_per_share": 19133.0,
+      "shareholders_equity": 12857098422797.928,
+      "market_cap_billion_vnd": 12969.32,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:29.855905+00:00",
+      "piotroski": {}
+    }
+  },
+  "DGC": {
+    "saved_at": "2026-05-01T05:38:00.761377+00:00",
+    "data": {
+      "symbol": "DGC",
+      "name": "DGC",
+      "price": 53600.0,
+      "eps": 6940.0,
+      "pe_ratio": 7.54,
+      "pb_ratio": 1.25,
+      "book_value_per_share": 41696.0,
+      "shareholders_equity": 15835238423880.598,
+      "market_cap_billion_vnd": 20356.12,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:38:00.761377+00:00",
+      "piotroski": {}
+    }
+  },
+  "DIG": {
+    "saved_at": "2026-05-01T05:38:22.079190+00:00",
+    "data": {
+      "symbol": "DIG",
+      "name": "DIG",
+      "price": 14700.0,
+      "eps": 1025.0,
+      "pe_ratio": 13.76,
+      "pb_ratio": 1.12,
+      "book_value_per_share": 12592.0,
+      "shareholders_equity": 10028662835374.148,
+      "market_cap_billion_vnd": 11707.54,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:38:22.079190+00:00",
+      "piotroski": {}
+    }
+  },
+  "DXG": {
+    "saved_at": "2026-05-01T05:40:11.250103+00:00",
+    "data": {
+      "symbol": "DXG",
+      "name": "DXG",
+      "price": 15350.0,
+      "eps": 250.0,
+      "pe_ratio": 59.61,
+      "pb_ratio": 0.79,
+      "book_value_per_share": 18754.0,
+      "shareholders_equity": 20861656377850.16,
+      "market_cap_billion_vnd": 17075.1,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:40:11.250103+00:00",
+      "piotroski": {}
+    }
+  },
+  "EIB": {
+    "saved_at": "2026-05-01T05:40:35.599580+00:00",
+    "data": {
+      "symbol": "EIB",
+      "name": "EIB",
+      "price": 21750.0,
+      "eps": 401.0,
+      "pe_ratio": 54.44,
+      "pb_ratio": 1.54,
+      "book_value_per_share": 14191.0,
+      "shareholders_equity": 26433866044597.7,
+      "market_cap_billion_vnd": 40514.17,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:40:35.599580+00:00",
+      "piotroski": {}
+    }
+  },
+  "PVS": {
+    "saved_at": "2026-04-08T14:42:56.004742+00:00",
+    "data": {
+      "symbol": "PVS",
+      "name": "PVS",
+      "price": 38200.0,
+      "eps": 3806.0,
+      "pe_ratio": 9.83,
+      "pb_ratio": 1.18,
+      "book_value_per_share": 31694.0,
+      "shareholders_equity": 16208950458115.184,
+      "market_cap_billion_vnd": 19536.25,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-04-08T14:42:56.004742+00:00",
+      "piotroski": {}
+    }
+  },
+  "DHG": {
+    "saved_at": "2026-04-30T13:59:07.055892+00:00",
+    "data": {
+      "symbol": "DHG",
+      "name": "DHG",
+      "price": 100000.0,
+      "eps": 7243.0,
+      "pe_ratio": 13.76,
+      "pb_ratio": 2.93,
+      "book_value_per_share": 33981.0,
+      "shareholders_equity": 4442883224100.0,
+      "market_cap_billion_vnd": 13074.61,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-04-30T13:59:07.055892+00:00",
+      "piotroski": {}
+    }
+  },
+  "GAS": {
+    "saved_at": "2026-08-02T09:38:25.779335+00:00",
+    "data": {
+      "symbol": "GAS",
+      "name": "GAS",
+      "price": 68600.0,
+      "eps": 5304.0,
+      "pe_ratio": 12.95,
+      "pb_ratio": 2.36,
+      "book_value_per_share": 29116.0,
+      "shareholders_equity": 70255443711370.266,
+      "market_cap_billion_vnd": 165528.35,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:38:25.779335+00:00",
+      "piotroski": {
+        "net_income": 12798293670012.898
+      }
+    }
+  },
+  "IMP": {
+    "saved_at": "2026-04-30T14:00:43.367375+00:00",
+    "data": {
+      "symbol": "IMP",
+      "name": "IMP",
+      "price": 50800.0,
+      "eps": 2316.0,
+      "pe_ratio": 20.51,
+      "pb_ratio": 3.08,
+      "book_value_per_share": 15444.0,
+      "shareholders_equity": 2378515847244.0947,
+      "market_cap_billion_vnd": 7823.66,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-04-30T14:00:43.367375+00:00",
+      "piotroski": {}
+    }
+  },
+  "PLX": {
+    "saved_at": "2026-08-02T09:42:14.175803+00:00",
+    "data": {
+      "symbol": "PLX",
+      "name": "PLX",
+      "price": 33300.0,
+      "eps": 2552.0,
+      "pe_ratio": 13.27,
+      "pb_ratio": 1.48,
+      "book_value_per_share": 22945.0,
+      "shareholders_equity": 29153737849849.848,
+      "market_cap_billion_vnd": 42310.72,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:42:14.175803+00:00",
+      "piotroski": {
+        "net_income": 3242537031135.9995
+      }
+    }
+  },
+  "SSI": {
+    "saved_at": "2026-08-02T09:37:39.849771+00:00",
+    "data": {
+      "symbol": "SSI",
+      "name": "SSI",
+      "price": 23550.0,
+      "eps": 2166.0,
+      "pe_ratio": 11.08,
+      "pb_ratio": 1.47,
+      "book_value_per_share": 16348.0,
+      "shareholders_equity": 40887944619957.53,
+      "market_cap_billion_vnd": 58900.85,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:37:39.849771+00:00",
+      "piotroski": {
+        "net_income": 5417366446532.033
+      }
+    }
+  },
+  "VND": {
+    "saved_at": "2026-04-30T14:06:52.352430+00:00",
+    "data": {
+      "symbol": "VND",
+      "name": "VND",
+      "price": 16100.0,
+      "eps": 1435.0,
+      "pe_ratio": 11.18,
+      "pb_ratio": 1.14,
+      "book_value_per_share": 14089.0,
+      "shareholders_equity": 21447684700000.0,
+      "market_cap_billion_vnd": 24509.03,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-04-30T14:06:52.352430+00:00",
+      "piotroski": {}
+    }
+  },
+  "KBC": {
+    "saved_at": "2026-04-30T14:01:43.747652+00:00",
+    "data": {
+      "symbol": "KBC",
+      "name": "KBC",
+      "price": 33900.0,
+      "eps": 1782.0,
+      "pe_ratio": 19.08,
+      "pb_ratio": 1.19,
+      "book_value_per_share": 28628.0,
+      "shareholders_equity": 26960558339823.01,
+      "market_cap_billion_vnd": 31925.49,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-04-30T14:01:43.747652+00:00",
+      "piotroski": {}
+    }
+  },
+  "SZC": {
+    "saved_at": "2026-04-30T14:04:41.083147+00:00",
+    "data": {
+      "symbol": "SZC",
+      "name": "SZC",
+      "price": 27200.0,
+      "eps": 1311.0,
+      "pe_ratio": 20.75,
+      "pb_ratio": 1.52,
+      "book_value_per_share": 17890.0,
+      "shareholders_equity": 3219950066176.4707,
+      "market_cap_billion_vnd": 4895.62,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-04-30T14:04:41.083147+00:00",
+      "piotroski": {}
+    }
+  },
+  "MIG": {
+    "saved_at": "2026-04-30T14:02:43.275527+00:00",
+    "data": {
+      "symbol": "MIG",
+      "name": "MIG",
+      "price": 17600.0,
+      "eps": 1583.0,
+      "pe_ratio": 11.12,
+      "pb_ratio": 1.36,
+      "book_value_per_share": 12907.0,
+      "shareholders_equity": 2729874501136.364,
+      "market_cap_billion_vnd": 3722.46,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-04-30T14:02:43.275527+00:00",
+      "piotroski": {}
+    }
+  },
+  "FPT": {
+    "saved_at": "2026-04-13T14:09:11.234446+00:00",
+    "data": {
+      "symbol": "FPT",
+      "name": "FPT",
+      "price": 76000.0,
+      "eps": 6017.0,
+      "pe_ratio": 12.91,
+      "pb_ratio": 3.03,
+      "book_value_per_share": 25682.0,
+      "shareholders_equity": 43749469477368.42,
+      "market_cap_billion_vnd": 129466.54,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-04-13T14:09:11.234446+00:00",
+      "piotroski": {}
+    }
+  },
+  "MSN": {
+    "saved_at": "2026-08-02T09:40:55.372511+00:00",
+    "data": {
+      "symbol": "MSN",
+      "name": "MSN",
+      "price": 66100.0,
+      "eps": 4642.0,
+      "pe_ratio": 14.63,
+      "pb_ratio": 2.08,
+      "book_value_per_share": 32599.0,
+      "shareholders_equity": 50037872038275.34,
+      "market_cap_billion_vnd": 101460.27,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:40:55.372511+00:00",
+      "piotroski": {
+        "net_income": 7125242864634.294
+      }
+    }
+  },
+  "DPG": {
+    "saved_at": "2026-08-02T09:43:57.120370+00:00",
+    "data": {
+      "symbol": "DPG",
+      "name": "DPG",
+      "price": 27700.0,
+      "eps": 3473.0,
+      "pe_ratio": 8.09,
+      "pb_ratio": 0.91,
+      "book_value_per_share": 30990.0,
+      "shareholders_equity": 3675011241877.2563,
+      "market_cap_billion_vnd": 3284.86,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:43:57.120370+00:00",
+      "piotroski": {
+        "net_income": 411851159854.7004
+      }
+    }
+  },
+  "GVR": {
+    "saved_at": "2026-08-02T09:42:29.676878+00:00",
+    "data": {
+      "symbol": "GVR",
+      "name": "GVR",
+      "price": 27500.0,
+      "eps": 1859.0,
+      "pe_ratio": 14.82,
+      "pb_ratio": 1.65,
+      "book_value_per_share": 16720.0,
+      "shareholders_equity": 66880000000000.0,
+      "market_cap_billion_vnd": 110000.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:42:29.676878+00:00",
+      "piotroski": {
+        "net_income": 7435985919999.999
+      }
+    }
+  },
+  "HDB": {
+    "saved_at": "2026-08-02T09:38:24.651447+00:00",
+    "data": {
+      "symbol": "HDB",
+      "name": "HDB",
+      "price": 25200.0,
+      "eps": 4489.0,
+      "pe_ratio": 5.72,
+      "pb_ratio": 1.43,
+      "book_value_per_share": 18026.0,
+      "shareholders_equity": 90225108609523.81,
+      "market_cap_billion_vnd": 126132.96,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:38:24.651447+00:00",
+      "piotroski": {}
+    }
+  },
+  "POW": {
+    "saved_at": "2026-08-02T09:40:23.739627+00:00",
+    "data": {
+      "symbol": "POW",
+      "name": "POW",
+      "price": 13600.0,
+      "eps": 2276.0,
+      "pe_ratio": 6.02,
+      "pb_ratio": 0.94,
+      "book_value_per_share": 14559.0,
+      "shareholders_equity": 44664763919117.65,
+      "market_cap_billion_vnd": 41722.7,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:40:23.739627+00:00",
+      "piotroski": {
+        "net_income": 6982397878711.742
+      }
+    }
+  },
+  "SAB": {
+    "saved_at": "2026-08-02T09:37:40.131649+00:00",
+    "data": {
+      "symbol": "SAB",
+      "name": "SAB",
+      "price": 43550.0,
+      "eps": 3723.0,
+      "pe_ratio": 11.66,
+      "pb_ratio": 2.59,
+      "book_value_per_share": 16728.0,
+      "shareholders_equity": 21454702859242.25,
+      "market_cap_billion_vnd": 55855.59,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:37:40.131649+00:00",
+      "piotroski": {
+        "net_income": 4774980123055.814
+      }
+    }
+  },
+  "SHB": {
+    "saved_at": "2026-08-02T09:39:33.138876+00:00",
+    "data": {
+      "symbol": "SHB",
+      "name": "SHB",
+      "price": 11500.0,
+      "eps": 2704.0,
+      "pe_ratio": 4.34,
+      "pb_ratio": 0.75,
+      "book_value_per_share": 15678.0,
+      "shareholders_equity": 83778583132173.92,
+      "market_cap_billion_vnd": 61452.59,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:39:33.138876+00:00",
+      "piotroski": {
+        "net_income": 14449376011389.168
+      }
+    }
+  },
+  "SSB": {
+    "saved_at": "2026-08-02T09:41:58.452470+00:00",
+    "data": {
+      "symbol": "SSB",
+      "name": "SSB",
+      "price": 15550.0,
+      "eps": 1041.0,
+      "pe_ratio": 14.94,
+      "pb_ratio": 1.26,
+      "book_value_per_share": 12306.0,
+      "shareholders_equity": 42194812800000.0,
+      "market_cap_billion_vnd": 53317.84,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:41:58.452470+00:00",
+      "piotroski": {}
+    }
+  },
+  "STB": {
+    "saved_at": "2026-08-02T09:40:25.518958+00:00",
+    "data": {
+      "symbol": "STB",
+      "name": "STB",
+      "price": 71300.0,
+      "eps": 1634.0,
+      "pe_ratio": 43.83,
+      "pb_ratio": 2.15,
+      "book_value_per_share": 33316.0,
+      "shareholders_equity": 62807846536886.39,
+      "market_cap_billion_vnd": 134415.88,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:40:25.518958+00:00",
+      "piotroski": {
+        "net_income": 3080473641248.1304
+      }
+    }
+  },
+  "TPB": {
+    "saved_at": "2026-08-02T09:40:03.539177+00:00",
+    "data": {
+      "symbol": "TPB",
+      "name": "TPB",
+      "price": 14100.0,
+      "eps": 2777.0,
+      "pe_ratio": 5.19,
+      "pb_ratio": 0.81,
+      "book_value_per_share": 17868.0,
+      "shareholders_equity": 49566668374468.086,
+      "market_cap_billion_vnd": 39114.06,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:40:03.539177+00:00",
+      "piotroski": {
+        "net_income": 7703552465423.081
+      }
+    }
+  },
+  "VIB": {
+    "saved_at": "2026-08-02T09:40:23.923819+00:00",
+    "data": {
+      "symbol": "VIB",
+      "name": "VIB",
+      "price": 14500.0,
+      "eps": 2218.0,
+      "pe_ratio": 6.65,
+      "pb_ratio": 1.05,
+      "book_value_per_share": 14053.0,
+      "shareholders_equity": 47836489533793.1,
+      "market_cap_billion_vnd": 49358.08,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:40:23.923819+00:00",
+      "piotroski": {
+        "net_income": 7550080979608.099
+      }
+    }
+  },
+  "VJC": {
+    "saved_at": "2026-08-02T09:42:46.629216+00:00",
+    "data": {
+      "symbol": "VJC",
+      "name": "VJC",
+      "price": 125000.0,
+      "eps": 3742.0,
+      "pe_ratio": 33.19,
+      "pb_ratio": 2.78,
+      "book_value_per_share": 44620.0,
+      "shareholders_equity": 34316927875200.0,
+      "market_cap_billion_vnd": 96136.62,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:42:46.629216+00:00",
+      "piotroski": {
+        "net_income": 2877954839325.7725
+      }
+    }
+  },
+  "VPB": {
+    "saved_at": "2026-08-02T09:39:50.674934+00:00",
+    "data": {
+      "symbol": "VPB",
+      "name": "VPB",
+      "price": 24800.0,
+      "eps": 3758.0,
+      "pe_ratio": 6.65,
+      "pb_ratio": 1.04,
+      "book_value_per_share": 24101.0,
+      "shareholders_equity": 191215497270564.5,
+      "market_cap_billion_vnd": 196761.31,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:39:50.674934+00:00",
+      "piotroski": {
+        "net_income": 29815658842907.312
+      }
+    }
+  },
+  "VRE": {
+    "saved_at": "2026-08-02T09:40:33.831649+00:00",
+    "data": {
+      "symbol": "VRE",
+      "name": "VRE",
+      "price": 24800.0,
+      "eps": 3191.0,
+      "pe_ratio": 7.62,
+      "pb_ratio": 1.12,
+      "book_value_per_share": 21701.0,
+      "shareholders_equity": 49311584818548.39,
+      "market_cap_billion_vnd": 56353.5,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:40:33.831649+00:00",
+      "piotroski": {
+        "net_income": 7250972678058.63
+      }
+    }
+  },
+  "A32": {
+    "saved_at": "2026-05-13T14:19:24.629242+00:00",
+    "data": {
+      "symbol": "A32",
+      "name": "A32",
+      "price": 29900.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 203.32,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:19:24.629242+00:00",
+      "piotroski": {}
+    }
+  },
+  "AAA": {
+    "saved_at": "2026-05-13T14:19:28.439806+00:00",
+    "data": {
+      "symbol": "AAA",
+      "name": "AAA",
+      "price": 7160.0,
+      "eps": 1213.0,
+      "pe_ratio": 5.89,
+      "pb_ratio": 0.45,
+      "book_value_per_share": 15827.0,
+      "shareholders_equity": 6231770726256.983,
+      "market_cap_billion_vnd": 2819.2,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:19:28.439806+00:00",
+      "piotroski": {}
+    }
+  },
+  "AAH": {
+    "saved_at": "2026-08-02T09:43:37.366181+00:00",
+    "data": {
+      "symbol": "AAH",
+      "name": "AAH",
+      "price": 2000.0,
+      "eps": -158.0,
+      "pe_ratio": -12.05,
+      "pb_ratio": 0.19,
+      "book_value_per_share": 10063.0,
+      "shareholders_equity": 1186427700000.0,
+      "market_cap_billion_vnd": 235.8,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:43:37.366181+00:00",
+      "piotroski": {
+        "net_income": -53168399747.0,
+        "net_income_prior": -17038391839.0,
+        "operating_cash_flow": 454344601041.0,
+        "operating_cash_flow_prior": -153542032529.0
+      }
+    }
+  },
+  "AAM": {
+    "saved_at": "2026-05-13T14:19:43.709620+00:00",
+    "data": {
+      "symbol": "AAM",
+      "name": "AAM",
+      "price": 7130.0,
+      "eps": 290.0,
+      "pe_ratio": 24.16,
+      "pb_ratio": 0.36,
+      "book_value_per_share": 19183.0,
+      "shareholders_equity": 200493290322.58063,
+      "market_cap_billion_vnd": 74.52,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:19:43.709620+00:00",
+      "piotroski": {}
+    }
+  },
+  "AAS": {
+    "saved_at": "2026-05-13T14:19:46.539292+00:00",
+    "data": {
+      "symbol": "AAS",
+      "name": "AAS",
+      "price": 8400.0,
+      "eps": 1131.0,
+      "pe_ratio": 7.42,
+      "pb_ratio": 0.73,
+      "book_value_per_share": 11571.0,
+      "shareholders_equity": 2661330000000.0,
+      "market_cap_billion_vnd": 1932.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:19:46.539292+00:00",
+      "piotroski": {}
+    }
+  },
+  "AAT": {
+    "saved_at": "2026-08-02T09:48:09.867702+00:00",
+    "data": {
+      "symbol": "AAT",
+      "name": "AAT",
+      "price": 2350.0,
+      "eps": 95.0,
+      "pe_ratio": 25.73,
+      "pb_ratio": 0.23,
+      "book_value_per_share": 10748.0,
+      "shareholders_equity": 761141344680.8511,
+      "market_cap_billion_vnd": 166.42,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:48:09.867702+00:00",
+      "piotroski": {
+        "operating_cash_flow": 70723096858.0,
+        "operating_cash_flow_prior": 32224153930.0,
+        "net_income": 40106059733.9234
+      }
+    }
+  },
+  "AAV": {
+    "saved_at": "2026-05-13T14:19:53.172081+00:00",
+    "data": {
+      "symbol": "AAV",
+      "name": "AAV",
+      "price": 6800.0,
+      "eps": -317.0,
+      "pe_ratio": -21.77,
+      "pb_ratio": 0.64,
+      "book_value_per_share": 10833.0,
+      "shareholders_equity": 747349552941.1764,
+      "market_cap_billion_vnd": 469.12,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:19:53.172081+00:00",
+      "piotroski": {}
+    }
+  },
+  "ABB": {
+    "saved_at": "2026-05-13T14:19:55.408181+00:00",
+    "data": {
+      "symbol": "ABB",
+      "name": "ABB",
+      "price": 15200.0,
+      "eps": 3564.0,
+      "pe_ratio": 4.26,
+      "pb_ratio": 1.19,
+      "book_value_per_share": 12813.0,
+      "shareholders_equity": 17902433184868.42,
+      "market_cap_billion_vnd": 21237.57,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:19:55.408181+00:00",
+      "piotroski": {}
+    }
+  },
+  "ABC": {
+    "saved_at": "2026-05-13T14:19:57.831010+00:00",
+    "data": {
+      "symbol": "ABC",
+      "name": "ABC",
+      "price": 11000.0,
+      "eps": 637.0,
+      "pe_ratio": 16.8,
+      "pb_ratio": 0.37,
+      "book_value_per_share": 29291.0,
+      "shareholders_equity": 597216861818.1819,
+      "market_cap_billion_vnd": 224.28,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:19:57.831010+00:00",
+      "piotroski": {}
+    }
+  },
+  "ABI": {
+    "saved_at": "2026-05-13T14:20:00.366700+00:00",
+    "data": {
+      "symbol": "ABI",
+      "name": "ABI",
+      "price": 19400.0,
+      "eps": 3115.0,
+      "pe_ratio": 6.23,
+      "pb_ratio": 1.06,
+      "book_value_per_share": 18259.0,
+      "shareholders_equity": 1850502590721.6494,
+      "market_cap_billion_vnd": 1966.14,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:20:00.366700+00:00",
+      "piotroski": {}
+    }
+  },
+  "ABR": {
+    "saved_at": "2026-05-13T14:20:03.533222+00:00",
+    "data": {
+      "symbol": "ABR",
+      "name": "ABR",
+      "price": 13100.0,
+      "eps": 710.0,
+      "pe_ratio": 18.59,
+      "pb_ratio": 1.13,
+      "book_value_per_share": 11657.0,
+      "shareholders_equity": 233140000000.0,
+      "market_cap_billion_vnd": 262.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:20:03.533222+00:00",
+      "piotroski": {}
+    }
+  },
+  "ABS": {
+    "saved_at": "2026-05-13T14:20:07.816331+00:00",
+    "data": {
+      "symbol": "ABS",
+      "name": "ABS",
+      "price": 2830.0,
+      "eps": -6098.0,
+      "pe_ratio": -0.46,
+      "pb_ratio": 0.56,
+      "book_value_per_share": 5003.0,
+      "shareholders_equity": 400240000000.0,
+      "market_cap_billion_vnd": 226.4,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:20:07.816331+00:00",
+      "piotroski": {}
+    }
+  },
+  "ABT": {
+    "saved_at": "2026-05-13T14:20:11.918331+00:00",
+    "data": {
+      "symbol": "ABT",
+      "name": "ABT",
+      "price": 56000.0,
+      "eps": 13228.0,
+      "pe_ratio": 4.18,
+      "pb_ratio": 0.99,
+      "book_value_per_share": 55894.0,
+      "shareholders_equity": 658281603928.5714,
+      "market_cap_billion_vnd": 659.53,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:20:11.918331+00:00",
+      "piotroski": {}
+    }
+  },
+  "ABW": {
+    "saved_at": "2026-08-02T09:43:38.649596+00:00",
+    "data": {
+      "symbol": "ABW",
+      "name": "ABW",
+      "price": 14100.0,
+      "eps": 2940.0,
+      "pe_ratio": 4.76,
+      "pb_ratio": 0.38,
+      "book_value_per_share": 37301.0,
+      "shareholders_equity": 11233209377304.965,
+      "market_cap_billion_vnd": 4246.22,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:43:38.649596+00:00",
+      "piotroski": {
+        "net_income": 8921167133.0,
+        "net_income_prior": 18371070195.0,
+        "operating_cash_flow": -49295258458.0,
+        "operating_cash_flow_prior": -40123294017.0
+      }
+    }
+  },
+  "ACC": {
+    "saved_at": "2026-05-13T14:20:21.148140+00:00",
+    "data": {
+      "symbol": "ACC",
+      "name": "ACC",
+      "price": 12850.0,
+      "eps": 466.0,
+      "pe_ratio": 27.81,
+      "pb_ratio": 0.98,
+      "book_value_per_share": 13275.0,
+      "shareholders_equity": 1393875000000.0,
+      "market_cap_billion_vnd": 1349.25,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:20:21.148140+00:00",
+      "piotroski": {}
+    }
+  },
+  "ACE": {
+    "saved_at": "2026-05-13T14:20:24.286553+00:00",
+    "data": {
+      "symbol": "ACE",
+      "name": "ACE",
+      "price": 36900.0,
+      "eps": 2069.0,
+      "pe_ratio": 17.25,
+      "pb_ratio": 1.78,
+      "book_value_per_share": 20029.0,
+      "shareholders_equity": 61102019783.19783,
+      "market_cap_billion_vnd": 112.57,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:20:24.286553+00:00",
+      "piotroski": {}
+    }
+  },
+  "ACG": {
+    "saved_at": "2026-08-02T09:50:06.961721+00:00",
+    "data": {
+      "symbol": "ACG",
+      "name": "ACG",
+      "price": 31950.0,
+      "eps": 3483.0,
+      "pe_ratio": 9.2,
+      "pb_ratio": 1.0,
+      "book_value_per_share": 32171.0,
+      "shareholders_equity": 4850994102347.418,
+      "market_cap_billion_vnd": 4817.67,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:50:06.961721+00:00",
+      "piotroski": {
+        "net_income": 505189736129.0,
+        "net_income_prior": 486382202889.0,
+        "operating_cash_flow": 44355571179.0,
+        "operating_cash_flow_prior": 383603378892.0
+      }
+    }
+  },
+  "ACL": {
+    "saved_at": "2026-05-13T14:20:29.848326+00:00",
+    "data": {
+      "symbol": "ACL",
+      "name": "ACL",
+      "price": 13200.0,
+      "eps": 776.0,
+      "pe_ratio": 17.01,
+      "pb_ratio": 0.81,
+      "book_value_per_share": 16297.0,
+      "shareholders_equity": 817442704545.4545,
+      "market_cap_billion_vnd": 662.1,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:20:29.848326+00:00",
+      "piotroski": {}
+    }
+  },
+  "ACM": {
+    "saved_at": "2026-05-13T14:20:41.074355+00:00",
+    "data": {
+      "symbol": "ACM",
+      "name": "ACM",
+      "price": 500.0,
+      "eps": -190.0,
+      "pe_ratio": -2.63,
+      "pb_ratio": 0.08,
+      "book_value_per_share": 6333.0,
+      "shareholders_equity": 322983000000.0,
+      "market_cap_billion_vnd": 25.5,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:20:41.074355+00:00",
+      "piotroski": {}
+    }
+  },
+  "ACS": {
+    "saved_at": "2026-05-13T14:20:48.975338+00:00",
+    "data": {
+      "symbol": "ACS",
+      "name": "ACS",
+      "price": 2700.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 14.58,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:20:48.975338+00:00",
+      "piotroski": {}
+    }
+  },
+  "ACV": {
+    "saved_at": "2026-05-13T14:20:55.682293+00:00",
+    "data": {
+      "symbol": "ACV",
+      "name": "ACV",
+      "price": 44500.0,
+      "eps": 4282.0,
+      "pe_ratio": 10.23,
+      "pb_ratio": 2.16,
+      "book_value_per_share": 20233.0,
+      "shareholders_equity": 72481162401348.31,
+      "market_cap_billion_vnd": 159413.42,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:20:55.682293+00:00",
+      "piotroski": {}
+    }
+  },
+  "ADC": {
+    "saved_at": "2026-05-13T14:20:59.504395+00:00",
+    "data": {
+      "symbol": "ADC",
+      "name": "ADC",
+      "price": 18400.0,
+      "eps": 2998.0,
+      "pe_ratio": 6.14,
+      "pb_ratio": 0.84,
+      "book_value_per_share": 21917.0,
+      "shareholders_equity": 87179632065.21739,
+      "market_cap_billion_vnd": 73.19,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:20:59.504395+00:00",
+      "piotroski": {}
+    }
+  },
+  "ADG": {
+    "saved_at": "2026-05-13T14:21:02.395815+00:00",
+    "data": {
+      "symbol": "ADG",
+      "name": "ADG",
+      "price": 8800.0,
+      "eps": 1192.0,
+      "pe_ratio": 7.55,
+      "pb_ratio": 0.46,
+      "book_value_per_share": 19471.0,
+      "shareholders_equity": 416303255681.8182,
+      "market_cap_billion_vnd": 188.15,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:21:02.395815+00:00",
+      "piotroski": {}
+    }
+  },
+  "ADP": {
+    "saved_at": "2026-05-13T14:21:05.560688+00:00",
+    "data": {
+      "symbol": "ADP",
+      "name": "ADP",
+      "price": 23700.0,
+      "eps": 3050.0,
+      "pe_ratio": 7.76,
+      "pb_ratio": 1.94,
+      "book_value_per_share": 12184.0,
+      "shareholders_equity": 280715247257.3839,
+      "market_cap_billion_vnd": 546.04,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:21:05.560688+00:00",
+      "piotroski": {}
+    }
+  },
+  "ADS": {
+    "saved_at": "2026-05-13T14:21:11.275626+00:00",
+    "data": {
+      "symbol": "ADS",
+      "name": "ADS",
+      "price": 9170.0,
+      "eps": 1333.0,
+      "pe_ratio": 6.71,
+      "pb_ratio": 0.64,
+      "book_value_per_share": 14045.0,
+      "shareholders_equity": 1072964482006.5432,
+      "market_cap_billion_vnd": 700.54,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:21:11.275626+00:00",
+      "piotroski": {}
+    }
+  },
+  "AFX": {
+    "saved_at": "2026-05-13T14:21:19.548063+00:00",
+    "data": {
+      "symbol": "AFX",
+      "name": "AFX",
+      "price": 10250.0,
+      "eps": 1734.0,
+      "pe_ratio": 5.94,
+      "pb_ratio": 0.67,
+      "book_value_per_share": 15411.0,
+      "shareholders_equity": 539385000000.0,
+      "market_cap_billion_vnd": 358.75,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:21:19.548063+00:00",
+      "piotroski": {}
+    }
+  },
+  "AG1": {
+    "saved_at": "2026-05-13T14:21:26.406251+00:00",
+    "data": {
+      "symbol": "AG1",
+      "name": "AG1",
+      "price": 13500.0,
+      "eps": 422.0,
+      "pe_ratio": 31.96,
+      "pb_ratio": 1.34,
+      "book_value_per_share": 10038.0,
+      "shareholders_equity": 48821857777.77777,
+      "market_cap_billion_vnd": 65.66,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:21:26.406251+00:00",
+      "piotroski": {}
+    }
+  },
+  "AGF": {
+    "saved_at": "2026-05-13T14:21:30.513498+00:00",
+    "data": {
+      "symbol": "AGF",
+      "name": "AGF",
+      "price": 1600.0,
+      "eps": -176.0,
+      "pe_ratio": -9.07,
+      "pb_ratio": -0.23,
+      "book_value_per_share": -6982.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 44.98,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:21:30.513498+00:00",
+      "piotroski": {}
+    }
+  },
+  "AGG": {
+    "saved_at": "2026-05-13T14:21:33.544187+00:00",
+    "data": {
+      "symbol": "AGG",
+      "name": "AGG",
+      "price": 12050.0,
+      "eps": 2301.0,
+      "pe_ratio": 5.28,
+      "pb_ratio": 0.56,
+      "book_value_per_share": 21658.0,
+      "shareholders_equity": 3520027110373.4443,
+      "market_cap_billion_vnd": 1958.46,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:21:33.544187+00:00",
+      "piotroski": {}
+    }
+  },
+  "AGM": {
+    "saved_at": "2026-05-13T14:21:37.259358+00:00",
+    "data": {
+      "symbol": "AGM",
+      "name": "AGM",
+      "price": 2200.0,
+      "eps": -7219.0,
+      "pe_ratio": -0.3,
+      "pb_ratio": -0.12,
+      "book_value_per_share": -18774.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 40.04,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:21:37.259358+00:00",
+      "piotroski": {}
+    }
+  },
+  "AGP": {
+    "saved_at": "2026-05-13T14:21:40.814634+00:00",
+    "data": {
+      "symbol": "AGP",
+      "name": "AGP",
+      "price": 37400.0,
+      "eps": 1973.0,
+      "pe_ratio": 19.01,
+      "pb_ratio": 2.03,
+      "book_value_per_share": 18476.0,
+      "shareholders_equity": 565503922994.6523,
+      "market_cap_billion_vnd": 1144.72,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:21:40.814634+00:00",
+      "piotroski": {}
+    }
+  },
+  "AGR": {
+    "saved_at": "2026-05-13T14:21:45.019768+00:00",
+    "data": {
+      "symbol": "AGR",
+      "name": "AGR",
+      "price": 14500.0,
+      "eps": 678.0,
+      "pe_ratio": 21.46,
+      "pb_ratio": 1.27,
+      "book_value_per_share": 11479.0,
+      "shareholders_equity": 2620790281379.3105,
+      "market_cap_billion_vnd": 3310.52,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:21:45.019768+00:00",
+      "piotroski": {}
+    }
+  },
+  "AIC": {
+    "saved_at": "2026-05-13T14:21:48.088745+00:00",
+    "data": {
+      "symbol": "AIC",
+      "name": "AIC",
+      "price": 9100.0,
+      "eps": 304.0,
+      "pe_ratio": 30.25,
+      "pb_ratio": 0.8,
+      "book_value_per_share": 11496.0,
+      "shareholders_equity": 1149600000000.0,
+      "market_cap_billion_vnd": 910.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:21:48.088745+00:00",
+      "piotroski": {}
+    }
+  },
+  "AIG": {
+    "saved_at": "2026-08-02T09:48:55.627047+00:00",
+    "data": {
+      "symbol": "AIG",
+      "name": "AIG",
+      "price": 52500.0,
+      "eps": 6102.0,
+      "pe_ratio": 8.47,
+      "pb_ratio": 1.12,
+      "book_value_per_share": 46082.0,
+      "shareholders_equity": 7861650642666.667,
+      "market_cap_billion_vnd": 8956.57,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:48:55.627047+00:00",
+      "piotroski": {
+        "net_income": 200120352728.0,
+        "net_income_prior": 545304281096.0,
+        "operating_cash_flow": -10737857500.0,
+        "operating_cash_flow_prior": 61138373760.0
+      }
+    }
+  },
+  "ALC": {
+    "saved_at": "2026-08-02T09:49:49.765638+00:00",
+    "data": {
+      "symbol": "ALC",
+      "name": "ALC",
+      "price": 20300.0,
+      "eps": 5420.0,
+      "pe_ratio": 3.75,
+      "pb_ratio": 0.6,
+      "book_value_per_share": 33875.0,
+      "shareholders_equity": 1734516810344.828,
+      "market_cap_billion_vnd": 1039.43,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:49:49.765638+00:00",
+      "piotroski": {
+        "net_income": 11540936274.0,
+        "net_income_prior": 37915721231.0,
+        "operating_cash_flow": 164810179781.0,
+        "operating_cash_flow_prior": -16185639672.0
+      }
+    }
+  },
+  "ALT": {
+    "saved_at": "2026-05-13T14:22:45.164817+00:00",
+    "data": {
+      "symbol": "ALT",
+      "name": "ALT",
+      "price": 14700.0,
+      "eps": 2228.0,
+      "pe_ratio": 6.01,
+      "pb_ratio": 0.34,
+      "book_value_per_share": 39329.0,
+      "shareholders_equity": 225620038775.5102,
+      "market_cap_billion_vnd": 84.33,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:22:45.164817+00:00",
+      "piotroski": {}
+    }
+  },
+  "ALV": {
+    "saved_at": "2026-05-13T14:22:47.700928+00:00",
+    "data": {
+      "symbol": "ALV",
+      "name": "ALV",
+      "price": 7300.0,
+      "eps": -233.0,
+      "pe_ratio": -30.86,
+      "pb_ratio": 0.64,
+      "book_value_per_share": 11280.0,
+      "shareholders_equity": 108488876712.32877,
+      "market_cap_billion_vnd": 70.21,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:22:47.700928+00:00",
+      "piotroski": {}
+    }
+  },
+  "AMC": {
+    "saved_at": "2026-05-13T14:22:50.165600+00:00",
+    "data": {
+      "symbol": "AMC",
+      "name": "AMC",
+      "price": 12400.0,
+      "eps": 2475.0,
+      "pe_ratio": 5.01,
+      "pb_ratio": 0.92,
+      "book_value_per_share": 13445.0,
+      "shareholders_equity": 57477375000.0,
+      "market_cap_billion_vnd": 53.01,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:22:50.165600+00:00",
+      "piotroski": {}
+    }
+  },
+  "AME": {
+    "saved_at": "2026-05-13T14:22:52.557231+00:00",
+    "data": {
+      "symbol": "AME",
+      "name": "AME",
+      "price": 7000.0,
+      "eps": 620.0,
+      "pe_ratio": 12.09,
+      "pb_ratio": 0.54,
+      "book_value_per_share": 14007.0,
+      "shareholders_equity": 913256400000.0,
+      "market_cap_billion_vnd": 456.4,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:22:52.557231+00:00",
+      "piotroski": {}
+    }
+  },
+  "AMP": {
+    "saved_at": "2026-05-13T14:22:55.183668+00:00",
+    "data": {
+      "symbol": "AMP",
+      "name": "AMP",
+      "price": 11500.0,
+      "eps": 303.0,
+      "pe_ratio": 38.01,
+      "pb_ratio": 0.72,
+      "book_value_per_share": 15892.0,
+      "shareholders_equity": 206596000000.0,
+      "market_cap_billion_vnd": 149.5,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:22:55.183668+00:00",
+      "piotroski": {}
+    }
+  },
+  "AMS": {
+    "saved_at": "2026-05-13T14:22:57.399137+00:00",
+    "data": {
+      "symbol": "AMS",
+      "name": "AMS",
+      "price": 9800.0,
+      "eps": 1207.0,
+      "pe_ratio": 8.12,
+      "pb_ratio": 0.67,
+      "book_value_per_share": 14658.0,
+      "shareholders_equity": 879480000000.0,
+      "market_cap_billion_vnd": 588.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:22:57.399137+00:00",
+      "piotroski": {}
+    }
+  },
+  "AMV": {
+    "saved_at": "2026-05-13T14:23:00.673666+00:00",
+    "data": {
+      "symbol": "AMV",
+      "name": "AMV",
+      "price": 1600.0,
+      "eps": -468.0,
+      "pe_ratio": -3.42,
+      "pb_ratio": 0.13,
+      "book_value_per_share": 12290.0,
+      "shareholders_equity": 1611295812500.0,
+      "market_cap_billion_vnd": 209.77,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:00.673666+00:00",
+      "piotroski": {}
+    }
+  },
+  "ANT": {
+    "saved_at": "2026-05-13T14:23:03.278620+00:00",
+    "data": {
+      "symbol": "ANT",
+      "name": "ANT",
+      "price": 34000.0,
+      "eps": 5636.0,
+      "pe_ratio": 6.03,
+      "pb_ratio": 1.6,
+      "book_value_per_share": 21238.0,
+      "shareholders_equity": 509793204117.64703,
+      "market_cap_billion_vnd": 816.13,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:03.278620+00:00",
+      "piotroski": {}
+    }
+  },
+  "ANV": {
+    "saved_at": "2026-05-13T14:23:05.954665+00:00",
+    "data": {
+      "symbol": "ANV",
+      "name": "ANV",
+      "price": 22800.0,
+      "eps": 3992.0,
+      "pe_ratio": 5.75,
+      "pb_ratio": 1.64,
+      "book_value_per_share": 13980.0,
+      "shareholders_equity": 3722254710526.316,
+      "market_cap_billion_vnd": 6070.63,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:05.954665+00:00",
+      "piotroski": {}
+    }
+  },
+  "APC": {
+    "saved_at": "2026-05-13T14:23:08.816896+00:00",
+    "data": {
+      "symbol": "APC",
+      "name": "APC",
+      "price": 5700.0,
+      "eps": -1266.0,
+      "pe_ratio": -4.5,
+      "pb_ratio": 0.21,
+      "book_value_per_share": 26963.0,
+      "shareholders_equity": 536705610526.3158,
+      "market_cap_billion_vnd": 113.46,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:08.816896+00:00",
+      "piotroski": {}
+    }
+  },
+  "APF": {
+    "saved_at": "2026-05-13T14:23:11.603181+00:00",
+    "data": {
+      "symbol": "APF",
+      "name": "APF",
+      "price": 48500.0,
+      "eps": 6048.0,
+      "pe_ratio": 7.95,
+      "pb_ratio": 1.21,
+      "book_value_per_share": 39608.0,
+      "shareholders_equity": 1297059917525.7732,
+      "market_cap_billion_vnd": 1588.25,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:11.603181+00:00",
+      "piotroski": {}
+    }
+  },
+  "APG": {
+    "saved_at": "2026-05-13T14:23:14.833597+00:00",
+    "data": {
+      "symbol": "APG",
+      "name": "APG",
+      "price": 4840.0,
+      "eps": 14.0,
+      "pe_ratio": 346.9,
+      "pb_ratio": 0.45,
+      "book_value_per_share": 10682.0,
+      "shareholders_equity": 2388729144628.099,
+      "market_cap_billion_vnd": 1082.33,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:14.833597+00:00",
+      "piotroski": {}
+    }
+  },
+  "APH": {
+    "saved_at": "2026-05-13T14:23:17.782974+00:00",
+    "data": {
+      "symbol": "APH",
+      "name": "APH",
+      "price": 5710.0,
+      "eps": 871.0,
+      "pe_ratio": 6.6,
+      "pb_ratio": 0.24,
+      "book_value_per_share": 24353.0,
+      "shareholders_equity": 5939317117338.003,
+      "market_cap_billion_vnd": 1392.58,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:17.782974+00:00",
+      "piotroski": {}
+    }
+  },
+  "API": {
+    "saved_at": "2026-05-13T14:23:21.180436+00:00",
+    "data": {
+      "symbol": "API",
+      "name": "API",
+      "price": 6400.0,
+      "eps": -8.0,
+      "pe_ratio": -717.7,
+      "pb_ratio": 0.56,
+      "book_value_per_share": 10711.0,
+      "shareholders_equity": 900627740625.0,
+      "market_cap_billion_vnd": 538.14,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:21.180436+00:00",
+      "piotroski": {}
+    }
+  },
+  "APL": {
+    "saved_at": "2026-05-13T14:23:24.387977+00:00",
+    "data": {
+      "symbol": "APL",
+      "name": "APL",
+      "price": 16000.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 19.2,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:24.387977+00:00",
+      "piotroski": {}
+    }
+  },
+  "APP": {
+    "saved_at": "2026-05-13T14:23:27.405445+00:00",
+    "data": {
+      "symbol": "APP",
+      "name": "APP",
+      "price": 4400.0,
+      "eps": -393.0,
+      "pe_ratio": -10.7,
+      "pb_ratio": 0.42,
+      "book_value_per_share": 10089.0,
+      "shareholders_equity": 47670525000.0,
+      "market_cap_billion_vnd": 20.79,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:27.405445+00:00",
+      "piotroski": {}
+    }
+  },
+  "APS": {
+    "saved_at": "2026-05-13T14:23:30.328622+00:00",
+    "data": {
+      "symbol": "APS",
+      "name": "APS",
+      "price": 6600.0,
+      "eps": -416.0,
+      "pe_ratio": -14.89,
+      "pb_ratio": 0.69,
+      "book_value_per_share": 8934.0,
+      "shareholders_equity": 741521999999.9999,
+      "market_cap_billion_vnd": 547.8,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:30.328622+00:00",
+      "piotroski": {}
+    }
+  },
+  "ARM": {
+    "saved_at": "2026-05-13T14:23:33.170465+00:00",
+    "data": {
+      "symbol": "ARM",
+      "name": "ARM",
+      "price": 46800.0,
+      "eps": 2102.0,
+      "pe_ratio": 22.27,
+      "pb_ratio": 3.42,
+      "book_value_per_share": 13667.0,
+      "shareholders_equity": 42522475854.70086,
+      "market_cap_billion_vnd": 145.61,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:33.170465+00:00",
+      "piotroski": {}
+    }
+  },
+  "ART": {
+    "saved_at": "2026-05-13T14:23:36.045917+00:00",
+    "data": {
+      "symbol": "ART",
+      "name": "ART",
+      "price": 1300.0,
+      "eps": -511.0,
+      "pe_ratio": -2.55,
+      "pb_ratio": 1.63,
+      "book_value_per_share": 799.0,
+      "shareholders_equity": 77441538461.53847,
+      "market_cap_billion_vnd": 126.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:36.045917+00:00",
+      "piotroski": {}
+    }
+  },
+  "ASG": {
+    "saved_at": "2026-05-13T14:23:39.260400+00:00",
+    "data": {
+      "symbol": "ASG",
+      "name": "ASG",
+      "price": 16900.0,
+      "eps": 1249.0,
+      "pe_ratio": 13.45,
+      "pb_ratio": 0.69,
+      "book_value_per_share": 24252.0,
+      "shareholders_equity": 2201708492307.6924,
+      "market_cap_billion_vnd": 1534.26,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:39.260400+00:00",
+      "piotroski": {}
+    }
+  },
+  "ASM": {
+    "saved_at": "2026-05-13T14:23:42.101131+00:00",
+    "data": {
+      "symbol": "ASM",
+      "name": "ASM",
+      "price": 6080.0,
+      "eps": 294.0,
+      "pe_ratio": 20.91,
+      "pb_ratio": 0.3,
+      "book_value_per_share": 20413.0,
+      "shareholders_equity": 8312052733552.632,
+      "market_cap_billion_vnd": 2475.74,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:42.101131+00:00",
+      "piotroski": {}
+    }
+  },
+  "ASP": {
+    "saved_at": "2026-05-13T14:23:44.820986+00:00",
+    "data": {
+      "symbol": "ASP",
+      "name": "ASP",
+      "price": 7300.0,
+      "eps": 1777.0,
+      "pe_ratio": 4.33,
+      "pb_ratio": 0.76,
+      "book_value_per_share": 10071.0,
+      "shareholders_equity": 376048380821.9177,
+      "market_cap_billion_vnd": 272.58,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:44.820986+00:00",
+      "piotroski": {}
+    }
+  },
+  "AST": {
+    "saved_at": "2026-05-13T14:23:47.920089+00:00",
+    "data": {
+      "symbol": "AST",
+      "name": "AST",
+      "price": 72000.0,
+      "eps": 6587.0,
+      "pe_ratio": 10.93,
+      "pb_ratio": 3.97,
+      "book_value_per_share": 18123.0,
+      "shareholders_equity": 815535000000.0,
+      "market_cap_billion_vnd": 3240.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:47.920089+00:00",
+      "piotroski": {}
+    }
+  },
+  "ATA": {
+    "saved_at": "2026-05-13T14:23:51.003734+00:00",
+    "data": {
+      "symbol": "ATA",
+      "name": "ATA",
+      "price": 400.0,
+      "eps": 60.0,
+      "pe_ratio": 6.72,
+      "pb_ratio": -0.02,
+      "book_value_per_share": -25217.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 4.8,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-13T14:23:51.003734+00:00",
+      "piotroski": {}
+    }
+  },
+  "ATG": {
+    "saved_at": "2026-05-01T05:30:59.182919+00:00",
+    "data": {
+      "symbol": "ATG",
+      "name": "ATG",
+      "price": 7300.0,
+      "eps": 2333.0,
+      "pe_ratio": 3.13,
+      "pb_ratio": 12.54,
+      "book_value_per_share": 582.0,
+      "shareholders_equity": 8858358904.109589,
+      "market_cap_billion_vnd": 111.11,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:30:59.182919+00:00",
+      "piotroski": {}
+    }
+  },
+  "ATS": {
+    "saved_at": "2026-05-01T05:31:01.316072+00:00",
+    "data": {
+      "symbol": "ATS",
+      "name": "ATS",
+      "price": 27400.0,
+      "eps": 191.0,
+      "pe_ratio": 143.19,
+      "pb_ratio": 2.16,
+      "book_value_per_share": 12692.0,
+      "shareholders_equity": 44422000000.0,
+      "market_cap_billion_vnd": 95.9,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:01.316072+00:00",
+      "piotroski": {}
+    }
+  },
+  "AVC": {
+    "saved_at": "2026-05-01T05:31:03.463833+00:00",
+    "data": {
+      "symbol": "AVC",
+      "name": "AVC",
+      "price": 45000.0,
+      "eps": 3607.0,
+      "pe_ratio": 13.72,
+      "pb_ratio": 2.98,
+      "book_value_per_share": 16603.0,
+      "shareholders_equity": 1246088356000.0,
+      "market_cap_billion_vnd": 3377.34,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:03.463833+00:00",
+      "piotroski": {}
+    }
+  },
+  "AVF": {
+    "saved_at": "2026-05-01T05:31:05.587759+00:00",
+    "data": {
+      "symbol": "AVF",
+      "name": "AVF",
+      "price": 400.0,
+      "eps": -2388.0,
+      "pe_ratio": -0.17,
+      "pb_ratio": -0.01,
+      "book_value_per_share": -45240.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 17.34,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:05.587759+00:00",
+      "piotroski": {}
+    }
+  },
+  "AVG": {
+    "saved_at": "2026-08-02T09:49:23.971745+00:00",
+    "data": {
+      "symbol": "AVG",
+      "name": "AVG",
+      "price": 8000.0,
+      "eps": 929.0,
+      "pe_ratio": 8.18,
+      "pb_ratio": 0.54,
+      "book_value_per_share": 14005.0,
+      "shareholders_equity": 247608400000.0,
+      "market_cap_billion_vnd": 141.44,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:49:23.971745+00:00",
+      "piotroski": {
+        "net_income": 6942653430.0,
+        "net_income_prior": 8797832178.0,
+        "operating_cash_flow": 7945363460.0,
+        "operating_cash_flow_prior": 2667994346.0
+      }
+    }
+  },
+  "BAB": {
+    "saved_at": "2026-05-01T05:31:09.668357+00:00",
+    "data": {
+      "symbol": "BAB",
+      "name": "BAB",
+      "price": 11300.0,
+      "eps": 1230.0,
+      "pe_ratio": 9.19,
+      "pb_ratio": 0.89,
+      "book_value_per_share": 12693.0,
+      "shareholders_equity": 13608670773451.326,
+      "market_cap_billion_vnd": 12115.18,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:09.668357+00:00",
+      "piotroski": {}
+    }
+  },
+  "BAF": {
+    "saved_at": "2026-08-02T09:42:30.847551+00:00",
+    "data": {
+      "symbol": "BAF",
+      "name": "BAF",
+      "price": 29700.0,
+      "eps": 218.0,
+      "pe_ratio": 136.12,
+      "pb_ratio": 2.07,
+      "book_value_per_share": 14328.0,
+      "shareholders_equity": 5227211393939.394,
+      "market_cap_billion_vnd": 10835.3,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:42:30.847551+00:00",
+      "piotroski": {
+        "net_income": -71942300018.0,
+        "net_income_prior": 45826798206.0,
+        "operating_cash_flow": 1822777038282.0,
+        "operating_cash_flow_prior": 157332934324.0
+      }
+    }
+  },
+  "BAL": {
+    "saved_at": "2026-05-01T05:31:13.847621+00:00",
+    "data": {
+      "symbol": "BAL",
+      "name": "BAL",
+      "price": 7800.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 15.6,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:13.847621+00:00",
+      "piotroski": {}
+    }
+  },
+  "BAX": {
+    "saved_at": "2026-05-01T05:31:15.789505+00:00",
+    "data": {
+      "symbol": "BAX",
+      "name": "BAX",
+      "price": 33300.0,
+      "eps": 4709.0,
+      "pe_ratio": 7.07,
+      "pb_ratio": 1.19,
+      "book_value_per_share": 27964.0,
+      "shareholders_equity": 229304800000.0,
+      "market_cap_billion_vnd": 273.06,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:15.789505+00:00",
+      "piotroski": {}
+    }
+  },
+  "BBH": {
+    "saved_at": "2026-05-01T05:31:17.828653+00:00",
+    "data": {
+      "symbol": "BBH",
+      "name": "BBH",
+      "price": 8800.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 18.02,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:17.828653+00:00",
+      "piotroski": {}
+    }
+  },
+  "BBM": {
+    "saved_at": "2026-05-01T05:31:20.088988+00:00",
+    "data": {
+      "symbol": "BBM",
+      "name": "BBM",
+      "price": 8500.0,
+      "eps": 1448.0,
+      "pe_ratio": 5.87,
+      "pb_ratio": 0.62,
+      "book_value_per_share": 13753.0,
+      "shareholders_equity": 27506000000.0,
+      "market_cap_billion_vnd": 17.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:20.088988+00:00",
+      "piotroski": {}
+    }
+  },
+  "BBS": {
+    "saved_at": "2026-05-01T05:31:22.340999+00:00",
+    "data": {
+      "symbol": "BBS",
+      "name": "BBS",
+      "price": 12900.0,
+      "eps": 1299.0,
+      "pe_ratio": 10.08,
+      "pb_ratio": 0.71,
+      "book_value_per_share": 18348.0,
+      "shareholders_equity": 110088000000.0,
+      "market_cap_billion_vnd": 77.4,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:22.340999+00:00",
+      "piotroski": {}
+    }
+  },
+  "BBT": {
+    "saved_at": "2026-05-01T05:31:24.756878+00:00",
+    "data": {
+      "symbol": "BBT",
+      "name": "BBT",
+      "price": 12100.0,
+      "eps": 239.0,
+      "pe_ratio": 51.78,
+      "pb_ratio": 0.91,
+      "book_value_per_share": 13626.0,
+      "shareholders_equity": 267069600000.0,
+      "market_cap_billion_vnd": 237.16,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:24.756878+00:00",
+      "piotroski": {}
+    }
+  },
+  "BCA": {
+    "saved_at": "2026-08-02T09:52:39.529234+00:00",
+    "data": {
+      "symbol": "BCA",
+      "name": "BCA",
+      "price": 19800.0,
+      "eps": 440.0,
+      "pe_ratio": 45.23,
+      "pb_ratio": 1.04,
+      "book_value_per_share": 19108.0,
+      "shareholders_equity": 955400000000.0,
+      "market_cap_billion_vnd": 990.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-08-02T09:52:39.529234+00:00",
+      "piotroski": {
+        "net_income": 1919647996.0,
+        "net_income_prior": 2454540849.0,
+        "operating_cash_flow": 4643132969.0,
+        "operating_cash_flow_prior": -44608192427.0
+      }
+    }
+  },
+  "BCB": {
+    "saved_at": "2026-05-01T05:31:28.887416+00:00",
+    "data": {
+      "symbol": "BCB",
+      "name": "BCB",
+      "price": 1600.0,
+      "eps": 28.0,
+      "pe_ratio": 56.78,
+      "pb_ratio": 0.16,
+      "book_value_per_share": 10028.0,
+      "shareholders_equity": 57159600000.0,
+      "market_cap_billion_vnd": 9.12,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:28.887416+00:00",
+      "piotroski": {}
+    }
+  },
+  "BCC": {
+    "saved_at": "2026-05-01T05:31:30.855366+00:00",
+    "data": {
+      "symbol": "BCC",
+      "name": "BCC",
+      "price": 7100.0,
+      "eps": 245.0,
+      "pe_ratio": 29.4,
+      "pb_ratio": 0.49,
+      "book_value_per_share": 14628.0,
+      "shareholders_equity": 1802313819718.3098,
+      "market_cap_billion_vnd": 874.79,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:30.855366+00:00",
+      "piotroski": {}
+    }
+  },
+  "BCE": {
+    "saved_at": "2026-05-01T05:31:33.115155+00:00",
+    "data": {
+      "symbol": "BCE",
+      "name": "BCE",
+      "price": 10850.0,
+      "eps": 2436.0,
+      "pe_ratio": 4.45,
+      "pb_ratio": 0.84,
+      "book_value_per_share": 12971.0,
+      "shareholders_equity": 453985000000.0,
+      "market_cap_billion_vnd": 379.75,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:33.115155+00:00",
+      "piotroski": {}
+    }
+  },
+  "BCF": {
+    "saved_at": "2026-05-01T05:31:35.174065+00:00",
+    "data": {
+      "symbol": "BCF",
+      "name": "BCF",
+      "price": 43000.0,
+      "eps": 3128.0,
+      "pe_ratio": 13.75,
+      "pb_ratio": 3.6,
+      "book_value_per_share": 11947.0,
+      "shareholders_equity": 453566465813.9535,
+      "market_cap_billion_vnd": 1632.49,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:35.174065+00:00",
+      "piotroski": {}
+    }
+  },
+  "BCG": {
+    "saved_at": "2026-05-01T05:31:37.347530+00:00",
+    "data": {
+      "symbol": "BCG",
+      "name": "BCG",
+      "price": 2530.0,
+      "eps": 565.0,
+      "pe_ratio": 4.48,
+      "pb_ratio": 0.1,
+      "book_value_per_share": 24305.0,
+      "shareholders_equity": 21393491561264.82,
+      "market_cap_billion_vnd": 2226.93,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:37.347530+00:00",
+      "piotroski": {}
+    }
+  },
+  "BCP": {
+    "saved_at": "2026-05-01T05:31:41.882073+00:00",
+    "data": {
+      "symbol": "BCP",
+      "name": "BCP",
+      "price": 11000.0,
+      "eps": 77.0,
+      "pe_ratio": 142.47,
+      "pb_ratio": 0.87,
+      "book_value_per_share": 12606.0,
+      "shareholders_equity": 75636000000.0,
+      "market_cap_billion_vnd": 66.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:41.882073+00:00",
+      "piotroski": {}
+    }
+  },
+  "BDG": {
+    "saved_at": "2026-05-01T05:31:43.993491+00:00",
+    "data": {
+      "symbol": "BDG",
+      "name": "BDG",
+      "price": 35800.0,
+      "eps": 5057.0,
+      "pe_ratio": 7.0,
+      "pb_ratio": 1.23,
+      "book_value_per_share": 28843.0,
+      "shareholders_equity": 715306400000.0,
+      "market_cap_billion_vnd": 887.84,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:43.993491+00:00",
+      "piotroski": {}
+    }
+  },
+  "BDT": {
+    "saved_at": "2026-05-01T05:31:46.564937+00:00",
+    "data": {
+      "symbol": "BDT",
+      "name": "BDT",
+      "price": 9200.0,
+      "eps": 237.0,
+      "pe_ratio": 38.81,
+      "pb_ratio": 0.64,
+      "book_value_per_share": 14373.0,
+      "shareholders_equity": 554735308695.6522,
+      "market_cap_billion_vnd": 355.08,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:46.564937+00:00",
+      "piotroski": {}
+    }
+  },
+  "BDW": {
+    "saved_at": "2026-05-01T05:31:48.751989+00:00",
+    "data": {
+      "symbol": "BDW",
+      "name": "BDW",
+      "price": 26700.0,
+      "eps": 3444.0,
+      "pe_ratio": 7.75,
+      "pb_ratio": 1.1,
+      "book_value_per_share": 24210.0,
+      "shareholders_equity": 300466955056.17975,
+      "market_cap_billion_vnd": 331.37,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:48.751989+00:00",
+      "piotroski": {}
+    }
+  },
+  "BED": {
+    "saved_at": "2026-05-01T05:31:51.031089+00:00",
+    "data": {
+      "symbol": "BED",
+      "name": "BED",
+      "price": 25500.0,
+      "eps": 1667.0,
+      "pe_ratio": 15.3,
+      "pb_ratio": 1.82,
+      "book_value_per_share": 13989.0,
+      "shareholders_equity": 41967000000.0,
+      "market_cap_billion_vnd": 76.5,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:51.031089+00:00",
+      "piotroski": {}
+    }
+  },
+  "BEL": {
+    "saved_at": "2026-05-01T05:31:53.260085+00:00",
+    "data": {
+      "symbol": "BEL",
+      "name": "BEL",
+      "price": 18300.0,
+      "eps": 3.0,
+      "pe_ratio": 6582.73,
+      "pb_ratio": 2.21,
+      "book_value_per_share": 8268.0,
+      "shareholders_equity": 49608000000.0,
+      "market_cap_billion_vnd": 109.8,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:53.260085+00:00",
+      "piotroski": {}
+    }
+  },
+  "BFC": {
+    "saved_at": "2026-05-01T05:31:55.985414+00:00",
+    "data": {
+      "symbol": "BFC",
+      "name": "BFC",
+      "price": 67600.0,
+      "eps": 5421.0,
+      "pe_ratio": 11.66,
+      "pb_ratio": 2.13,
+      "book_value_per_share": 29657.0,
+      "shareholders_equity": 1695432779881.6567,
+      "market_cap_billion_vnd": 3864.56,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:55.985414+00:00",
+      "piotroski": {}
+    }
+  },
+  "BGE": {
+    "saved_at": "2026-05-01T05:31:58.225422+00:00",
+    "data": {
+      "symbol": "BGE",
+      "name": "BGE",
+      "price": 3500.0,
+      "eps": -9.0,
+      "pe_ratio": -407.93,
+      "pb_ratio": 0.28,
+      "book_value_per_share": 12390.0,
+      "shareholders_equity": 9044700000000.0,
+      "market_cap_billion_vnd": 2555.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:31:58.225422+00:00",
+      "piotroski": {}
+    }
+  },
+  "BGW": {
+    "saved_at": "2026-05-01T05:32:00.231014+00:00",
+    "data": {
+      "symbol": "BGW",
+      "name": "BGW",
+      "price": 16000.0,
+      "eps": 1002.0,
+      "pe_ratio": 15.96,
+      "pb_ratio": 1.45,
+      "book_value_per_share": 11072.0,
+      "shareholders_equity": 200949880000.0,
+      "market_cap_billion_vnd": 290.39,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:00.231014+00:00",
+      "piotroski": {}
+    }
+  },
+  "BHA": {
+    "saved_at": "2026-05-01T05:32:02.335425+00:00",
+    "data": {
+      "symbol": "BHA",
+      "name": "BHA",
+      "price": 23300.0,
+      "eps": 2616.0,
+      "pe_ratio": 8.91,
+      "pb_ratio": 1.44,
+      "book_value_per_share": 16233.0,
+      "shareholders_equity": 1071378000000.0,
+      "market_cap_billion_vnd": 1537.8,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:02.335425+00:00",
+      "piotroski": {}
+    }
+  },
+  "BHC": {
+    "saved_at": "2026-05-01T05:32:04.412820+00:00",
+    "data": {
+      "symbol": "BHC",
+      "name": "BHC",
+      "price": 1100.0,
+      "eps": 2.0,
+      "pe_ratio": 497.74,
+      "pb_ratio": -0.06,
+      "book_value_per_share": -17121.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 4.95,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:04.412820+00:00",
+      "piotroski": {}
+    }
+  },
+  "BHG": {
+    "saved_at": "2026-05-01T05:32:06.471202+00:00",
+    "data": {
+      "symbol": "BHG",
+      "name": "BHG",
+      "price": 11000.0,
+      "eps": 1745.0,
+      "pe_ratio": 6.3,
+      "pb_ratio": 0.99,
+      "book_value_per_share": 11097.0,
+      "shareholders_equity": 99156739090.90909,
+      "market_cap_billion_vnd": 98.29,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:06.471202+00:00",
+      "piotroski": {}
+    }
+  },
+  "BHH": {
+    "saved_at": "2026-05-01T05:32:08.834287+00:00",
+    "data": {
+      "symbol": "BHH",
+      "name": "BHH",
+      "price": 22000.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 132.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:08.834287+00:00",
+      "piotroski": {}
+    }
+  },
+  "BHI": {
+    "saved_at": "2026-05-01T05:32:11.343471+00:00",
+    "data": {
+      "symbol": "BHI",
+      "name": "BHI",
+      "price": 9200.0,
+      "eps": 162.0,
+      "pe_ratio": 56.65,
+      "pb_ratio": 0.74,
+      "book_value_per_share": 12357.0,
+      "shareholders_equity": 1235700000000.0,
+      "market_cap_billion_vnd": 920.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:11.343471+00:00",
+      "piotroski": {}
+    }
+  },
+  "BHK": {
+    "saved_at": "2026-05-01T05:32:14.265933+00:00",
+    "data": {
+      "symbol": "BHK",
+      "name": "BHK",
+      "price": 14000.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 55.8,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:14.265933+00:00",
+      "piotroski": {}
+    }
+  },
+  "BHN": {
+    "saved_at": "2026-05-01T05:32:16.703607+00:00",
+    "data": {
+      "symbol": "BHN",
+      "name": "BHN",
+      "price": 30050.0,
+      "eps": 2022.0,
+      "pe_ratio": 14.83,
+      "pb_ratio": 1.29,
+      "book_value_per_share": 23290.0,
+      "shareholders_equity": 5398622000000.0,
+      "market_cap_billion_vnd": 6965.59,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:16.703607+00:00",
+      "piotroski": {}
+    }
+  },
+  "BHP": {
+    "saved_at": "2026-05-01T05:32:18.824424+00:00",
+    "data": {
+      "symbol": "BHP",
+      "name": "BHP",
+      "price": 7000.0,
+      "eps": -461.0,
+      "pe_ratio": -15.19,
+      "pb_ratio": 0.45,
+      "book_value_per_share": 15453.0,
+      "shareholders_equity": 141858540000.00003,
+      "market_cap_billion_vnd": 64.26,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:18.824424+00:00",
+      "piotroski": {}
+    }
+  },
+  "BIC": {
+    "saved_at": "2026-05-01T05:32:20.586323+00:00",
+    "data": {
+      "symbol": "BIC",
+      "name": "BIC",
+      "price": 23950.0,
+      "eps": 3037.0,
+      "pe_ratio": 8.07,
+      "pb_ratio": 1.43,
+      "book_value_per_share": 17164.0,
+      "shareholders_equity": 3468281822129.436,
+      "market_cap_billion_vnd": 4839.51,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:20.586323+00:00",
+      "piotroski": {}
+    }
+  },
+  "BIG": {
+    "saved_at": "2026-05-01T05:32:22.936737+00:00",
+    "data": {
+      "symbol": "BIG",
+      "name": "BIG",
+      "price": 7600.0,
+      "eps": 2359.0,
+      "pe_ratio": 3.39,
+      "pb_ratio": 0.6,
+      "book_value_per_share": 13421.0,
+      "shareholders_equity": 417039915789.4737,
+      "market_cap_billion_vnd": 236.16,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:22.936737+00:00",
+      "piotroski": {}
+    }
+  },
+  "BIO": {
+    "saved_at": "2026-05-01T05:32:25.364352+00:00",
+    "data": {
+      "symbol": "BIO",
+      "name": "BIO",
+      "price": 13500.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 115.45,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:25.364352+00:00",
+      "piotroski": {}
+    }
+  },
+  "BKC": {
+    "saved_at": "2026-05-01T05:32:27.775514+00:00",
+    "data": {
+      "symbol": "BKC",
+      "name": "BKC",
+      "price": 21600.0,
+      "eps": 5452.0,
+      "pe_ratio": 3.93,
+      "pb_ratio": 1.39,
+      "book_value_per_share": 15438.0,
+      "shareholders_equity": 362414197222.2222,
+      "market_cap_billion_vnd": 507.07,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:27.775514+00:00",
+      "piotroski": {}
+    }
+  },
+  "BKG": {
+    "saved_at": "2026-05-01T05:32:30.203144+00:00",
+    "data": {
+      "symbol": "BKG",
+      "name": "BKG",
+      "price": 2520.0,
+      "eps": 142.0,
+      "pe_ratio": 17.56,
+      "pb_ratio": 0.23,
+      "book_value_per_share": 10646.0,
+      "shareholders_equity": 762329642857.1428,
+      "market_cap_billion_vnd": 180.45,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:30.203144+00:00",
+      "piotroski": {}
+    }
+  },
+  "BLF": {
+    "saved_at": "2026-05-01T05:32:32.414638+00:00",
+    "data": {
+      "symbol": "BLF",
+      "name": "BLF",
+      "price": 2200.0,
+      "eps": 878.0,
+      "pe_ratio": 2.5,
+      "pb_ratio": 0.21,
+      "book_value_per_share": 10581.0,
+      "shareholders_equity": 121681500000.0,
+      "market_cap_billion_vnd": 25.3,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:32.414638+00:00",
+      "piotroski": {}
+    }
+  },
+  "BLI": {
+    "saved_at": "2026-05-01T05:32:34.962348+00:00",
+    "data": {
+      "symbol": "BLI",
+      "name": "BLI",
+      "price": 9200.0,
+      "eps": 82.0,
+      "pe_ratio": 104.31,
+      "pb_ratio": 0.55,
+      "book_value_per_share": 15574.0,
+      "shareholders_equity": 934440000000.0,
+      "market_cap_billion_vnd": 552.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:34.962348+00:00",
+      "piotroski": {}
+    }
+  },
+  "BLN": {
+    "saved_at": "2026-05-01T05:32:37.024734+00:00",
+    "data": {
+      "symbol": "BLN",
+      "name": "BLN",
+      "price": 6700.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 33.5,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:37.024234+00:00",
+      "piotroski": {}
+    }
+  },
+  "BLT": {
+    "saved_at": "2026-05-01T05:32:39.052991+00:00",
+    "data": {
+      "symbol": "BLT",
+      "name": "BLT",
+      "price": 22000.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 88.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:39.052991+00:00",
+      "piotroski": {}
+    }
+  },
+  "BMC": {
+    "saved_at": "2026-05-01T05:32:41.120878+00:00",
+    "data": {
+      "symbol": "BMC",
+      "name": "BMC",
+      "price": 13200.0,
+      "eps": 977.0,
+      "pe_ratio": 13.52,
+      "pb_ratio": 0.71,
+      "book_value_per_share": 18510.0,
+      "shareholders_equity": 229383772727.27274,
+      "market_cap_billion_vnd": 163.58,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:41.120878+00:00",
+      "piotroski": {}
+    }
+  },
+  "BMD": {
+    "saved_at": "2026-05-01T05:32:43.285832+00:00",
+    "data": {
+      "symbol": "BMD",
+      "name": "BMD",
+      "price": 10000.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": 0.84,
+      "book_value_per_share": 11879.0,
+      "shareholders_equity": 32702887000.0,
+      "market_cap_billion_vnd": 27.53,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:43.285832+00:00",
+      "piotroski": {}
+    }
+  },
+  "BMF": {
+    "saved_at": "2026-05-01T05:32:45.668930+00:00",
+    "data": {
+      "symbol": "BMF",
+      "name": "BMF",
+      "price": 7500.0,
+      "eps": 1021.0,
+      "pe_ratio": 6.95,
+      "pb_ratio": 0.58,
+      "book_value_per_share": 12308.0,
+      "shareholders_equity": 195057184000.0,
+      "market_cap_billion_vnd": 118.86,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:45.668930+00:00",
+      "piotroski": {}
+    }
+  },
+  "BMG": {
+    "saved_at": "2026-05-01T05:32:48.609460+00:00",
+    "data": {
+      "symbol": "BMG",
+      "name": "BMG",
+      "price": 20000.0,
+      "eps": 915.0,
+      "pe_ratio": 21.85,
+      "pb_ratio": 1.18,
+      "book_value_per_share": 16974.0,
+      "shareholders_equity": 89826408000.0,
+      "market_cap_billion_vnd": 105.84,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:48.609460+00:00",
+      "piotroski": {}
+    }
+  },
+  "BMI": {
+    "saved_at": "2026-05-01T05:32:50.643825+00:00",
+    "data": {
+      "symbol": "BMI",
+      "name": "BMI",
+      "price": 15100.0,
+      "eps": 1921.0,
+      "pe_ratio": 7.86,
+      "pb_ratio": 0.78,
+      "book_value_per_share": 19461.0,
+      "shareholders_equity": 2929808441721.8545,
+      "market_cap_billion_vnd": 2273.27,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:50.643825+00:00",
+      "piotroski": {}
+    }
+  },
+  "BMJ": {
+    "saved_at": "2026-05-01T05:32:52.915245+00:00",
+    "data": {
+      "symbol": "BMJ",
+      "name": "BMJ",
+      "price": 9900.0,
+      "eps": 920.0,
+      "pe_ratio": 10.76,
+      "pb_ratio": 0.74,
+      "book_value_per_share": 13306.0,
+      "shareholders_equity": 1397130000000.0,
+      "market_cap_billion_vnd": 1039.5,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:52.915245+00:00",
+      "piotroski": {}
+    }
+  },
+  "BMK": {
+    "saved_at": "2026-05-01T05:32:55.145742+00:00",
+    "data": {
+      "symbol": "BMK",
+      "name": "BMK",
+      "price": 15200.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 121.96,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:55.145742+00:00",
+      "piotroski": {}
+    }
+  },
+  "BMP": {
+    "saved_at": "2026-05-01T05:32:57.461827+00:00",
+    "data": {
+      "symbol": "BMP",
+      "name": "BMP",
+      "price": 145600.0,
+      "eps": 15218.0,
+      "pe_ratio": 9.55,
+      "pb_ratio": 3.74,
+      "book_value_per_share": 38864.0,
+      "shareholders_equity": 3181442807692.3076,
+      "market_cap_billion_vnd": 11918.95,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:57.461827+00:00",
+      "piotroski": {}
+    }
+  },
+  "BNA": {
+    "saved_at": "2026-05-01T05:32:59.809402+00:00",
+    "data": {
+      "symbol": "BNA",
+      "name": "BNA",
+      "price": 6100.0,
+      "eps": 1638.0,
+      "pe_ratio": 3.6,
+      "pb_ratio": 0.32,
+      "book_value_per_share": 18461.0,
+      "shareholders_equity": 576891118032.7869,
+      "market_cap_billion_vnd": 190.62,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:32:59.809402+00:00",
+      "piotroski": {}
+    }
+  },
+  "BNW": {
+    "saved_at": "2026-05-01T05:33:02.060918+00:00",
+    "data": {
+      "symbol": "BNW",
+      "name": "BNW",
+      "price": 15600.0,
+      "eps": 966.0,
+      "pe_ratio": 16.14,
+      "pb_ratio": 1.46,
+      "book_value_per_share": 10657.0,
+      "shareholders_equity": 400163518589.7436,
+      "market_cap_billion_vnd": 585.77,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:02.060918+00:00",
+      "piotroski": {}
+    }
+  },
+  "BOT": {
+    "saved_at": "2026-05-01T05:33:04.205857+00:00",
+    "data": {
+      "symbol": "BOT",
+      "name": "BOT",
+      "price": 1900.0,
+      "eps": -1747.0,
+      "pe_ratio": -1.09,
+      "pb_ratio": 0.37,
+      "book_value_per_share": 5069.0,
+      "shareholders_equity": 300324910526.3158,
+      "market_cap_billion_vnd": 112.57,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:04.205857+00:00",
+      "piotroski": {}
+    }
+  },
+  "BPC": {
+    "saved_at": "2026-05-01T05:33:06.147151+00:00",
+    "data": {
+      "symbol": "BPC",
+      "name": "BPC",
+      "price": 12500.0,
+      "eps": 452.0,
+      "pe_ratio": 27.68,
+      "pb_ratio": 0.5,
+      "book_value_per_share": 24876.0,
+      "shareholders_equity": 94528800000.0,
+      "market_cap_billion_vnd": 47.5,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:06.147151+00:00",
+      "piotroski": {}
+    }
+  },
+  "BQB": {
+    "saved_at": "2026-05-01T05:33:08.185203+00:00",
+    "data": {
+      "symbol": "BQB",
+      "name": "BQB",
+      "price": 4000.0,
+      "eps": -230.0,
+      "pe_ratio": -16.08,
+      "pb_ratio": 0.84,
+      "book_value_per_share": 4431.0,
+      "shareholders_equity": 25699800000.0,
+      "market_cap_billion_vnd": 23.2,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:08.185203+00:00",
+      "piotroski": {}
+    }
+  },
+  "BQP": {
+    "saved_at": "2026-05-01T05:33:10.156419+00:00",
+    "data": {
+      "symbol": "BQP",
+      "name": "BQP",
+      "price": 16800.0,
+      "eps": 2278.0,
+      "pe_ratio": 7.37,
+      "pb_ratio": 1.07,
+      "book_value_per_share": 15710.0,
+      "shareholders_equity": 290635000000.0,
+      "market_cap_billion_vnd": 310.8,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:10.156419+00:00",
+      "piotroski": {}
+    }
+  },
+  "BRC": {
+    "saved_at": "2026-05-01T05:33:12.006268+00:00",
+    "data": {
+      "symbol": "BRC",
+      "name": "BRC",
+      "price": 11800.0,
+      "eps": 1685.0,
+      "pe_ratio": 7.36,
+      "pb_ratio": 0.71,
+      "book_value_per_share": 17474.0,
+      "shareholders_equity": 216233345762.71188,
+      "market_cap_billion_vnd": 146.02,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:12.006268+00:00",
+      "piotroski": {}
+    }
+  },
+  "BRR": {
+    "saved_at": "2026-05-01T05:33:14.122547+00:00",
+    "data": {
+      "symbol": "BRR",
+      "name": "BRR",
+      "price": 18500.0,
+      "eps": 1680.0,
+      "pe_ratio": 11.01,
+      "pb_ratio": 1.37,
+      "book_value_per_share": 13493.0,
+      "shareholders_equity": 1517962500000.0,
+      "market_cap_billion_vnd": 2081.25,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:14.122547+00:00",
+      "piotroski": {}
+    }
+  },
+  "BRS": {
+    "saved_at": "2026-05-01T05:33:16.133684+00:00",
+    "data": {
+      "symbol": "BRS",
+      "name": "BRS",
+      "price": 24400.0,
+      "eps": -62.0,
+      "pe_ratio": -397.74,
+      "pb_ratio": 1.79,
+      "book_value_per_share": 13744.0,
+      "shareholders_equity": 62422544262.29508,
+      "market_cap_billion_vnd": 110.82,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:16.133684+00:00",
+      "piotroski": {}
+    }
+  },
+  "BSA": {
+    "saved_at": "2026-05-01T05:33:18.362900+00:00",
+    "data": {
+      "symbol": "BSA",
+      "name": "BSA",
+      "price": 20200.0,
+      "eps": 2532.0,
+      "pe_ratio": 8.18,
+      "pb_ratio": 1.41,
+      "book_value_per_share": 14698.0,
+      "shareholders_equity": 982575852475.2476,
+      "market_cap_billion_vnd": 1350.39,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:18.362900+00:00",
+      "piotroski": {}
+    }
+  },
+  "BSD": {
+    "saved_at": "2026-05-01T05:33:20.218645+00:00",
+    "data": {
+      "symbol": "BSD",
+      "name": "BSD",
+      "price": 23000.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 69.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:20.218645+00:00",
+      "piotroski": {}
+    }
+  },
+  "BSG": {
+    "saved_at": "2026-05-01T05:33:22.068476+00:00",
+    "data": {
+      "symbol": "BSG",
+      "name": "BSG",
+      "price": 17500.0,
+      "eps": -160.0,
+      "pe_ratio": -109.5,
+      "pb_ratio": 2.85,
+      "book_value_per_share": 6132.0,
+      "shareholders_equity": 367920000000.0,
+      "market_cap_billion_vnd": 1050.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:22.068476+00:00",
+      "piotroski": {}
+    }
+  },
+  "BSH": {
+    "saved_at": "2026-05-01T05:33:23.876645+00:00",
+    "data": {
+      "symbol": "BSH",
+      "name": "BSH",
+      "price": 17000.0,
+      "eps": 2131.0,
+      "pe_ratio": 7.93,
+      "pb_ratio": 0.94,
+      "book_value_per_share": 17888.0,
+      "shareholders_equity": 321984000000.0,
+      "market_cap_billion_vnd": 306.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:23.876645+00:00",
+      "piotroski": {}
+    }
+  },
+  "BSI": {
+    "saved_at": "2026-05-01T05:33:25.509993+00:00",
+    "data": {
+      "symbol": "BSI",
+      "name": "BSI",
+      "price": 35050.0,
+      "eps": 2095.0,
+      "pe_ratio": 16.8,
+      "pb_ratio": 1.54,
+      "book_value_per_share": 22891.0,
+      "shareholders_equity": 5616674216262.482,
+      "market_cap_billion_vnd": 8600.08,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:25.509993+00:00",
+      "piotroski": {}
+    }
+  },
+  "BSL": {
+    "saved_at": "2026-05-01T05:33:27.527598+00:00",
+    "data": {
+      "symbol": "BSL",
+      "name": "BSL",
+      "price": 12300.0,
+      "eps": 1509.0,
+      "pe_ratio": 8.88,
+      "pb_ratio": 1.13,
+      "book_value_per_share": 11872.0,
+      "shareholders_equity": 534240000000.0,
+      "market_cap_billion_vnd": 553.5,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:27.527598+00:00",
+      "piotroski": {}
+    }
+  },
+  "BSP": {
+    "saved_at": "2026-05-01T05:33:29.770020+00:00",
+    "data": {
+      "symbol": "BSP",
+      "name": "BSP",
+      "price": 11000.0,
+      "eps": 1021.0,
+      "pe_ratio": 10.77,
+      "pb_ratio": 0.76,
+      "book_value_per_share": 14538.0,
+      "shareholders_equity": 181725000000.0,
+      "market_cap_billion_vnd": 137.5,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:29.770020+00:00",
+      "piotroski": {}
+    }
+  },
+  "BSQ": {
+    "saved_at": "2026-05-01T05:33:31.506733+00:00",
+    "data": {
+      "symbol": "BSQ",
+      "name": "BSQ",
+      "price": 17700.0,
+      "eps": 2294.0,
+      "pe_ratio": 7.72,
+      "pb_ratio": 0.89,
+      "book_value_per_share": 19879.0,
+      "shareholders_equity": 894555000000.0,
+      "market_cap_billion_vnd": 796.5,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:31.506733+00:00",
+      "piotroski": {}
+    }
+  },
+  "BT1": {
+    "saved_at": "2026-05-01T05:33:35.609991+00:00",
+    "data": {
+      "symbol": "BT1",
+      "name": "BT1",
+      "price": 9900.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 99.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:35.609991+00:00",
+      "piotroski": {}
+    }
+  },
+  "BT6": {
+    "saved_at": "2026-05-01T05:33:37.489133+00:00",
+    "data": {
+      "symbol": "BT6",
+      "name": "BT6",
+      "price": 3400.0,
+      "eps": -2081.0,
+      "pe_ratio": -1.63,
+      "pb_ratio": -0.11,
+      "book_value_per_share": -32355.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 112.18,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:37.489133+00:00",
+      "piotroski": {}
+    }
+  },
+  "BTB": {
+    "saved_at": "2026-05-01T05:33:39.692858+00:00",
+    "data": {
+      "symbol": "BTB",
+      "name": "BTB",
+      "price": 4800.0,
+      "eps": 401.0,
+      "pe_ratio": 11.21,
+      "pb_ratio": 0.32,
+      "book_value_per_share": 14037.0,
+      "shareholders_equity": 107967925000.0,
+      "market_cap_billion_vnd": 36.92,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:39.692858+00:00",
+      "piotroski": {}
+    }
+  },
+  "BTD": {
+    "saved_at": "2026-05-01T05:33:41.757348+00:00",
+    "data": {
+      "symbol": "BTD",
+      "name": "BTD",
+      "price": 18000.0,
+      "eps": 1443.0,
+      "pe_ratio": 11.78,
+      "pb_ratio": 0.43,
+      "book_value_per_share": 39656.0,
+      "shareholders_equity": 254283084444.44443,
+      "market_cap_billion_vnd": 115.42,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:41.757348+00:00",
+      "piotroski": {}
+    }
+  },
+  "BTG": {
+    "saved_at": "2026-05-01T05:33:43.659845+00:00",
+    "data": {
+      "symbol": "BTG",
+      "name": "BTG",
+      "price": 8700.0,
+      "eps": 128.0,
+      "pe_ratio": 68.01,
+      "pb_ratio": 0.57,
+      "book_value_per_share": 15349.0,
+      "shareholders_equity": 18260017241.37931,
+      "market_cap_billion_vnd": 10.35,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:43.659845+00:00",
+      "piotroski": {}
+    }
+  },
+  "BTH": {
+    "saved_at": "2026-05-01T05:33:45.425800+00:00",
+    "data": {
+      "symbol": "BTH",
+      "name": "BTH",
+      "price": 23400.0,
+      "eps": 8187.0,
+      "pe_ratio": 2.82,
+      "pb_ratio": 1.12,
+      "book_value_per_share": 20558.0,
+      "shareholders_equity": 513950000000.0,
+      "market_cap_billion_vnd": 585.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:45.425800+00:00",
+      "piotroski": {}
+    }
+  },
+  "BTN": {
+    "saved_at": "2026-05-01T05:33:47.222096+00:00",
+    "data": {
+      "symbol": "BTN",
+      "name": "BTN",
+      "price": 2600.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 11.43,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:47.222096+00:00",
+      "piotroski": {}
+    }
+  },
+  "BTP": {
+    "saved_at": "2026-05-01T05:33:49.041832+00:00",
+    "data": {
+      "symbol": "BTP",
+      "name": "BTP",
+      "price": 8370.0,
+      "eps": 932.0,
+      "pe_ratio": 9.01,
+      "pb_ratio": 0.46,
+      "book_value_per_share": 18226.0,
+      "shareholders_equity": 1102400807646.3562,
+      "market_cap_billion_vnd": 506.26,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:49.041832+00:00",
+      "piotroski": {}
+    }
+  },
+  "BVB": {
+    "saved_at": "2026-05-01T05:33:51.043694+00:00",
+    "data": {
+      "symbol": "BVB",
+      "name": "BVB",
+      "price": 12400.0,
+      "eps": 853.0,
+      "pe_ratio": 14.42,
+      "pb_ratio": 1.03,
+      "book_value_per_share": 11948.0,
+      "shareholders_equity": 7656519287096.773,
+      "market_cap_billion_vnd": 7946.17,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:51.043694+00:00",
+      "piotroski": {}
+    }
+  },
+  "BVG": {
+    "saved_at": "2026-05-01T05:33:52.794660+00:00",
+    "data": {
+      "symbol": "BVG",
+      "name": "BVG",
+      "price": 2800.0,
+      "eps": -1385.0,
+      "pe_ratio": -2.02,
+      "pb_ratio": 0.56,
+      "book_value_per_share": 5026.0,
+      "shareholders_equity": 49003500000.0,
+      "market_cap_billion_vnd": 27.3,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:52.794660+00:00",
+      "piotroski": {}
+    }
+  },
+  "BVL": {
+    "saved_at": "2026-05-01T05:33:54.986336+00:00",
+    "data": {
+      "symbol": "BVL",
+      "name": "BVL",
+      "price": 17800.0,
+      "eps": 3914.0,
+      "pe_ratio": 4.09,
+      "pb_ratio": 0.9,
+      "book_value_per_share": 17780.0,
+      "shareholders_equity": 1589731775280.8987,
+      "market_cap_billion_vnd": 1591.52,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:54.986336+00:00",
+      "piotroski": {}
+    }
+  },
+  "BVN": {
+    "saved_at": "2026-05-01T05:33:57.025224+00:00",
+    "data": {
+      "symbol": "BVN",
+      "name": "BVN",
+      "price": 15900.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 79.5,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:57.025224+00:00",
+      "piotroski": {}
+    }
+  },
+  "BVS": {
+    "saved_at": "2026-05-01T05:33:58.841764+00:00",
+    "data": {
+      "symbol": "BVS",
+      "name": "BVS",
+      "price": 25600.0,
+      "eps": 2835.0,
+      "pe_ratio": 8.99,
+      "pb_ratio": 0.69,
+      "book_value_per_share": 37013.0,
+      "shareholders_equity": 2672338600000.0,
+      "market_cap_billion_vnd": 1848.32,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:33:58.841264+00:00",
+      "piotroski": {}
+    }
+  },
+  "BWA": {
+    "saved_at": "2026-05-01T05:34:00.760145+00:00",
+    "data": {
+      "symbol": "BWA",
+      "name": "BWA",
+      "price": 13200.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 35.64,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:00.760145+00:00",
+      "piotroski": {}
+    }
+  },
+  "BWE": {
+    "saved_at": "2026-05-01T05:34:02.576592+00:00",
+    "data": {
+      "symbol": "BWE",
+      "name": "BWE",
+      "price": 43500.0,
+      "eps": 4478.0,
+      "pe_ratio": 9.56,
+      "pb_ratio": 1.5,
+      "book_value_per_share": 28603.0,
+      "shareholders_equity": 6290621625287.356,
+      "market_cap_billion_vnd": 9566.9,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:02.576592+00:00",
+      "piotroski": {}
+    }
+  },
+  "BWS": {
+    "saved_at": "2026-05-01T05:34:04.544153+00:00",
+    "data": {
+      "symbol": "BWS",
+      "name": "BWS",
+      "price": 34000.0,
+      "eps": 2679.0,
+      "pe_ratio": 12.84,
+      "pb_ratio": 3.13,
+      "book_value_per_share": 10974.0,
+      "shareholders_equity": 1097483918823.5294,
+      "market_cap_billion_vnd": 3400.26,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:04.544153+00:00",
+      "piotroski": {}
+    }
+  },
+  "BXH": {
+    "saved_at": "2026-05-01T05:34:06.547997+00:00",
+    "data": {
+      "symbol": "BXH",
+      "name": "BXH",
+      "price": 13500.0,
+      "eps": 321.0,
+      "pe_ratio": 42.07,
+      "pb_ratio": 0.74,
+      "book_value_per_share": 18354.0,
+      "shareholders_equity": 55279528888.888885,
+      "market_cap_billion_vnd": 40.66,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:06.547997+00:00",
+      "piotroski": {}
+    }
+  },
+  "C21": {
+    "saved_at": "2026-05-01T05:34:08.420628+00:00",
+    "data": {
+      "symbol": "C21",
+      "name": "C21",
+      "price": 16900.0,
+      "eps": 726.0,
+      "pe_ratio": 23.27,
+      "pb_ratio": 0.36,
+      "book_value_per_share": 47109.0,
+      "shareholders_equity": 854484784615.3846,
+      "market_cap_billion_vnd": 306.54,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:08.420628+00:00",
+      "piotroski": {}
+    }
+  },
+  "C22": {
+    "saved_at": "2026-05-01T05:34:10.052452+00:00",
+    "data": {
+      "symbol": "C22",
+      "name": "C22",
+      "price": 19400.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 68.87,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:10.052452+00:00",
+      "piotroski": {}
+    }
+  },
+  "C32": {
+    "saved_at": "2026-05-01T05:34:11.730753+00:00",
+    "data": {
+      "symbol": "C32",
+      "name": "C32",
+      "price": 13600.0,
+      "eps": 2614.0,
+      "pe_ratio": 4.88,
+      "pb_ratio": 0.33,
+      "book_value_per_share": 38723.0,
+      "shareholders_equity": 1163939350735.2942,
+      "market_cap_billion_vnd": 408.79,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:11.730254+00:00",
+      "piotroski": {}
+    }
+  },
+  "C47": {
+    "saved_at": "2026-05-01T05:34:13.821074+00:00",
+    "data": {
+      "symbol": "C47",
+      "name": "C47",
+      "price": 9150.0,
+      "eps": 1604.0,
+      "pe_ratio": 5.67,
+      "pb_ratio": 0.65,
+      "book_value_per_share": 13986.0,
+      "shareholders_equity": 508280281967.2131,
+      "market_cap_billion_vnd": 332.53,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:13.821074+00:00",
+      "piotroski": {}
+    }
+  },
+  "C4G": {
+    "saved_at": "2026-05-01T05:34:15.477193+00:00",
+    "data": {
+      "symbol": "C4G",
+      "name": "C4G",
+      "price": 7000.0,
+      "eps": 275.0,
+      "pe_ratio": 25.42,
+      "pb_ratio": 0.62,
+      "book_value_per_share": 11240.0,
+      "shareholders_equity": 4016068057142.8574,
+      "market_cap_billion_vnd": 2501.11,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:15.477193+00:00",
+      "piotroski": {}
+    }
+  },
+  "C69": {
+    "saved_at": "2026-05-01T05:34:17.227123+00:00",
+    "data": {
+      "symbol": "C69",
+      "name": "C69",
+      "price": 16000.0,
+      "eps": 660.0,
+      "pe_ratio": 23.79,
+      "pb_ratio": 1.09,
+      "book_value_per_share": 14446.0,
+      "shareholders_equity": 892762800000.0,
+      "market_cap_billion_vnd": 988.8,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:17.227123+00:00",
+      "piotroski": {}
+    }
+  },
+  "C92": {
+    "saved_at": "2026-05-01T05:34:19.148821+00:00",
+    "data": {
+      "symbol": "C92",
+      "name": "C92",
+      "price": 4100.0,
+      "eps": 26.0,
+      "pe_ratio": 156.49,
+      "pb_ratio": 0.34,
+      "book_value_per_share": 11622.0,
+      "shareholders_equity": 61738331707.31708,
+      "market_cap_billion_vnd": 21.78,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:19.148821+00:00",
+      "piotroski": {}
+    }
+  },
+  "CAD": {
+    "saved_at": "2026-05-01T05:34:21.610529+00:00",
+    "data": {
+      "symbol": "CAD",
+      "name": "CAD",
+      "price": 500.0,
+      "eps": -221.0,
+      "pe_ratio": -2.27,
+      "pb_ratio": null,
+      "book_value_per_share": -171573.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 4.4,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:21.610529+00:00",
+      "piotroski": {}
+    }
+  },
+  "CAG": {
+    "saved_at": "2026-05-01T05:34:23.872820+00:00",
+    "data": {
+      "symbol": "CAG",
+      "name": "CAG",
+      "price": 6900.0,
+      "eps": 206.0,
+      "pe_ratio": 33.55,
+      "pb_ratio": 0.66,
+      "book_value_per_share": 10453.0,
+      "shareholders_equity": 144251400000.0,
+      "market_cap_billion_vnd": 95.22,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:23.872820+00:00",
+      "piotroski": {}
+    }
+  },
+  "CAN": {
+    "saved_at": "2026-05-01T05:34:25.587065+00:00",
+    "data": {
+      "symbol": "CAN",
+      "name": "CAN",
+      "price": 27000.0,
+      "eps": 389.0,
+      "pe_ratio": 69.42,
+      "pb_ratio": 0.91,
+      "book_value_per_share": 29579.0,
+      "shareholders_equity": 147895000000.0,
+      "market_cap_billion_vnd": 135.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:25.587065+00:00",
+      "piotroski": {}
+    }
+  },
+  "CAP": {
+    "saved_at": "2026-05-01T05:34:27.873586+00:00",
+    "data": {
+      "symbol": "CAP",
+      "name": "CAP",
+      "price": 45900.0,
+      "eps": 4849.0,
+      "pe_ratio": 9.59,
+      "pb_ratio": 3.28,
+      "book_value_per_share": 14164.0,
+      "shareholders_equity": 216283354248.366,
+      "market_cap_billion_vnd": 700.89,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:27.873586+00:00",
+      "piotroski": {}
+    }
+  },
+  "CAR": {
+    "saved_at": "2026-05-01T05:34:29.839384+00:00",
+    "data": {
+      "symbol": "CAR",
+      "name": "CAR",
+      "price": 15000.0,
+      "eps": -97.0,
+      "pe_ratio": -154.35,
+      "pb_ratio": 1.5,
+      "book_value_per_share": 10012.0,
+      "shareholders_equity": 55720117333.33333,
+      "market_cap_billion_vnd": 83.48,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:29.839384+00:00",
+      "piotroski": {}
+    }
+  },
+  "CAT": {
+    "saved_at": "2026-05-01T05:34:31.775265+00:00",
+    "data": {
+      "symbol": "CAT",
+      "name": "CAT",
+      "price": 14400.0,
+      "eps": 1190.0,
+      "pe_ratio": 12.19,
+      "pb_ratio": 0.8,
+      "book_value_per_share": 18059.0,
+      "shareholders_equity": 250543543055.55557,
+      "market_cap_billion_vnd": 199.78,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:31.775265+00:00",
+      "piotroski": {}
+    }
+  },
+  "CBI": {
+    "saved_at": "2026-05-01T05:34:33.742121+00:00",
+    "data": {
+      "symbol": "CBI",
+      "name": "CBI",
+      "price": 13900.0,
+      "eps": -3709.0,
+      "pe_ratio": -3.75,
+      "pb_ratio": 22.03,
+      "book_value_per_share": 631.0,
+      "shareholders_equity": 27137085611.51079,
+      "market_cap_billion_vnd": 597.79,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:33.742121+00:00",
+      "piotroski": {}
+    }
+  },
+  "CBS": {
+    "saved_at": "2026-05-01T05:34:35.696853+00:00",
+    "data": {
+      "symbol": "CBS",
+      "name": "CBS",
+      "price": 25000.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 132.3,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:35.696853+00:00",
+      "piotroski": {}
+    }
+  },
+  "CC1": {
+    "saved_at": "2026-05-01T05:34:37.772752+00:00",
+    "data": {
+      "symbol": "CC1",
+      "name": "CC1",
+      "price": 37300.0,
+      "eps": 619.0,
+      "pe_ratio": 57.87,
+      "pb_ratio": 3.15,
+      "book_value_per_share": 11375.0,
+      "shareholders_equity": 4526182640750.67,
+      "market_cap_billion_vnd": 14841.9,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:37.772752+00:00",
+      "piotroski": {}
+    }
+  },
+  "CCA": {
+    "saved_at": "2026-05-01T05:34:39.635066+00:00",
+    "data": {
+      "symbol": "CCA",
+      "name": "CCA",
+      "price": 15400.0,
+      "eps": 2632.0,
+      "pe_ratio": 5.7,
+      "pb_ratio": 0.92,
+      "book_value_per_share": 16322.0,
+      "shareholders_equity": 295597779220.7792,
+      "market_cap_billion_vnd": 278.9,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:39.635066+00:00",
+      "piotroski": {}
+    }
+  },
+  "CCC": {
+    "saved_at": "2026-05-01T05:34:41.224837+00:00",
+    "data": {
+      "symbol": "CCC",
+      "name": "CCC",
+      "price": 8150.0,
+      "eps": 1037.0,
+      "pe_ratio": 7.71,
+      "pb_ratio": 0.52,
+      "book_value_per_share": 15416.0,
+      "shareholders_equity": 632907190184.0491,
+      "market_cap_billion_vnd": 334.6,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:41.224837+00:00",
+      "piotroski": {}
+    }
+  },
+  "CCI": {
+    "saved_at": "2026-05-01T05:34:43.166016+00:00",
+    "data": {
+      "symbol": "CCI",
+      "name": "CCI",
+      "price": 19000.0,
+      "eps": 2825.0,
+      "pe_ratio": 6.73,
+      "pb_ratio": 1.09,
+      "book_value_per_share": 17373.0,
+      "shareholders_equity": 304740707368.4211,
+      "market_cap_billion_vnd": 333.28,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:43.166016+00:00",
+      "piotroski": {}
+    }
+  },
+  "CCL": {
+    "saved_at": "2026-05-01T05:34:44.906738+00:00",
+    "data": {
+      "symbol": "CCL",
+      "name": "CCL",
+      "price": 4960.0,
+      "eps": 365.0,
+      "pe_ratio": 13.61,
+      "pb_ratio": 0.41,
+      "book_value_per_share": 12218.0,
+      "shareholders_equity": 727956322580.6451,
+      "market_cap_billion_vnd": 295.52,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:44.906738+00:00",
+      "piotroski": {}
+    }
+  },
+  "CCM": {
+    "saved_at": "2026-05-01T05:34:46.947924+00:00",
+    "data": {
+      "symbol": "CCM",
+      "name": "CCM",
+      "price": 34200.0,
+      "eps": 7621.0,
+      "pe_ratio": 4.75,
+      "pb_ratio": 0.96,
+      "book_value_per_share": 37668.0,
+      "shareholders_equity": 233541600000.0,
+      "market_cap_billion_vnd": 212.04,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:46.947924+00:00",
+      "piotroski": {}
+    }
+  },
+  "CCP": {
+    "saved_at": "2026-05-01T05:34:48.861197+00:00",
+    "data": {
+      "symbol": "CCP",
+      "name": "CCP",
+      "price": 15800.0,
+      "eps": 1114.0,
+      "pe_ratio": 14.18,
+      "pb_ratio": 0.73,
+      "book_value_per_share": 21620.0,
+      "shareholders_equity": 51888000000.0,
+      "market_cap_billion_vnd": 37.92,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:48.860697+00:00",
+      "piotroski": {}
+    }
+  },
+  "CDC": {
+    "saved_at": "2026-05-01T05:34:50.853779+00:00",
+    "data": {
+      "symbol": "CDC",
+      "name": "CDC",
+      "price": 18800.0,
+      "eps": 599.0,
+      "pe_ratio": 29.57,
+      "pb_ratio": 1.07,
+      "book_value_per_share": 16514.0,
+      "shareholders_equity": 871491213829.7872,
+      "market_cap_billion_vnd": 992.13,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:50.853779+00:00",
+      "piotroski": {}
+    }
+  },
+  "CDG": {
+    "saved_at": "2026-05-01T05:34:53.002220+00:00",
+    "data": {
+      "symbol": "CDG",
+      "name": "CDG",
+      "price": 3500.0,
+      "eps": 1538.0,
+      "pe_ratio": 2.28,
+      "pb_ratio": 0.27,
+      "book_value_per_share": 13099.0,
+      "shareholders_equity": 45397391428.571434,
+      "market_cap_billion_vnd": 12.13,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:53.002220+00:00",
+      "piotroski": {}
+    }
+  },
+  "CDN": {
+    "saved_at": "2026-05-01T05:34:55.216762+00:00",
+    "data": {
+      "symbol": "CDN",
+      "name": "CDN",
+      "price": 29900.0,
+      "eps": 4171.0,
+      "pe_ratio": 7.17,
+      "pb_ratio": 1.31,
+      "book_value_per_share": 22860.0,
+      "shareholders_equity": 2263140000000.0,
+      "market_cap_billion_vnd": 2960.1,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:55.216762+00:00",
+      "piotroski": {}
+    }
+  },
+  "CDO": {
+    "saved_at": "2026-05-01T05:34:57.376798+00:00",
+    "data": {
+      "symbol": "CDO",
+      "name": "CDO",
+      "price": 1500.0,
+      "eps": 72.0,
+      "pe_ratio": 20.79,
+      "pb_ratio": 0.22,
+      "book_value_per_share": 6749.0,
+      "shareholders_equity": 212638493333.33334,
+      "market_cap_billion_vnd": 47.26,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:57.376798+00:00",
+      "piotroski": {}
+    }
+  },
+  "CDP": {
+    "saved_at": "2026-05-01T05:34:59.435777+00:00",
+    "data": {
+      "symbol": "CDP",
+      "name": "CDP",
+      "price": 13900.0,
+      "eps": 1709.0,
+      "pe_ratio": 8.02,
+      "pb_ratio": 1.06,
+      "book_value_per_share": 12949.0,
+      "shareholders_equity": 235783589928.05753,
+      "market_cap_billion_vnd": 253.1,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:34:59.435777+00:00",
+      "piotroski": {}
+    }
+  },
+  "CDR": {
+    "saved_at": "2026-05-01T05:35:01.179661+00:00",
+    "data": {
+      "symbol": "CDR",
+      "name": "CDR",
+      "price": 4100.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 8.75,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:01.179661+00:00",
+      "piotroski": {}
+    }
+  },
+  "CEN": {
+    "saved_at": "2026-05-01T05:35:03.383445+00:00",
+    "data": {
+      "symbol": "CEN",
+      "name": "CEN",
+      "price": 1700.0,
+      "eps": 18.0,
+      "pe_ratio": 92.54,
+      "pb_ratio": 0.17,
+      "book_value_per_share": 10091.0,
+      "shareholders_equity": 219093417647.0588,
+      "market_cap_billion_vnd": 36.91,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:03.383445+00:00",
+      "piotroski": {}
+    }
+  },
+  "CEO": {
+    "saved_at": "2026-05-01T05:35:05.102194+00:00",
+    "data": {
+      "symbol": "CEO",
+      "name": "CEO",
+      "price": 17800.0,
+      "eps": 330.0,
+      "pe_ratio": 52.14,
+      "pb_ratio": 1.52,
+      "book_value_per_share": 11343.0,
+      "shareholders_equity": 6436203001685.393,
+      "market_cap_billion_vnd": 10100.01,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:05.102194+00:00",
+      "piotroski": {}
+    }
+  },
+  "CET": {
+    "saved_at": "2026-05-01T05:35:07.118386+00:00",
+    "data": {
+      "symbol": "CET",
+      "name": "CET",
+      "price": 7900.0,
+      "eps": -148.0,
+      "pe_ratio": -53.49,
+      "pb_ratio": 0.74,
+      "book_value_per_share": 10668.0,
+      "shareholders_equity": 64548151898.73418,
+      "market_cap_billion_vnd": 47.8,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:07.117885+00:00",
+      "piotroski": {}
+    }
+  },
+  "CFM": {
+    "saved_at": "2026-05-01T05:35:09.370959+00:00",
+    "data": {
+      "symbol": "CFM",
+      "name": "CFM",
+      "price": 9000.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 27.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:09.370959+00:00",
+      "piotroski": {}
+    }
+  },
+  "CFV": {
+    "saved_at": "2026-05-01T05:35:11.226706+00:00",
+    "data": {
+      "symbol": "CFV",
+      "name": "CFV",
+      "price": 20100.0,
+      "eps": 1125.0,
+      "pe_ratio": 17.86,
+      "pb_ratio": 1.24,
+      "book_value_per_share": 16175.0,
+      "shareholders_equity": 204609726368.1592,
+      "market_cap_billion_vnd": 254.26,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:11.226706+00:00",
+      "piotroski": {}
+    }
+  },
+  "CGV": {
+    "saved_at": "2026-05-01T05:35:12.941385+00:00",
+    "data": {
+      "symbol": "CGV",
+      "name": "CGV",
+      "price": 3000.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 28.5,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:12.941385+00:00",
+      "piotroski": {}
+    }
+  },
+  "CH5": {
+    "saved_at": "2026-05-01T05:35:14.826206+00:00",
+    "data": {
+      "symbol": "CH5",
+      "name": "CH5",
+      "price": 11800.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 44.04,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:14.826206+00:00",
+      "piotroski": {}
+    }
+  },
+  "CHC": {
+    "saved_at": "2026-05-01T05:35:16.732055+00:00",
+    "data": {
+      "symbol": "CHC",
+      "name": "CHC",
+      "price": 5800.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 39.04,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:16.732055+00:00",
+      "piotroski": {}
+    }
+  },
+  "CHP": {
+    "saved_at": "2026-05-01T05:35:18.495071+00:00",
+    "data": {
+      "symbol": "CHP",
+      "name": "CHP",
+      "price": 28300.0,
+      "eps": 2896.0,
+      "pe_ratio": 9.67,
+      "pb_ratio": 2.16,
+      "book_value_per_share": 12948.0,
+      "shareholders_equity": 2041355143462.8977,
+      "market_cap_billion_vnd": 4461.72,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:18.495071+00:00",
+      "piotroski": {}
+    }
+  },
+  "CHS": {
+    "saved_at": "2026-05-01T05:35:20.195237+00:00",
+    "data": {
+      "symbol": "CHS",
+      "name": "CHS",
+      "price": 11000.0,
+      "eps": 959.0,
+      "pe_ratio": 11.36,
+      "pb_ratio": 0.95,
+      "book_value_per_share": 11476.0,
+      "shareholders_equity": 325918400000.0,
+      "market_cap_billion_vnd": 312.4,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:20.195237+00:00",
+      "piotroski": {}
+    }
+  },
+  "CI5": {
+    "saved_at": "2026-05-01T05:35:22.188462+00:00",
+    "data": {
+      "symbol": "CI5",
+      "name": "CI5",
+      "price": 4300.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 11.61,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:22.188462+00:00",
+      "piotroski": {}
+    }
+  },
+  "CIA": {
+    "saved_at": "2026-05-01T05:35:24.090454+00:00",
+    "data": {
+      "symbol": "CIA",
+      "name": "CIA",
+      "price": 9900.0,
+      "eps": 1059.0,
+      "pe_ratio": 9.44,
+      "pb_ratio": 0.54,
+      "book_value_per_share": 18637.0,
+      "shareholders_equity": 347796540404.0404,
+      "market_cap_billion_vnd": 184.75,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:24.090454+00:00",
+      "piotroski": {}
+    }
+  },
+  "CID": {
+    "saved_at": "2026-05-01T05:35:26.047267+00:00",
+    "data": {
+      "symbol": "CID",
+      "name": "CID",
+      "price": 10100.0,
+      "eps": -105.0,
+      "pe_ratio": -84.13,
+      "pb_ratio": 1.91,
+      "book_value_per_share": 4615.0,
+      "shareholders_equity": 4286009900.990099,
+      "market_cap_billion_vnd": 9.38,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:26.047267+00:00",
+      "piotroski": {}
+    }
+  },
+  "CIG": {
+    "saved_at": "2026-05-01T05:35:28.064142+00:00",
+    "data": {
+      "symbol": "CIG",
+      "name": "CIG",
+      "price": 6590.0,
+      "eps": 2702.0,
+      "pe_ratio": 2.37,
+      "pb_ratio": 0.83,
+      "book_value_per_share": 7750.0,
+      "shareholders_equity": 395555766312.59485,
+      "market_cap_billion_vnd": 336.35,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:28.064142+00:00",
+      "piotroski": {}
+    }
+  },
+  "CIP": {
+    "saved_at": "2026-05-01T05:35:31.705822+00:00",
+    "data": {
+      "symbol": "CIP",
+      "name": "CIP",
+      "price": 2200.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 10.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:31.705822+00:00",
+      "piotroski": {}
+    }
+  },
+  "CJC": {
+    "saved_at": "2026-05-01T05:35:33.653376+00:00",
+    "data": {
+      "symbol": "CJC",
+      "name": "CJC",
+      "price": 18000.0,
+      "eps": 663.0,
+      "pe_ratio": 27.13,
+      "pb_ratio": 1.43,
+      "book_value_per_share": 12557.0,
+      "shareholders_equity": 100456000000.0,
+      "market_cap_billion_vnd": 144.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:33.653376+00:00",
+      "piotroski": {}
+    }
+  },
+  "CK8": {
+    "saved_at": "2026-05-01T05:35:35.723489+00:00",
+    "data": {
+      "symbol": "CK8",
+      "name": "CK8",
+      "price": 5000.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 15.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:35.723489+00:00",
+      "piotroski": {}
+    }
+  },
+  "CKA": {
+    "saved_at": "2026-05-01T05:35:37.454260+00:00",
+    "data": {
+      "symbol": "CKA",
+      "name": "CKA",
+      "price": 66600.0,
+      "eps": 0.0,
+      "pe_ratio": null,
+      "pb_ratio": null,
+      "book_value_per_share": 0.0,
+      "shareholders_equity": null,
+      "market_cap_billion_vnd": 218.87,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:37.454260+00:00",
+      "piotroski": {}
+    }
+  },
+  "CKD": {
+    "saved_at": "2026-05-01T05:35:39.268620+00:00",
+    "data": {
+      "symbol": "CKD",
+      "name": "CKD",
+      "price": 29000.0,
+      "eps": 3919.0,
+      "pe_ratio": 6.97,
+      "pb_ratio": 1.46,
+      "book_value_per_share": 18747.0,
+      "shareholders_equity": 581157000000.0,
+      "market_cap_billion_vnd": 899.0,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:39.268620+00:00",
+      "piotroski": {}
+    }
+  },
+  "CKG": {
+    "saved_at": "2026-05-01T05:35:41.230937+00:00",
+    "data": {
+      "symbol": "CKG",
+      "name": "CKG",
+      "price": 8610.0,
+      "eps": 697.0,
+      "pe_ratio": 12.43,
+      "pb_ratio": 0.69,
+      "book_value_per_share": 12538.0,
+      "shareholders_equity": 2028738685249.7097,
+      "market_cap_billion_vnd": 1393.16,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:41.230937+00:00",
+      "piotroski": {}
+    }
+  },
+  "CKV": {
+    "saved_at": "2026-05-01T05:35:43.264302+00:00",
+    "data": {
+      "symbol": "CKV",
+      "name": "CKV",
+      "price": 19000.0,
+      "eps": 899.0,
+      "pe_ratio": 21.14,
+      "pb_ratio": 0.97,
+      "book_value_per_share": 19554.0,
+      "shareholders_equity": 78452706315.78947,
+      "market_cap_billion_vnd": 76.23,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:43.264302+00:00",
+      "piotroski": {}
+    }
+  },
+  "CLC": {
+    "saved_at": "2026-05-01T05:35:45.100829+00:00",
+    "data": {
+      "symbol": "CLC",
+      "name": "CLC",
+      "price": 55000.0,
+      "eps": 6747.0,
+      "pe_ratio": 8.24,
+      "pb_ratio": 1.52,
+      "book_value_per_share": 36598.0,
+      "shareholders_equity": 959147075636.3636,
+      "market_cap_billion_vnd": 1441.42,
+      "currency": "VND",
+      "growth_rate_pct": 0.0,
+      "bond_yield_pct": 4.4,
+      "source": "vietstock",
+      "scraped_at": "2026-05-01T05:35:45.100829+00:00",
+      "piotroski": {}
+    }
+  }

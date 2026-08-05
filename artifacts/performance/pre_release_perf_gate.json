@@ -1,0 +1,20 @@
+{
+  "generated_at_utc": "2026-05-04T15:03:33.810859+00:00",
+  "decision": "PASS",
+  "max_regress_pct": 20.0,
+  "summary_json": "E:\\Du an 1\\artifacts\\performance\\runtime_6s_benchmark_summary.json",
+  "baseline_json": "E:\\Du an 1\\config\\runtime_6s_perf_baseline.json",
+  "current_metrics": {
+    "list_tradable_cold_ms": 3.151,
+    "list_tradable_warm_ms": 0.044,
+    "perf_benchmark_elapsed_sec": 2.527,
+    "strategic_report_no_llm_sec": 0.065
+  },
+  "baseline_metrics": {
+    "list_tradable_cold_ms": 3.151,
+    "list_tradable_warm_ms": 0.044,
+    "perf_benchmark_elapsed_sec": 2.527,
+    "strategic_report_no_llm_sec": 0.065
+  },
+  "violations": []
+}

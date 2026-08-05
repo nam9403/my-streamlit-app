@@ -1,0 +1,235 @@
+{
+  "ran_at": "2026-07-24T13:52:22.816997+00:00",
+  "ticker": "SHB",
+  "stages": [
+    {
+      "stage": "snapshot",
+      "seconds": 0.035,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "financial_indicators",
+      "seconds": 0.004,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "valuation",
+      "seconds": 0.008,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "ohlcv",
+      "seconds": 0.017,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "news",
+      "seconds": 0.793,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "macro",
+      "seconds": 0.001,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "catalyst",
+      "seconds": 0.021,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "strategic_report",
+      "seconds": 0.056,
+      "ok": true,
+      "error": ""
+    }
+  ],
+  "total_seconds": 0.935,
+  "snapshot": {
+    "price": 11800.0,
+    "eps": 2809.0,
+    "pe_ratio": 4.27,
+    "pb_ratio": 0.77,
+    "roe": 17.9914,
+    "debt_to_equity": null,
+    "current_ratio": null,
+    "growth_rate_pct": 46.64,
+    "source": "vietstock",
+    "is_bank": null,
+    "fundamentals_merge_notes": [
+      "Tăng trưởng từ YoY (fireant_finance_api:disk_cache:fastpath)"
+    ]
+  },
+  "financials_source": "fireant_finance_api:disk_cache:fastpath",
+  "financials_core": {
+    "roe": null,
+    "debt_to_equity": null,
+    "current_ratio": null,
+    "net_income": null,
+    "operating_cash_flow": null,
+    "revenue_growth_yoy": 44.921433877871124,
+    "profit_growth_yoy": 49.817607709731014,
+    "data_quality_score": 3
+  },
+  "valuation": {
+    "instant_conclusion": "Mua mạnh",
+    "piotroski_score": 2,
+    "mos_pct": 74.26563535166245,
+    "target": 45853.084625356336,
+    "safe_buy_price": 32097.159237749434,
+    "legend_scorecard": {
+      "graham_pass": true,
+      "buffett_pass": true,
+      "lynch_pass": true
+    },
+    "legend_data_ready": {
+      "has_graham_inputs": true,
+      "de_available": false,
+      "cr_available": false,
+      "roe_available": true
+    },
+    "industry_display_vi": "Ngân hàng",
+    "industry_subtype_label_vi": "Ngân hàng",
+    "is_bank_sector": true,
+    "value_trap_warning": "Không thấy bẫy giá trị lớn theo bộ lọc hiện tại.",
+    "advice": "Kết luận: Mua mạnh. Giá mua an toàn <= 32,097 VND. Pass/Fail: Graham=Đạt, Buffett=Đạt, Lynch=Đạt. Cảnh báo: Không thấy bẫy giá trị lớn theo bộ lọc hiện tại."
+  },
+  "phase": {
+    "phase": "neutral",
+    "reason": "Chưa xuất hiện tín hiệu tích lũy/bùng nổ/phân phối rõ.",
+    "metrics": {
+      "close": 14550.0,
+      "day_change_pct": 0.6920415224913495,
+      "range_pct_10": 8.362369337979095,
+      "volume": 55535970.0,
+      "vol_ma20": 86193474.0,
+      "vol_multiple": 0.6443175732770674,
+      "ma20": 15045.0,
+      "ma50": 15166.0,
+      "rsi14": 100.0,
+      "vol_std20": 40203270.75132549
+    }
+  },
+  "ohlcv_rows": 80,
+  "news_count": 8,
+  "news_sample": [
+    {
+      "title": "Phó Chủ tịch SHB Đỗ Quang Vinh tham gia Đoàn Chủ tịch Hội Doanh nhân trẻ Việt Nam khóa VIII",
+      "source": "cafef"
+    },
+    {
+      "title": "SHB sắp thu về nguồn thặng dư vốn lớn từ thương vụ với Krungsri",
+      "source": "cafef"
+    },
+    {
+      "title": "Phó Chủ tịch SHB Đỗ Quang Vinh: “AI không chỉ là câu chuyện đầu tư vào công nghệ”",
+      "source": "cafef"
+    },
+    {
+      "title": "SHB đồng hành kiến tạo nguồn nhân lực AI cho quốc gia",
+      "source": "cafef"
+    },
+    {
+      "title": "SHB điều chỉnh phương án phát hành trái phiếu riêng lẻ lần 1 năm 2026",
+      "source": "cafef"
+    }
+  ],
+  "macro": {
+    "source": "policy_env+open_er_api",
+    "market_bias": 0.0,
+    "usd_vnd": 26250.538817,
+    "policy_rate_pct": 4.5
+  },
+  "catalyst": {
+    "score": 0.0,
+    "caption": "News/Macro Bias **SHB**: `+0.00` (macro_src=policy_env+open_er_api; P0 heuristic)"
+  },
+  "earnings_quality": {
+    "label": "Ổn",
+    "severity": "low",
+    "warning": false,
+    "net_income": 15010450678354.25,
+    "operating_cash_flow": null,
+    "notes": []
+  },
+  "smart_money": {
+    "bias": "neutral",
+    "score": 0.0,
+    "label": "Chưa đủ dữ liệu smart money",
+    "data_mode": "heuristic"
+  },
+  "risk_plan": {
+    "entry_price": 11800.0,
+    "buy_zone_low": 11446.0,
+    "buy_zone_high": 12154.0,
+    "stop_loss_price": 10974.0,
+    "take_profit_price": 14691.0,
+    "allocated_capital_vnd": 20000000.0
+  },
+  "forecast": {
+    "summary": "Dự phóng 90 ngày: expected return 22.60% (bull 30% / base 45% / bear 25%). Monte Carlo range P10/P50/P90: 8,284/10,275/12,733 VND | P(đạt target)=0.0%.",
+    "expected_return_pct": 22.6,
+    "expected_price": 14466.8,
+    "horizon_days": 90
+  },
+  "recommendation": {
+    "final_action": "WATCH",
+    "confidence_score": 71.0,
+    "analysis_verdict": "CAUTION",
+    "decision_readiness": "MEDIUM",
+    "decision_alignment": {
+      "legend_view": "Mua mạnh",
+      "action_view": "WATCH",
+      "unified_action": "WATCH",
+      "alignment": "valuation_vs_timing",
+      "note_vi": "Định giá hấp dẫn (Mua mạnh) nhưng pha/gate kỹ thuật (neutral) chưa ủng hộ giải ngân — ưu tiên WATCH."
+    },
+    "whys": [
+      "Hồ sơ nhà đầu tư: Tăng trưởng; tổng vốn giả định 100,000,000 VND.",
+      "Why 1 (xu hướng): Pha thị trường hiện tại là neutral (Chưa xuất hiện tín hiệu tích lũy/bùng nổ/phân phối rõ.).",
+      "Why 2 (dòng tiền): Volume multiple ~0.64.",
+      "Why 3 (nội tại): F-Score=2/9, D/E=None.",
+      "Why 4 (tăng trưởng): Rev YoY=44.921433877871124, Profit YoY=49.817607709731014.",
+      "Why 5 (định giá ngành): Hybrid Legend: Graham Đạt, Buffett Đạt, Lynch Đạt · PEG=0.09 (Cực kỳ hấp dẫn) · Ngành: Ngân hàng.",
+      "Why 6 (tin tức): Headline dẫn dắt gần nhất: Phó Chủ tịch SHB Đỗ Quang Vinh tham gia Đoàn Chủ tịch Hội Doanh nhân trẻ Việt Nam khóa VIII"
+    ],
+    "do_not_act_reasons": []
+  },
+  "dss": {
+    "decision": "NEAR_READY",
+    "commercial_score": 80.0,
+    "missing_items": [
+      "smart_money_structured_available",
+      "backtesting_sample_sufficient"
+    ],
+    "backtesting_source": "engine_action_backtest_fallback",
+    "summary_vi": "DSS commercial score=80.00. Trạng thái=NEAR_READY. Cần bổ sung một số hạng mục trước khi scale trả phí."
+  },
+  "data_gaps": {
+    "missing": [
+      "cfo"
+    ],
+    "fields": {
+      "price": 11800.0,
+      "eps": 2809.0,
+      "pe": 4.27,
+      "pb": 0.77,
+      "roe": 17.9914,
+      "de": 0.0,
+      "cr": 0.0,
+      "ni": 15010450678354.254,
+      "cfo": null,
+      "rev_yoy": 44.921433877871124,
+      "profit_yoy": 49.817607709731014,
+      "ohlcv": 80,
+      "news_n": 8
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "admin_kpi": {
+    "users_total": 4,
+    "active_users_period": 2,
+    "events_period": 50,
+    "alerts_total": 2,
+    "holdings_total": 0,
+    "decisions_total": 6,
+    "trades_total": 2,
+    "plans": [
+      {
+        "plan_id": "free",
+        "count": 2
+      },
+      {
+        "plan_id": "pro",
+        "count": 2
+      }
+    ],
+    "events_by_type": [
+      {
+        "event": "action_center_viewed",
+        "count": 14
+      },
+      {
+        "event": "analysis_started_bg",
+        "count": 1
+      },
+      {
+        "event": "chat_analyze",
+        "count": 30
+      },
+      {
+        "event": "chat_autopilot",
+        "count": 4
+      },
+      {
+        "event": "referral_signup",
+        "count": 1
+      }
+    ],
+    "notification_queue": [
+      {
+        "status": "done",
+        "count": 2
+      }
+    ]
+  },
+  "referral": {
+    "window_days": 30,
+    "signups": 1,
+    "unique_codes": 1,
+    "top_referrers": [
+      {
+        "code": "5A28C381",
+        "signups": 1
+      }
+    ]
+  },
+  "markdown_path": "E:\\Du an 1\\artifacts\\operations\\weekly_growth_report.md"
+}

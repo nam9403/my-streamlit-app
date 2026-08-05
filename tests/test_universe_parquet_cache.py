@@ -1,11 +1,10 @@
 import pandas as pd
-from pathlib import Path
 
 from core import universe_parquet_cache as upc
 
 
-def test_universe_parquet_cache_roundtrip_or_graceful_fail(monkeypatch):
-    test_path = Path("e:/Du an 1/data/universe_scan_cache_test.parquet")
+def test_universe_parquet_cache_roundtrip_or_graceful_fail(monkeypatch, tmp_path):
+    test_path = tmp_path / "universe_scan_cache_test.parquet"
     monkeypatch.setattr(upc, "CACHE_PATH", test_path)
     df = pd.DataFrame([{"Mã": "FPT", "MOS%": 12.5}])
     ok = upc.save_universe_scan_cache(df)

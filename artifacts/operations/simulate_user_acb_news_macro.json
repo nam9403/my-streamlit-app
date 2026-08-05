@@ -1,0 +1,217 @@
+{
+  "ran_at": "2026-07-23T14:41:10.589518+00:00",
+  "ticker": "ACB",
+  "profile": "growth",
+  "capital_vnd": 100000000.0,
+  "module": "news_macro_service P0",
+  "snapshot": {
+    "price": 22400.0,
+    "pe_ratio": 7.01,
+    "pb_ratio": 1.19,
+    "roe": 27.7313,
+    "debt_to_equity": 14.6691799214,
+    "growth_rate_pct": 0.0,
+    "source": "vietstock:swr",
+    "fundamentals_merge_notes": [
+      "D/E từ vnstock:live:disk_cache",
+      "ROE từ vnstock:live:disk_cache (chuẩn hóa %)"
+    ]
+  },
+  "valuation": {
+    "instant_conclusion": "Theo dõi",
+    "piotroski_score": 4,
+    "roe_5y_avg": 27.7313,
+    "margin_of_safety_composite_pct": 40.33109816110197,
+    "legend_scorecard": {
+      "graham_pass": true,
+      "buffett_pass": true,
+      "lynch_pass": false
+    },
+    "value_trap_warning": "Không thấy bẫy giá trị lớn theo bộ lọc hiện tại.",
+    "is_bank_sector": true
+  },
+  "macro_snapshot": {
+    "market_bias": 0.0,
+    "source": "default",
+    "usd_vnd": null,
+    "notes_vi": "P0 placeholder — chưa gắn feed vĩ mô live; bias=0.",
+    "saved_at": "2026-07-23T14:01:05.284116+00:00"
+  },
+  "micro_disk": {
+    "source": "news_disk_cache",
+    "news_count": 5,
+    "events_hint": [
+      "ACB đạt lợi nhuận hơn 10.700 tỷ đồng trong 6 tháng đầu năm 2026, bán lẻ và SME hồi phục tích cực",
+      "Cổ phiếu ngân hàng hồi phục ngoạn mục phiên 16/7: HDB, STB, ACB dẫn đầu tăng giá"
+    ],
+    "news_sample": [
+      {
+        "title": "NHNN đang hoàn thiện những bước cuối cùng để thay thế Thông tư quan trọng bậc nhất ngành ngân hàng: VietinBank, Vietcombank, BIDV, Techcombank, MB, ACB, VIB… nói gì?",
+        "source": "cafef"
+      },
+      {
+        "title": "ACB đạt lợi nhuận hơn 10.700 tỷ đồng trong 6 tháng đầu năm 2026, bán lẻ và SME hồi phục tích cực",
+        "source": "cafef"
+      },
+      {
+        "title": "Chủ tịch ACB Trần Hùng Huy bất ngờ khoe cơ bụng 6 múi, “than thở” 1 điều",
+        "source": "cafef"
+      }
+    ]
+  },
+  "micro_lazy": {
+    "source": "news_disk_cache",
+    "news_count": 5,
+    "events_hint": [
+      "ACB đạt lợi nhuận hơn 10.700 tỷ đồng trong 6 tháng đầu năm 2026, bán lẻ và SME hồi phục tích cực",
+      "Cổ phiếu ngân hàng hồi phục ngoạn mục phiên 16/7: HDB, STB, ACB dẫn đầu tăng giá"
+    ],
+    "news_sample": [
+      {
+        "title": "NHNN đang hoàn thiện những bước cuối cùng để thay thế Thông tư quan trọng bậc nhất ngành ngân hàng: VietinBank, Vietcombank, BIDV, Techcombank, MB, ACB, VIB… nói gì?",
+        "source": "cafef"
+      },
+      {
+        "title": "ACB đạt lợi nhuận hơn 10.700 tỷ đồng trong 6 tháng đầu năm 2026, bán lẻ và SME hồi phục tích cực",
+        "source": "cafef"
+      },
+      {
+        "title": "Chủ tịch ACB Trần Hùng Huy bất ngờ khoe cơ bụng 6 múi, “than thở” 1 điều",
+        "source": "cafef"
+      },
+      {
+        "title": "Cổ phiếu ngân hàng hồi phục ngoạn mục phiên 16/7: HDB, STB, ACB dẫn đầu tăng giá",
+        "source": "cafef"
+      },
+      {
+        "title": "Doanh nghiệp nào có cơ hội tiếp cận ưu đãi lãi suất đến 2% từ ACB?",
+        "source": "cafef"
+      }
+    ]
+  },
+  "catalyst": {
+    "score": 0.6,
+    "caption": "News/Macro Bias **ACB**: `+0.60` (macro_src=default; P0 heuristic)"
+  },
+  "boost_off": {
+    "enabled": false,
+    "unchanged": true,
+    "columns": [
+      "Mã",
+      "Khuyến nghị",
+      "Expected Return %",
+      "MOS%",
+      "Risk % (ước tính)",
+      "Trạng thái",
+      "__rank",
+      "__score"
+    ],
+    "acb_score": 35.299329448330596
+  },
+  "boost_on": {
+    "enabled": true,
+    "acb_bias": 0.6,
+    "acb_score_after": 41.299329448330596,
+    "ranking": [
+      {
+        "Mã": "FPT",
+        "__score": 64.4,
+        "News/Macro Bias": -0.65
+      },
+      {
+        "Mã": "HPG",
+        "__score": 47.300000000000004,
+        "News/Macro Bias": 0.35
+      },
+      {
+        "Mã": "ACB",
+        "__score": 41.299329448330596,
+        "News/Macro Bias": 0.6
+      }
+    ]
+  },
+  "recommendation": {
+    "final_action": "WATCH",
+    "confidence_score": 41.0,
+    "analysis_verdict": null,
+    "whys_steps": [
+      "Hồ sơ nhà đầu tư: Tăng trưởng; tổng vốn giả định 100,000,000 VND.",
+      "Why 1 (xu hướng): Pha thị trường hiện tại là neutral (Chưa xuất hiện tín hiệu tích lũy/bùng nổ/phân phối rõ.).",
+      "Why 2 (dòng tiền): Volume multiple ~0.94.",
+      "Why 3 (nội tại): F-Score=4/9, D/E=None.",
+      "Why 4 (tăng trưởng): Rev YoY=None, Profit YoY=None."
+    ]
+  },
+  "stages": [
+    {
+      "stage": "1_fetch_financial_snapshot",
+      "seconds": 1.796,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "2_value_investing_summary",
+      "seconds": 0.001,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "3_get_macro_snapshot",
+      "seconds": 0.005,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "4_get_micro_bundle_disk_only",
+      "seconds": 0.003,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "5_get_micro_bundle_lazy_network",
+      "seconds": 0.002,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "6_score_catalyst_and_caption",
+      "seconds": 0.006,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "7_apply_boost_OFF",
+      "seconds": 0.005,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "8_apply_boost_ON",
+      "seconds": 0.02,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "9_strategic_report_fast",
+      "seconds": 1.386,
+      "ok": true,
+      "error": ""
+    }
+  ],
+  "total_seconds": 3.224,
+  "all_ok": true,
+  "user_experience_summary_vi": {
+    "ma": "ACB",
+    "ket_luan_dinh_gia": "Theo dõi",
+    "legend": {
+      "graham_pass": true,
+      "buffett_pass": true,
+      "lynch_pass": false
+    },
+    "news_macro_bias": 0.6,
+    "caption": "News/Macro Bias **ACB**: `+0.60` (macro_src=default; P0 heuristic)",
+    "khuyen_nghi_report": "WATCH",
+    "boost_mac_dinh": "OFF — ranking cũ không đổi trừ khi bật II_SCANNER_NEWS_MACRO_BOOST=1",
+    "ghi_chu": "Micro/Macro P0 không chạy trong vòng quét _one_symbol; lazy theo mã + post-rank opt-in."
+  }
+}

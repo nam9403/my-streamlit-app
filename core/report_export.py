@@ -7,6 +7,14 @@ from datetime import datetime, timezone
 from typing import Any
 
 
+def _as_dict(value: Any) -> dict[str, Any]:
+    return value if isinstance(value, dict) else {}
+
+
+def _as_list(value: Any) -> list[Any]:
+    return value if isinstance(value, list) else []
+
+
 def _fmt_num(v: Any, *, digits: int = 0) -> str:
     if v is None:
         return "—"
@@ -31,8 +39,8 @@ def investment_report_markdown(summary: dict[str, Any]) -> str:
         "",
         "## Chỉ số chính",
         "",
-        f"| Chỉ tiêu | Giá trị |",
-        f"| --- | --- |",
+        "| Chỉ tiêu | Giá trị |",
+        "| --- | --- |",
         f"| Giá thị trường ({cur}) | {_fmt_num(summary.get('price'))} |",
         f"| Giá trị Graham | {_fmt_num(summary.get('intrinsic_value_graham'))} |",
         f"| Mục tiêu P/E forward | {_fmt_num(summary.get('target_price_forward_pe'))} |",
@@ -130,11 +138,12 @@ def premium_storytelling_report_markdown(report: dict[str, Any]) -> str:
     """
     Story-style report for premium users (backward-compatible API expected by tests).
     """
-    val = report.get("valuation") if isinstance(report.get("valuation"), dict) else {}
-    fin = report.get("financials") if isinstance(report.get("financials"), dict) else {}
-    phase = report.get("phase") if isinstance(report.get("phase"), dict) else {}
-    rp = report.get("risk_plan") if isinstance(report.get("risk_plan"), dict) else {}
-    news = report.get("news") if isinstance(report.get("news"), list) else []
+    val = _as_dict(report.get("valuation"))
+    fin = _as_dict(report.get("financials"))
+    phase = _as_dict(report.get("phase"))
+    rp = _as_dict(report.get("risk_plan"))
+    news = _as_list(report.get("news"))
+    buy_zone = _as_dict(rp.get("buy_zone"))
 
     sym = str(report.get("ticker") or val.get("symbol") or "")
     name = str(val.get("name") or sym)
@@ -161,10 +170,11 @@ def premium_storytelling_report_markdown(report: dict[str, Any]) -> str:
         "",
         "## Kế hoạch hành động",
         f"- Pha kỹ thuật: {phase.get('phase', 'neutral')} ({phase.get('reason', '')}).",
-        f"- Vùng mua: {rp.get('buy_zone', {}).get('low', '—')} - {rp.get('buy_zone', {}).get('high', '—')}.",
+        f"- Vùng mua: {buy_zone.get('low', '—')} - {buy_zone.get('high', '—')}.",
         f"- Chốt lời / Cắt lỗ: {rp.get('take_profit_price', '—')} / {rp.get('stop_loss_price', '—')}.",
     ]
     if news:
-        lines.extend(["", "## Điểm tin gần nhất", f"- {news[0].get('title', '')}"])
+        first_news = _as_dict(news[0])
+        lines.extend(["", "## Điểm tin gần nhất", f"- {first_news.get('title', '')}"])
     lines.extend(["", "_Tài liệu tham khảo, không phải khuyến nghị đầu tư bắt buộc._"])
     return "\n".join(lines)

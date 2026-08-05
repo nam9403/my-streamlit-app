@@ -1,0 +1,9 @@
+{
+  "generated_at_utc": "2026-05-04T15:02:00+00:00",
+  "metrics": {
+    "list_tradable_cold_ms": 3.151,
+    "list_tradable_warm_ms": 0.044,
+    "perf_benchmark_elapsed_sec": 2.527,
+    "strategic_report_no_llm_sec": 0.065
+  }
+}

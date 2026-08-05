@@ -1,0 +1,139 @@
+{
+  "generated_at_utc": "2026-05-02T04:54:47.057156+00:00",
+  "source": "E:/Du an 1/data/reports/logs/timing_metrics.jsonl",
+  "total_events": 82,
+  "min_samples": 1,
+  "window_hours": 2.0,
+  "required_min_samples": 30,
+  "required_flows": [
+    "product_layer.get_admin_kpi",
+    "product_layer.process_notification_queue",
+    "product_layer.get_notification_queue_diagnostics",
+    "product_layer.retry_failed_notifications",
+    "product_layer.get_kpi_dashboard"
+  ],
+  "required_coverage": {
+    "required_flows": [
+      {
+        "metric": "product_layer.get_admin_kpi",
+        "samples": 22,
+        "required_min_samples": 30,
+        "meets_sample_target": false
+      },
+      {
+        "metric": "product_layer.process_notification_queue",
+        "samples": 8,
+        "required_min_samples": 30,
+        "meets_sample_target": false
+      },
+      {
+        "metric": "product_layer.get_notification_queue_diagnostics",
+        "samples": 2,
+        "required_min_samples": 30,
+        "meets_sample_target": false
+      },
+      {
+        "metric": "product_layer.retry_failed_notifications",
+        "samples": 2,
+        "required_min_samples": 30,
+        "meets_sample_target": false
+      },
+      {
+        "metric": "product_layer.get_kpi_dashboard",
+        "samples": 34,
+        "required_min_samples": 30,
+        "meets_sample_target": true
+      }
+    ],
+    "required_flow_count": 5,
+    "covered_flow_count": 1,
+    "coverage_ratio": 0.2,
+    "all_required_flows_covered": false
+  },
+  "summary": [
+    {
+      "metric": "scanner.scan_potential_stocks",
+      "samples": 8,
+      "min_ms": 3.9,
+      "p50_ms": 13.35,
+      "p90_ms": 1079.89,
+      "p95_ms": 1215.54,
+      "p99_ms": 1324.06,
+      "avg_ms": 300.62,
+      "std_ms": 504.23,
+      "max_ms": 1351.19
+    },
+    {
+      "metric": "product_layer.get_admin_kpi",
+      "samples": 22,
+      "min_ms": 3.0,
+      "p50_ms": 9.01,
+      "p90_ms": 13.01,
+      "p95_ms": 14.43,
+      "p99_ms": 70.62,
+      "avg_ms": 11.73,
+      "std_ms": 16.5,
+      "max_ms": 85.53
+    },
+    {
+      "metric": "product_layer.process_notification_queue",
+      "samples": 8,
+      "min_ms": 10.01,
+      "p50_ms": 12.01,
+      "p90_ms": 14.01,
+      "p95_ms": 14.01,
+      "p99_ms": 14.01,
+      "avg_ms": 12.2,
+      "std_ms": 1.32,
+      "max_ms": 14.01
+    },
+    {
+      "metric": "scanner.load_autopilot_board",
+      "samples": 6,
+      "min_ms": 1.44,
+      "p50_ms": 7.32,
+      "p90_ms": 12.21,
+      "p95_ms": 12.56,
+      "p99_ms": 12.83,
+      "avg_ms": 7.24,
+      "std_ms": 4.34,
+      "max_ms": 12.9
+    },
+    {
+      "metric": "product_layer.get_kpi_dashboard",
+      "samples": 34,
+      "min_ms": 1.0,
+      "p50_ms": 2.0,
+      "p90_ms": 7.21,
+      "p95_ms": 12.36,
+      "p99_ms": 13.68,
+      "avg_ms": 2.96,
+      "std_ms": 3.43,
+      "max_ms": 14.01
+    },
+    {
+      "metric": "product_layer.get_notification_queue_diagnostics",
+      "samples": 2,
+      "min_ms": 11.01,
+      "p50_ms": 11.01,
+      "p90_ms": 11.01,
+      "p95_ms": 11.01,
+      "p99_ms": 11.01,
+      "avg_ms": 11.01,
+      "std_ms": 0.0,
+      "max_ms": 11.01
+    },
+    {
+      "metric": "product_layer.retry_failed_notifications",
+      "samples": 2,
+      "min_ms": 1.0,
+      "p50_ms": 1.5,
+      "p90_ms": 1.9,
+      "p95_ms": 1.95,
+      "p99_ms": 1.99,
+      "avg_ms": 1.5,
+      "std_ms": 0.5,
+      "max_ms": 2.0
+    }
+  ]
+}

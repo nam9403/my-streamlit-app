@@ -1,0 +1,35 @@
+{
+  "updated_at_utc": "2026-08-02T14:04:59.364620+00:00",
+  "window_days": 30,
+  "onboarding_funnel": {
+    "autopilot_seen": 0,
+    "deep_analysis": 0,
+    "onboarding_complete": 0,
+    "upgrade_intent": 0,
+    "upgrade_success": 0,
+    "waitlist_join": 0,
+    "referral_signup": 2,
+    "rate_deep_given_autopilot_pct": null,
+    "rate_complete_given_deep_pct": null,
+    "rate_intent_given_complete_pct": null,
+    "rate_pay_given_intent_pct": null,
+    "rate_pay_given_complete_pct": null
+  },
+  "pilot": {
+    "status": "BUILDING",
+    "active_users_30d": 2,
+    "upgrade_success_30d": 0,
+    "pay_pct": 0.0,
+    "waitlist_joins": 0,
+    "target_mau": 50,
+    "target_pay_pct": 10.0,
+    "mau_ok": false,
+    "pay_ok": false,
+    "waitlist_ok": false,
+    "paper_closed_40d": 0,
+    "paper_note": "paper edge live chưa đủ mẫu",
+    "note_vi": "MAU=2/50 — tiếp tục acquisition + onboarding."
+  },
+  "admin_users_total": 4,
+  "admin_active_users_period": 2
+}

@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ii-postgres
+    environment:
+      POSTGRES_USER: ii_user
+      POSTGRES_PASSWORD: ii_pass
+      POSTGRES_DB: ii_app
+    ports:
+      - "5432:5432"
+    volumes:
+      - ii_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ii_user -d ii_app"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  ii_postgres_data:
+

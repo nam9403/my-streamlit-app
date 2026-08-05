@@ -1,0 +1,141 @@
+{
+  "ran_at": "2026-07-28T13:20:15.527016+00:00",
+  "results": {
+    "ACB": {
+      "symbol": "ACB",
+      "seconds": 27.34,
+      "price": 22400.0,
+      "industry": "Ngân hàng",
+      "is_bank": true,
+      "instant_conclusion": "Mua mạnh",
+      "mos_pct": 53.21410881938512,
+      "fscore": 4,
+      "pe": 6.875383670963782,
+      "roe": 16.9467,
+      "rev_yoy": 26.764073428175006,
+      "profit_yoy": 17.457193144813342,
+      "cfo": 11905177000000.0,
+      "phase": "neutral",
+      "phase_reason": "Chưa xuất hiện tín hiệu tích lũy/bùng nổ/phân phối rõ.",
+      "final_action": "HOLD",
+      "display_action": "HOLD",
+      "analysis_verdict": "CAUTION",
+      "decision_readiness": "MEDIUM",
+      "confidence_score": 76.0,
+      "gate_passed": true,
+      "missing_items": [],
+      "alignment": "aligned",
+      "alignment_note": "Định giá Legend và khuyến nghị hành động cùng hướng.",
+      "trade_plan_active": true,
+      "data_trust_score": 77.0,
+      "data_trust_band": "MEDIUM",
+      "data_trust_notes": [
+        "Financial indicators stale hoặc cũ.",
+        "Thiếu D/E."
+      ],
+      "price_crosscheck": null,
+      "proprietary_signal": {
+        "blend_score": 52.4,
+        "blend_band": "MEDIUM",
+        "wf_pct": 42.57,
+        "flow": 55.2,
+        "valuation": 95.86,
+        "phase_score": 52.0
+      },
+      "smart_money": {
+        "bias": "neutral",
+        "score": 0.0,
+        "label": "Chưa đủ dữ liệu smart money",
+        "signals_n": 0,
+        "sample": []
+      },
+      "earnings_quality": {
+        "label": "Ổn",
+        "warning": false,
+        "severity": "low"
+      },
+      "forecast_90d": {
+        "expected_return_pct": 21.6,
+        "expected_price": 27238.4,
+        "summary": "Dự phóng 90 ngày: expected return 21.60% (bull 30% / base 45% / bear 25%). Monte Carlo range P10/P50/P90: 6,429/16,251/40,923 VND | P(đạt target)=6.7%."
+      },
+      "opportunity_3m": {
+        "score": 72.0,
+        "expected_return_3m_pct": 1.49,
+        "technical_score": 40.0,
+        "risks": "Động lượng 3 tháng âm. ; F-Score thấp, nền tảng tài chính chưa mạnh."
+      },
+      "fin_source": "fireant_finance_api:disk_cache:fastpath+cfo_backfill",
+      "ohlcv_source": "ohlcv_store_fastpath",
+      "news_count": 8
+    },
+    "QTP": {
+      "symbol": "QTP",
+      "seconds": 7.24,
+      "price": 11000.0,
+      "industry": "Điện — Nhiệt điện",
+      "is_bank": false,
+      "instant_conclusion": "Theo dõi",
+      "mos_pct": 61.011440171477936,
+      "fscore": 5,
+      "pe": 4.083147735708983,
+      "roe": 20.5148,
+      "rev_yoy": -6.122425481941677,
+      "profit_yoy": 14.250251407130632,
+      "cfo": 2410108006854.0,
+      "phase": "accumulation",
+      "phase_reason": "Giá đi ngang biên hẹp (<5%) và thanh khoản thấp hơn trung bình.",
+      "final_action": "HOLD",
+      "display_action": "HOLD",
+      "analysis_verdict": "CAUTION",
+      "decision_readiness": "HIGH",
+      "confidence_score": 86.0,
+      "gate_passed": true,
+      "missing_items": [],
+      "alignment": "soft_divergence",
+      "alignment_note": "Legend=Theo dõi; action=HOLD; pha=accumulation.",
+      "trade_plan_active": true,
+      "data_trust_score": 67.0,
+      "data_trust_band": "MEDIUM",
+      "data_trust_notes": [
+        "P/E tính lại=4.08 rất thấp (EPS/giá=24.5%) — nghi EPS lệch đơn vị/scale; không tin MOS chỉ dựa P/E này.",
+        "Financial indicators stale hoặc cũ."
+      ],
+      "price_crosscheck": null,
+      "proprietary_signal": {
+        "blend_score": 57.29,
+        "blend_band": "MEDIUM",
+        "wf_pct": 41.47,
+        "flow": 52.2,
+        "valuation": 100.0,
+        "phase_score": 78.0
+      },
+      "smart_money": {
+        "bias": "neutral",
+        "score": 0.0,
+        "label": "Chưa đủ dữ liệu smart money",
+        "signals_n": 0,
+        "sample": []
+      },
+      "earnings_quality": {
+        "label": "Ổn",
+        "warning": false,
+        "severity": "low"
+      },
+      "forecast_90d": {
+        "expected_return_pct": 16.06,
+        "expected_price": 12766.47,
+        "summary": "Dự phóng 90 ngày: expected return 16.06% (bull 28% / base 45% / bear 27%). Monte Carlo range P10/P50/P90: 8,074/9,629/11,477 VND | P(đạt target)=0.0%."
+      },
+      "opportunity_3m": {
+        "score": 58.0,
+        "expected_return_3m_pct": -1.78,
+        "technical_score": 20.0,
+        "risks": "Giá dưới MA20, xung lực ngắn hạn còn yếu. ; Động lượng 3 tháng âm. ; Doanh thu suy giảm YoY."
+      },
+      "fin_source": "fireant_finance_api:disk_cache:fastpath+cfo_backfill",
+      "ohlcv_source": "ohlcv_store_fastpath",
+      "news_count": 8
+    }
+  }
+}

@@ -4,9 +4,14 @@ Checklist tối thiểu trước khi đưa bản mới ra production.
 
 ## 1) Pre-release (T-1 đến T-0)
 
+- [ ] Chạy bộ kiểm tra RC 1 lệnh (khuyến nghị): `powershell -ExecutionPolicy Bypass -File "scripts/pre_release_rc.ps1"`
+- [ ] Nếu cần nhanh hơn (bỏ pytest cuối): `powershell -ExecutionPolicy Bypass -File "scripts/pre_release_rc.ps1" -SkipPytest`
 - [ ] Bump version nếu cần (`python scripts/bump_version.py patch|minor|major`).
 - [ ] Hoặc chạy trọn bộ không cần thủ công: `python scripts/release_all_in_one.py --bump patch`.
 - [ ] Chạy preflight môi trường: `python scripts/preflight_check.py`.
+- [ ] DSS commercial gate pass: `python scripts/dss_release_gate.py --symbol FPT --user-id default_user --strict`.
+- [ ] Sync smart-money structured events: `python scripts/smart_money_event_sync.py --symbols FPT,VNM,HPG,VCB`.
+- [ ] Live-data stability pass (7-14 phiên): `python scripts/live_data_stability_benchmark.py --window-days 14 --min-sessions 7 --require-go`.
 - [ ] Xác nhận không còn secret hardcode trong source/script.
 - [ ] Rotate API keys nếu có thay đổi nhân sự hoặc nghi ngờ rò rỉ.
 - [ ] Cập nhật `.env`/secret manager cho môi trường deploy.

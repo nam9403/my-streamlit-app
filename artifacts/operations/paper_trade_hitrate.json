@@ -1,0 +1,13 @@
+{
+  "resolve": {
+    "resolved": 0,
+    "failed": 0,
+    "still_open": 0
+  },
+  "hitrate": {
+    "samples": 0,
+    "hit_rate_pct": null,
+    "avg_realized_pct": null,
+    "open_count": 0
+  }
+}

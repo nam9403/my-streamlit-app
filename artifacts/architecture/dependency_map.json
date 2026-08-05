@@ -1,0 +1,247 @@
+{
+  "generated_at_utc": "2026-05-11T14:55:22.226201+00:00",
+  "module_count": 19,
+  "total_import_edges": 146,
+  "modules": {
+    "app.py": {
+      "import_count": 56,
+      "imports": [
+        "__future__",
+        "core.action_center_panel",
+        "core.admin_growth_panel",
+        "core.ai_logic",
+        "core.analysis_ai_panel",
+        "core.analysis_chart_panel",
+        "core.analysis_financial_panel",
+        "core.analysis_forecast_panel",
+        "core.analysis_forecast_service",
+        "core.analysis_helper_service",
+        "core.analysis_outlook_panel",
+        "core.analysis_runtime_service",
+        "core.analysis_summary_panel",
+        "core.analysis_view_panel",
+        "core.app_analysis_dashboard_panel",
+        "core.app_analysis_orchestration",
+        "core.app_analysis_tab_primary",
+        "core.app_analysis_tabs_secondary",
+        "core.app_auth_gate",
+        "core.app_autopilot_panel",
+        "core.app_bootstrap",
+        "core.app_daily_action_panel",
+        "core.app_finder_panel",
+        "core.app_reminder_panel",
+        "core.app_scan_flow",
+        "core.app_sidebar_account_panel",
+        "core.app_sidebar_runtime_panel",
+        "core.app_ui_config",
+        "core.app_watch_board_panel",
+        "core.background_jobs",
+        "core.decision_trade_panel",
+        "core.engagement_panel",
+        "core.experience_panel",
+        "core.forecast_accountability_panel",
+        "core.notification_settings_panel",
+        "core.opportunity_3m_service",
+        "core.opportunity_filter_panel",
+        "core.ops_tail_panel",
+        "core.portfolio_alert_panel",
+        "core.portfolio_kpi_panel",
+        "core.portfolio_overview_panel",
+        "core.product_layer",
+        "core.report_export",
+        "core.scanner_service",
+        "core.strategy_backtest",
+        "core.valuation",
+        "core.warm_flow",
+        "core.watchlist_controls_panel",
+        "os",
+        "pathlib",
+        "scrapers.financial_data",
+        "scrapers.portal",
+        "scrapers.vn_listing",
+        "streamlit",
+        "sys",
+        "time"
+      ]
+    },
+    "core/app_account_helpers.py": {
+      "import_count": 1,
+      "imports": [
+        "__future__"
+      ]
+    },
+    "core/app_analysis_dashboard_panel.py": {
+      "import_count": 3,
+      "imports": [
+        "__future__",
+        "streamlit",
+        "typing"
+      ]
+    },
+    "core/app_analysis_orchestration.py": {
+      "import_count": 8,
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "core.ai_logic",
+        "pandas",
+        "scrapers.portal",
+        "streamlit",
+        "time",
+        "typing"
+      ]
+    },
+    "core/app_analysis_tab_primary.py": {
+      "import_count": 6,
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "datetime",
+        "pandas",
+        "streamlit",
+        "typing"
+      ]
+    },
+    "core/app_analysis_tabs_secondary.py": {
+      "import_count": 4,
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "streamlit",
+        "typing"
+      ]
+    },
+    "core/app_auth_gate.py": {
+      "import_count": 4,
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "core.app_account_helpers",
+        "streamlit"
+      ]
+    },
+    "core/app_autopilot_panel.py": {
+      "import_count": 7,
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "datetime",
+        "pandas",
+        "streamlit",
+        "time",
+        "typing"
+      ]
+    },
+    "core/app_bootstrap.py": {
+      "import_count": 6,
+      "imports": [
+        "__future__",
+        "app_constants",
+        "core.observability",
+        "core.ui_styles",
+        "logging",
+        "streamlit"
+      ]
+    },
+    "core/app_daily_action_panel.py": {
+      "import_count": 5,
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "pandas",
+        "streamlit",
+        "typing"
+      ]
+    },
+    "core/app_finder_panel.py": {
+      "import_count": 8,
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "datetime",
+        "hashlib",
+        "json",
+        "pandas",
+        "streamlit",
+        "typing"
+      ]
+    },
+    "core/app_onboarding_helpers.py": {
+      "import_count": 1,
+      "imports": [
+        "__future__"
+      ]
+    },
+    "core/app_reminder_panel.py": {
+      "import_count": 4,
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "streamlit",
+        "typing"
+      ]
+    },
+    "core/app_scan_flow.py": {
+      "import_count": 9,
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "core.universe_rotation",
+        "datetime",
+        "os",
+        "pandas",
+        "streamlit",
+        "time",
+        "typing"
+      ]
+    },
+    "core/app_sidebar_account_panel.py": {
+      "import_count": 9,
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "core.app_account_helpers",
+        "core.app_onboarding_helpers",
+        "core.app_view_helpers",
+        "dataclasses",
+        "streamlit",
+        "time",
+        "typing"
+      ]
+    },
+    "core/app_sidebar_runtime_panel.py": {
+      "import_count": 5,
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "dataclasses",
+        "streamlit",
+        "typing"
+      ]
+    },
+    "core/app_ui_config.py": {
+      "import_count": 0,
+      "imports": []
+    },
+    "core/app_view_helpers.py": {
+      "import_count": 4,
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "scrapers.vn_listing",
+        "typing"
+      ]
+    },
+    "core/app_watch_board_panel.py": {
+      "import_count": 6,
+      "imports": [
+        "__future__",
+        "collections.abc",
+        "core.app_view_helpers",
+        "pandas",
+        "streamlit",
+        "typing"
+      ]
+    }
+  }
+}

@@ -17,6 +17,11 @@ _CACHE_PATH = _ROOT / "data" / "snapshot_disk_cache.json"
 _LOCK = threading.Lock()
 _VERSION = 1
 
+# Giảm đọc JSON lặp (nhiều mã / multi-panel): giữ bản parse theo mtime + đường dẫn file.
+_RAW_MEM: dict[str, Any] | None = None
+_RAW_MEM_MTIME: float = -2.0
+_RAW_CACHE_KEY: str | None = None
+
 
 def cache_ttl_seconds() -> float:
     try:
@@ -42,24 +47,58 @@ def _parse_iso(ts: str | None) -> datetime | None:
         return None
 
 
+def _disk_cache_key() -> str:
+    return str(_CACHE_PATH.resolve())
+
+
 def _load_raw() -> dict[str, Any]:
+    global _RAW_MEM, _RAW_MEM_MTIME, _RAW_CACHE_KEY
+    ck = _disk_cache_key()
+    if _RAW_CACHE_KEY != ck:
+        _RAW_MEM = None
+        _RAW_MEM_MTIME = -2.0
+        _RAW_CACHE_KEY = ck
+    try:
+        mt = float(_CACHE_PATH.stat().st_mtime) if _CACHE_PATH.exists() else -1.0
+    except OSError:
+        mt = -1.0
+    if _RAW_MEM is not None and _RAW_MEM_MTIME == mt:
+        return _RAW_MEM
     if not _CACHE_PATH.exists():
-        return {"version": _VERSION, "symbols": {}}
+        payload: dict[str, Any] = {"version": _VERSION, "symbols": {}}
+        _RAW_MEM = payload
+        _RAW_MEM_MTIME = -1.0
+        return payload
     try:
         with open(_CACHE_PATH, encoding="utf-8") as f:
             data = json.load(f)
-        return data if isinstance(data, dict) else {"version": _VERSION, "symbols": {}}
+        payload = data if isinstance(data, dict) else {"version": _VERSION, "symbols": {}}
     except (OSError, json.JSONDecodeError):
-        return {"version": _VERSION, "symbols": {}}
+        payload = {"version": _VERSION, "symbols": {}}
+    try:
+        mt = float(_CACHE_PATH.stat().st_mtime) if _CACHE_PATH.exists() else -1.0
+    except OSError:
+        mt = -1.0
+    _RAW_MEM = payload
+    _RAW_MEM_MTIME = mt
+    return payload
 
 
 def _atomic_write(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_suffix(".tmp")
+    # Use per-process/thread temp file to avoid cross-process collisions on Windows.
+    tmp = path.with_name(f"{path.stem}.{os.getpid()}.{threading.get_ident()}.tmp")
     raw = json.dumps(payload, ensure_ascii=False, default=str, indent=2)
     with open(tmp, "w", encoding="utf-8") as f:
         f.write(raw)
-    tmp.replace(path)
+    try:
+        tmp.replace(path)
+    finally:
+        try:
+            if tmp.exists():
+                tmp.unlink()
+        except OSError:
+            pass
 
 
 def get_disk_snapshot_any_age(symbol: str) -> dict[str, Any] | None:
@@ -146,6 +185,13 @@ def put_snapshot(symbol: str, snapshot: dict[str, Any]) -> None:
             data["symbols"] = {}
         data["symbols"][sym] = {"snapshot": clean, "cached_at": now}
         _atomic_write(_CACHE_PATH, data)
+        global _RAW_MEM, _RAW_MEM_MTIME
+        try:
+            mt = float(_CACHE_PATH.stat().st_mtime)
+        except OSError:
+            mt = -1.0
+        _RAW_MEM = data
+        _RAW_MEM_MTIME = mt
 
 
 def get_disk_cache_cached_at(symbol: str) -> str | None:
@@ -166,7 +212,8 @@ def cache_meta_summary() -> dict[str, Any]:
     """Thông tin nhanh cho UI (đếm mã, thời điểm cập nhật gần nhất)."""
     with _LOCK:
         data = _load_raw()
-    syms = data.get("symbols") if isinstance(data.get("symbols"), dict) else {}
+    syms_raw = data.get("symbols")
+    syms: dict[str, Any] = syms_raw if isinstance(syms_raw, dict) else {}
     latest: str | None = None
     for b in syms.values():
         if isinstance(b, dict) and b.get("cached_at"):
@@ -190,3 +237,6 @@ def clear_cache() -> None:
                 _CACHE_PATH.unlink()
             except OSError:
                 pass
+        global _RAW_MEM, _RAW_MEM_MTIME
+        _RAW_MEM = None
+        _RAW_MEM_MTIME = -2.0

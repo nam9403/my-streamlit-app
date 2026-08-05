@@ -12,6 +12,10 @@ from statistics import median
 from typing import Any
 
 
+def _as_dict(value: Any) -> dict[str, Any]:
+    return value if isinstance(value, dict) else {}
+
+
 def _clip_g(g: float) -> float:
     return max(0.0, min(float(g), 45.0))
 
@@ -119,7 +123,7 @@ VALUATION_DISCLAIMER_VI = (
 
 
 def _simple_ocf_dcf_per_share(snapshot: dict[str, Any], base_val: dict[str, Any]) -> dict[str, Any]:
-    pio = snapshot.get("piotroski") if isinstance(snapshot.get("piotroski"), dict) else {}
+    pio = _as_dict(snapshot.get("piotroski"))
     ocf = float(pio.get("operating_cash_flow") or 0)
     sh = float(pio.get("shares_outstanding") or 0)
     capex_ratio = _env_float("II_DCF_CAPEX_RATIO", "0.25")
@@ -163,9 +167,13 @@ def _peer_relative_analysis(snapshot: dict[str, Any], base_val: dict[str, Any]) 
         return {"ok": False, "rows": [], "reason_vi": "Thiếu mã"}
 
     try:
-        from scrapers.financial_data import peer_symbols_same_cluster, snapshot_for_peer_compare
+        from scrapers import financial_data as fd
     except ImportError:
         return {"ok": False, "rows": [], "reason_vi": "Không import được financial_data"}
+    peer_symbols_same_cluster = getattr(fd, "peer_symbols_same_cluster", None)
+    snapshot_for_peer_compare = getattr(fd, "snapshot_for_peer_compare", None)
+    if not callable(peer_symbols_same_cluster) or not callable(snapshot_for_peer_compare):
+        return {"ok": False, "rows": [], "reason_vi": "Thiếu API peer compare trong financial_data"}
 
     peers = peer_symbols_same_cluster(sym, limit=int(os.environ.get("II_PEER_LIMIT", "7")))
     pr = float(base_val.get("price") or 0)
@@ -251,13 +259,13 @@ def _excellence_score(
         score += 0.15
         reasons.append("EPS cho Graham từ TTM")
 
-    br = snapshot.get("bctc_readiness") if isinstance(snapshot.get("bctc_readiness"), dict) else {}
+    br = _as_dict(snapshot.get("bctc_readiness"))
     tier = str(br.get("tier") or "")
     if tier in ("A", "B"):
         score += 0.45
         reasons.append(f"BCTC readiness tier {tier}")
 
-    fr = snapshot.get("financial_report_fetch") if isinstance(snapshot.get("financial_report_fetch"), dict) else {}
+    fr = _as_dict(snapshot.get("financial_report_fetch"))
     if fr.get("ok"):
         score += 0.3
         reasons.append("Chuỗi BCTC API tải được")

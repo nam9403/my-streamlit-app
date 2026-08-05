@@ -1,0 +1,218 @@
+{
+  "ran_at": "2026-07-24T13:18:57.261271+00:00",
+  "ticker": "FPT",
+  "stages": [
+    {
+      "stage": "snapshot",
+      "seconds": 0.101,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "financial_indicators",
+      "seconds": 0.004,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "valuation",
+      "seconds": 0.028,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "ohlcv",
+      "seconds": 0.093,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "news",
+      "seconds": 0.992,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "macro",
+      "seconds": 0.001,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "micro",
+      "seconds": 0.027,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "catalyst",
+      "seconds": 0.017,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "stage": "strategic_report",
+      "seconds": 0.153,
+      "ok": true,
+      "error": ""
+    }
+  ],
+  "total_seconds": 1.416,
+  "snapshot": {
+    "price": 64600.0,
+    "eps": 6010.0,
+    "pe_ratio": 10.78,
+    "pb_ratio": 2.75,
+    "roe": 25.5169,
+    "debt_to_equity": 0.7094370238394878,
+    "current_ratio": 1.616112524374696,
+    "growth_rate_pct": -16.09,
+    "source": "vietstock:swr",
+    "fundamentals_merge_notes": [
+      "Tăng trưởng từ YoY (fireant_finance_api:disk_cache:fastpath)"
+    ],
+    "net_income_source": null
+  },
+  "financials_source": "fireant_finance_api:disk_cache:fastpath",
+  "financials_core": {
+    "roe": null,
+    "debt_to_equity": 0.7094370238394878,
+    "current_ratio": 1.616112524374696,
+    "net_income": 2476789833481.0,
+    "operating_cash_flow": null,
+    "revenue_growth_yoy": -22.282428261816293,
+    "profit_growth_yoy": -4.57580491778825,
+    "data_quality_score": 6
+  },
+  "valuation": {
+    "instant_conclusion": "Bỏ qua",
+    "piotroski_score": 3,
+    "mos_pct": -14.467159751269849,
+    "target": 56435.40045928619,
+    "legend_scorecard": {
+      "graham_pass": false,
+      "buffett_pass": false,
+      "lynch_pass": false
+    },
+    "legend_data_ready": {
+      "has_graham_inputs": true,
+      "de_available": true,
+      "cr_available": true,
+      "roe_available": true
+    },
+    "industry_subtype_label_vi": "Công nghệ dịch vụ",
+    "industry_display_vi": "Công nghệ và thông tin",
+    "value_trap_warning": "Đòn bẩy cao hoặc thanh khoản yếu (D/E > 0.5 hoặc CR < 1.5) là rủi ro lớn nhất.",
+    "is_bank_sector": false
+  },
+  "ohlcv_rows": 80,
+  "news_count": 8,
+  "news_sample": [
+    {
+      "title": "Nóng: Khởi tố 1 Phó quản lý FPT Shop",
+      "source": "cafef"
+    },
+    {
+      "title": "Bắt quản lý cửa hàng FPT Shop Nguyễn Phúc Linh SN 1993",
+      "source": "cafef"
+    },
+    {
+      "title": "Siêu dự án công viên công nghệ 2 tỷ USD của Tập đoàn FPT tại “làng hoa” có diễn biến mới",
+      "source": "cafef"
+    },
+    {
+      "title": "Một “cá mập” chứng khoán tạm lỗ hơn 400 tỷ đồng vì FPT, KDH và MWG",
+      "source": "cafef"
+    }
+  ],
+  "macro": {
+    "source": "policy_env+open_er_api",
+    "market_bias": 0.0,
+    "usd_vnd": 26250.538817,
+    "policy_rate_pct": 4.5,
+    "cpi_yoy_pct": null,
+    "notes_vi": "Macro blend: USD/VND (optional) + policy/CPI env + VNINDEX disk proxy; fail-soft."
+  },
+  "catalyst": {
+    "score": -0.649997266705045,
+    "caption": "News/Macro Bias **FPT**: `-0.65` (macro_src=policy_env+open_er_api; P0 heuristic)"
+  },
+  "earnings_quality": {
+    "label": "Ổn",
+    "severity": "low",
+    "warning": false,
+    "net_income": 2476789833481.0,
+    "operating_cash_flow": null,
+    "notes": []
+  },
+  "smart_money": {
+    "bias": "bearish",
+    "score": -25.62,
+    "label": "Smart money nghiêng bán",
+    "data_mode": "structured"
+  },
+  "recommendation": {
+    "final_action": "WATCH",
+    "confidence_score": 69.0,
+    "analysis_verdict": "CAUTION",
+    "decision_readiness": "MEDIUM",
+    "decision_alignment": {
+      "legend_view": "Bỏ qua",
+      "action_view": "WATCH",
+      "unified_action": "WATCH",
+      "alignment": "soft_divergence",
+      "note_vi": "Legend=Bỏ qua; action=WATCH; pha=distribution."
+    },
+    "whys": [
+      "Hồ sơ nhà đầu tư: Tăng trưởng; tổng vốn giả định 100,000,000 VND.",
+      "Why 1 (xu hướng): Pha thị trường hiện tại là distribution (Giá giảm kèm khối lượng lớn, tín hiệu suy yếu/phân phối.).",
+      "Why 2 (dòng tiền): Volume multiple ~1.81.",
+      "Why 3 (nội tại): F-Score=3/9, D/E=0.7094370238394878.",
+      "Why 4 (tăng trưởng): Rev YoY=-22.282428261816293, Profit YoY=-4.57580491778825.",
+      "Why 5 (định giá ngành): Hybrid Legend: Graham Trượt, Buffett Trượt, Lynch Trượt · PEG=0.00 (Không xác định) · Ngành: Công nghệ và thông tin."
+    ]
+  },
+  "dss": {
+    "decision": "COMMERCIAL_READY",
+    "commercial_score": 85.0,
+    "missing_items": [
+      "backtesting_sample_sufficient"
+    ],
+    "backtesting_source": "engine_action_backtest_fallback",
+    "summary_vi": "DSS commercial score=85.00. Trạng thái=COMMERCIAL_READY. Đã sẵn sàng thương mại hóa."
+  },
+  "data_gaps": {
+    "missing_fields": [
+      "operating_cash_flow",
+      "macro_cpi"
+    ],
+    "core_completeness_pct": 91.7,
+    "fields_snapshot": {
+      "price": 64600.0,
+      "eps": 6010.0,
+      "pe_ratio": 10.78,
+      "pb_ratio": 2.75,
+      "roe": 25.5169,
+      "debt_to_equity": 0.7094370238394878,
+      "current_ratio": 1.616112524374696,
+      "growth_rate_pct": -16.09,
+      "revenue_growth_yoy": -22.282428261816293,
+      "profit_growth_yoy": -4.57580491778825,
+      "net_income": 2476789833481.0,
+      "operating_cash_flow": null,
+      "industry": "Công nghệ và thông tin",
+      "ohlcv_rows": 80,
+      "news_count": 8,
+      "macro_usd_vnd": 26250.538817,
+      "macro_policy_rate": 4.5,
+      "macro_cpi": null,
+      "catalyst_score": -0.649997266705045,
+      "f_score": 3,
+      "smart_money_mode": "structured"
+    }
+  },
+  "system_maturity": {
+    "score_pct": 91.7,
+    "verdict_vi": "Gần hoàn thiện cho quyết định thận trọng"
+  }
+}

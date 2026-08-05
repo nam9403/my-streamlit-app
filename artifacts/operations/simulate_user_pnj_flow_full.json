@@ -1,0 +1,85 @@
+{
+  "ran_at": "2026-07-28T14:18:38.100235+00:00",
+  "mode": "full",
+  "seconds": 1.36,
+  "price": 32650.0,
+  "industry": "Bán lẻ trang sức — Tiêu dùng",
+  "instant_conclusion": "Bỏ qua",
+  "value_trap_warning": "Đòn bẩy cao hoặc thanh khoản yếu (D/E > 0.5 hoặc CR < 1.5) là rủi ro lớn nhất. P/E tính lại=3.06 rất thấp (EPS/giá=32.7%) — nghi EPS lệch đơn vị/scale; không tin MOS chỉ dựa P/E này.",
+  "pe_sanity_notes": [
+    "P/E tính lại=3.06 rất thấp (EPS/giá=32.7%) — nghi EPS lệch đơn vị/scale; không tin MOS chỉ dựa P/E này."
+  ],
+  "mos_pct": 67.57805592794497,
+  "pe": 3.0579750866348223,
+  "fscore": 2,
+  "roe": 28.6774,
+  "rev_yoy": null,
+  "profit_yoy": null,
+  "cfo": -302139905578.0,
+  "debt_to_equity": 0.7190305292,
+  "phase": "distribution",
+  "phase_reason": "Giá giảm kèm khối lượng lớn, tín hiệu suy yếu/phân phối.",
+  "rsi_anomaly": 1.0,
+  "final_action": "WATCH",
+  "display_action": "WATCH",
+  "analysis_verdict": "NO-GO",
+  "decision_readiness": "LOW",
+  "confidence_score": 60.0,
+  "gate_passed": false,
+  "missing_items": [],
+  "alignment": "soft_divergence",
+  "alignment_note": "Legend=Bỏ qua; action=WATCH; pha=distribution.",
+  "trade_plan_active": false,
+  "data_trust_score": 80.0,
+  "data_trust_band": "HIGH",
+  "data_trust_notes": [
+    "P/E tính lại=3.06 rất thấp (EPS/giá=32.7%) — nghi EPS lệch đơn vị/scale; không tin MOS chỉ dựa P/E này.",
+    "Thiếu Rev YoY."
+  ],
+  "proprietary_signal": {
+    "blend_score": 38.87,
+    "blend_band": "LOW",
+    "wf_pct": null,
+    "flow": null,
+    "valuation": null,
+    "phase_score": 22.0
+  },
+  "news_macro": {
+    "catalyst_score": -0.15,
+    "story_score": -0.03,
+    "caption": "News/Macro Bias **PNJ**: `-0.15` (macro_src=policy_env; P0 heuristic)",
+    "news_count": 8,
+    "news_sample": [
+      "Nóng: PNJ đã mua lại hơn 7.000 tỷ đồng hàng hoá từ khách trong 27 ngày giữa lúc nhu cầu bán lại kim cương tăng đột biến",
+      "Xuất hiện người mua PNJ tạm lỗ ngay 7% trong ngày đầu tiên",
+      "Giá vàng miếng, vàng nhẫn trơn chiều 28/7 tại Bảo Tín Minh Châu, Bảo Tín Mạnh Hải, DOJI, PNJ, SJC,..."
+    ]
+  },
+  "smart_money": {
+    "bias": "neutral",
+    "score": 0.0,
+    "label": "Chưa đủ dữ liệu smart money",
+    "signals_n": 0
+  },
+  "earnings_quality": {
+    "label": "Cảnh báo chất lượng lợi nhuận (mức cao)",
+    "warning": true,
+    "severity": "high"
+  },
+  "forecast_90d": {
+    "expected_return_pct": 1.0,
+    "expected_price": 32976.5,
+    "summary": "Dự phóng 90 ngày: expected return 1.00% (bull 15% / base 45% / bear 40%). Monte Carlo range P10/P50/P90: 17,061/25,832/39,048 VND | P(đạt target)=0.0%."
+  },
+  "fin_source": "vnstock:live:disk_cache:fastpath",
+  "decision_completeness": {
+    "is_bank": false,
+    "missing_items": [],
+    "critical_missing": [],
+    "severity": "low",
+    "readiness_cap": null,
+    "soften_legend": false,
+    "notes": [],
+    "completeness_score": 100
+  }
+}

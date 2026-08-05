@@ -1,0 +1,374 @@
+{
+  "ran_at": "2026-07-22T14:48:50.851072+00:00",
+  "profile": "growth",
+  "capital_vnd": 100000000.0,
+  "results": {
+    "ACB": {
+      "ticker": "ACB",
+      "stages": [
+        {
+          "stage": "snapshot",
+          "seconds": 0.097,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "stage": "valuation",
+          "seconds": 0.021,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "stage": "ohlcv",
+          "seconds": 0.226,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "stage": "news",
+          "seconds": 1.005,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "stage": "full_analysis_bundle",
+          "seconds": 0.216,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "stage": "dss",
+          "seconds": 0.001,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "stage": "earnings_quality",
+          "seconds": 0.0,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "stage": "smart_money",
+          "seconds": 0.002,
+          "ok": true,
+          "error": ""
+        }
+      ],
+      "ok": true,
+      "snapshot": {
+        "price": 22400.0,
+        "pe_ratio": 7.01,
+        "pb_ratio": 1.19,
+        "source": "vietstock",
+        "name": "ACB",
+        "industry": null
+      },
+      "valuation": {
+        "composite_target_price": 37540.493137410966,
+        "margin_of_safety_composite_pct": 40.33109816110197,
+        "piotroski_score": 0,
+        "instant_conclusion": "Theo dõi",
+        "advice": "Kết luận: Theo dõi. Giá mua an toàn <= 26,278 VND. Pass/Fail: Graham=Trượt, Buffett=Trượt, Lynch=Trượt. Cảnh báo: Thiếu dữ liệu đầu vào cho bộ lọc Graham/Buffett; cần xác minh D/E, CR, ROE trước khi giải ngân.",
+        "pe_current": 6.875383670963782,
+        "industry_subtype_label_vi": "Khác"
+      },
+      "ohlcv_rows": 80,
+      "ohlcv_source": "ohlcv_store_fastpath",
+      "news_count": 6,
+      "news_sample": [
+        {
+          "title": "NHNN đang hoàn thiện những bước cuối cùng để thay thế Thông tư quan trọng bậc nhất ngành ngân hàng: VietinBank, Vietcombank, BIDV, Techcombank, MB, ACB, VIB… nói gì?",
+          "source": "cafef"
+        },
+        {
+          "title": "ACB đạt lợi nhuận hơn 10.700 tỷ đồng trong 6 tháng đầu năm 2026, bán lẻ và SME hồi phục tích cực",
+          "source": "cafef"
+        },
+        {
+          "title": "Chủ tịch ACB Trần Hùng Huy bất ngờ khoe cơ bụng 6 múi, “than thở” 1 điều",
+          "source": "cafef"
+        }
+      ],
+      "recommendation": {
+        "final_action": "AVOID",
+        "analysis_verdict": "NO-GO",
+        "decision_readiness": "MEDIUM",
+        "confidence_score": 76.0,
+        "gate_passed": true,
+        "phase_assessment": "trung tính",
+        "whys_steps": [
+          "Hồ sơ nhà đầu tư: Tăng trưởng; tổng vốn giả định 100,000,000 VND.",
+          "Why 1 (xu hướng): Pha thị trường hiện tại là neutral (Chưa xuất hiện tín hiệu tích lũy/bùng nổ/phân phối rõ.).",
+          "Why 2 (dòng tiền): Volume multiple ~0.94.",
+          "Why 3 (nội tại): F-Score=0/9, D/E=14.6691799214.",
+          "Why 4 (tăng trưởng): Rev YoY=None, Profit YoY=None.",
+          "Why 5 (định giá ngành): Hybrid Legend: Graham Trượt, Buffett Trượt, Lynch Trượt · PEG=0.00 (Không xác định) · Ngành: Chưa phân loại ngành.",
+          "Why 6 (tin tức): Headline dẫn dắt gần nhất: NHNN đang hoàn thiện những bước cuối cùng để thay thế Thông tư quan trọng bậc nhất ngành ngân hàng: VietinBank, Vietcombank, BIDV, Techcombank, MB, ACB, VIB… nói gì?",
+          "Why 7 (hành động): Ưu tiên kỷ luật điểm mua/chốt/cắt lỗ theo vùng giá định lượng."
+        ],
+        "do_not_act_reasons": [
+          "analysis_verdict_no_go"
+        ],
+        "latency_seconds": 0.22
+      },
+      "risk_plan": {
+        "entry_price": 22400.0,
+        "buy_zone_low": 21728.0,
+        "buy_zone_high": 23072.0,
+        "stop_loss_price": 20832.0,
+        "take_profit_price": 27888.0,
+        "allocated_capital_vnd": 20000000.0,
+        "estimated_quantity": 892,
+        "max_position_pct": 20.0,
+        "worst_case_loss_vnd": 1398656.0,
+        "worst_case_loss_pct_total_capital": 1.399
+      },
+      "forecast": {
+        "expected_price": 24236.8,
+        "expected_return_pct": 8.2,
+        "horizon_days": 90,
+        "summary": "Dự phóng 90 ngày: expected return 8.20% (bull 25% / base 45% / bear 30%). Monte Carlo range P10/P50/P90: 6,429/16,251/40,923 VND | P(đạt target)=12.2%.",
+        "scenarios": [
+          {
+            "name": "bull",
+            "probability": 0.25,
+            "target_price": 27059.2,
+            "return_pct": 20.8
+          },
+          {
+            "name": "base",
+            "probability": 0.45,
+            "target_price": 24371.2,
+            "return_pct": 8.8
+          },
+          {
+            "name": "bear",
+            "probability": 0.3,
+            "target_price": 21683.2,
+            "return_pct": -3.2
+          }
+        ]
+      },
+      "deep_insight": {
+        "from_report_keys": [
+          "earnings_quality",
+          "smart_money_flow"
+        ],
+        "earnings_quality": {
+          "warning": false,
+          "severity": "low",
+          "label": "Ổn",
+          "net_income": 0.0,
+          "operating_cash_flow": 0.0,
+          "net_income_growth_yoy_pct": null,
+          "operating_cash_flow_growth_yoy_pct": null,
+          "notes": []
+        },
+        "smart_money": {
+          "bias": "neutral",
+          "score": 0.0,
+          "label": "Chưa đủ dữ liệu smart money",
+          "signals": [],
+          "data_mode": "heuristic"
+        }
+      },
+      "dss": {
+        "decision": "NEAR_READY",
+        "commercial_score": 65.0,
+        "missing_items": [
+          "smart_money_structured_available",
+          "backtesting_winloss_available",
+          "backtesting_sample_sufficient"
+        ],
+        "summary_vi": "DSS commercial score=65.00. Trạng thái=NEAR_READY. Cần bổ sung một số hạng mục trước khi scale trả phí."
+      },
+      "total_seconds": 1.568
+    },
+    "QTP": {
+      "ticker": "QTP",
+      "stages": [
+        {
+          "stage": "snapshot",
+          "seconds": 0.002,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "stage": "valuation",
+          "seconds": 0.002,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "stage": "ohlcv",
+          "seconds": 0.059,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "stage": "news",
+          "seconds": 0.915,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "stage": "full_analysis_bundle",
+          "seconds": 0.212,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "stage": "dss",
+          "seconds": 0.001,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "stage": "earnings_quality",
+          "seconds": 0.0,
+          "ok": true,
+          "error": ""
+        },
+        {
+          "stage": "smart_money",
+          "seconds": 0.007,
+          "ok": true,
+          "error": ""
+        }
+      ],
+      "ok": true,
+      "snapshot": {
+        "price": 11200.0,
+        "pe_ratio": 4.16,
+        "pb_ratio": 0.85,
+        "source": "vietstock:swr",
+        "name": "QTP",
+        "industry": null
+      },
+      "valuation": {
+        "composite_target_price": 28213.40426109547,
+        "margin_of_safety_composite_pct": 60.30255726550481,
+        "piotroski_score": 0,
+        "instant_conclusion": "Theo dõi",
+        "advice": "Kết luận: Theo dõi. Giá mua an toàn <= 19,749 VND. Pass/Fail: Graham=Trượt, Buffett=Trượt, Lynch=Trượt. Cảnh báo: Thiếu dữ liệu đầu vào cho bộ lọc Graham/Buffett; cần xác minh D/E, CR, ROE trước khi giải ngân.",
+        "pe_current": 4.157386785449146,
+        "industry_subtype_label_vi": "Khác"
+      },
+      "ohlcv_rows": 80,
+      "ohlcv_source": "ohlcv_store_fastpath",
+      "news_count": 6,
+      "news_sample": [
+        {
+          "title": "REE tạm lãi gần 300 tỷ đồng khi đầu tư cổ phiếu VIB, bán toàn bộ QTP và mua thêm hơn 200 tỷ đồng trái phiếu trong quý 2/2023",
+          "source": "cafef"
+        },
+        {
+          "title": "Vượt 50% kế hoạch năm, Nhiệt điện Quảng Ninh (QTP) chốt danh sách cổ đông chi 360 tỷ đồng tạm ứng cổ tức",
+          "source": "cafef"
+        },
+        {
+          "title": "Vượt 50% kế hoạch năm, Nhiệt điện Quảng Ninh (QTP) lấy ý kiến cổ đông để dùng 360 tỷ đồng tạm ứng cổ tức năm 2021",
+          "source": "cafef"
+        }
+      ],
+      "recommendation": {
+        "final_action": "WATCH",
+        "analysis_verdict": "NO-GO",
+        "decision_readiness": "LOW",
+        "confidence_score": 33.0,
+        "gate_passed": false,
+        "phase_assessment": "tích lũy/gom hàng",
+        "whys_steps": [
+          "Hồ sơ nhà đầu tư: Tăng trưởng; tổng vốn giả định 100,000,000 VND.",
+          "Why 1 (xu hướng): Pha thị trường hiện tại là accumulation (Giá đi ngang biên hẹp (<5%) và thanh khoản thấp hơn trung bình.).",
+          "Why 2 (dòng tiền): Volume multiple ~0.78.",
+          "Why 3 (nội tại): F-Score=0/9, D/E=None.",
+          "Why 4 (tăng trưởng): Rev YoY=None, Profit YoY=None.",
+          "Why 5 (định giá ngành): Hybrid Legend: Graham Trượt, Buffett Trượt, Lynch Trượt · PEG=0.00 (Không xác định) · Ngành: Chưa phân loại ngành.",
+          "Why 6 (tin tức): Headline dẫn dắt gần nhất: REE tạm lãi gần 300 tỷ đồng khi đầu tư cổ phiếu VIB, bán toàn bộ QTP và mua thêm hơn 200 tỷ đồng trái phiếu trong quý 2/2023",
+          "Why 7 (hành động): Ưu tiên kỷ luật điểm mua/chốt/cắt lỗ theo vùng giá định lượng."
+        ],
+        "do_not_act_reasons": [
+          "confidence_below_gate",
+          "data_reliability_too_low",
+          "analysis_verdict_no_go"
+        ],
+        "latency_seconds": 0.21
+      },
+      "risk_plan": {
+        "entry_price": 11200.0,
+        "buy_zone_low": 10864.0,
+        "buy_zone_high": 11536.0,
+        "stop_loss_price": 10416.0,
+        "take_profit_price": 13944.0,
+        "allocated_capital_vnd": 20000000.0,
+        "estimated_quantity": 1785,
+        "max_position_pct": 20.0,
+        "worst_case_loss_vnd": 1399440.0,
+        "worst_case_loss_pct_total_capital": 1.399
+      },
+      "forecast": {
+        "expected_price": 13453.44,
+        "expected_return_pct": 20.12,
+        "horizon_days": 90,
+        "summary": "Dự phóng 90 ngày: expected return 20.12% (bull 33% / base 45% / bear 22%). Monte Carlo range P10/P50/P90: 8,220/9,804/11,686 VND | P(đạt target)=0.0%.",
+        "scenarios": [
+          {
+            "name": "bull",
+            "probability": 0.33,
+            "target_price": 14649.6,
+            "return_pct": 30.8
+          },
+          {
+            "name": "base",
+            "probability": 0.45,
+            "target_price": 13305.6,
+            "return_pct": 18.8
+          },
+          {
+            "name": "bear",
+            "probability": 0.22,
+            "target_price": 11961.6,
+            "return_pct": 6.8
+          }
+        ]
+      },
+      "deep_insight": {
+        "from_report_keys": [
+          "earnings_quality",
+          "smart_money_flow"
+        ],
+        "earnings_quality": {
+          "warning": false,
+          "severity": "low",
+          "label": "Ổn",
+          "net_income": 0.0,
+          "operating_cash_flow": 0.0,
+          "net_income_growth_yoy_pct": null,
+          "operating_cash_flow_growth_yoy_pct": null,
+          "notes": []
+        },
+        "smart_money": {
+          "bias": "neutral",
+          "score": 0.0,
+          "label": "Chưa đủ dữ liệu smart money",
+          "signals": [],
+          "data_mode": "heuristic"
+        }
+      },
+      "dss": {
+        "decision": "NEAR_READY",
+        "commercial_score": 65.0,
+        "missing_items": [
+          "smart_money_structured_available",
+          "backtesting_winloss_available",
+          "backtesting_sample_sufficient"
+        ],
+        "summary_vi": "DSS commercial score=65.00. Trạng thái=NEAR_READY. Cần bổ sung một số hạng mục trước khi scale trả phí."
+      },
+      "total_seconds": 1.198
+    }
+  },
+  "total_seconds": 11.263
+}

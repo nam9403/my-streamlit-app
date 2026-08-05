@@ -1,0 +1,308 @@
+{
+  "generated_at_utc": "2026-08-02T13:15:59.092450+00:00",
+  "disclaimer_vi": "Exit bake-off học tập trên entry pit_quality — path sim no look-ahead trong cửa sổ giữ. Không cam kết lợi nhuận tương lai.",
+  "symbols": [
+    "ACB",
+    "BCM",
+    "BID",
+    "BVH",
+    "CTG",
+    "FPT",
+    "GAS",
+    "GVR",
+    "HDB",
+    "HPG",
+    "MBB",
+    "MSN",
+    "MWG",
+    "PLX",
+    "POW",
+    "SAB",
+    "SHB",
+    "SSB",
+    "SSI",
+    "STB",
+    "TCB",
+    "TPB",
+    "VCB",
+    "VHM",
+    "VIB",
+    "VIC",
+    "VJC",
+    "VNM",
+    "VPB",
+    "VRE"
+  ],
+  "symbols_ok": 30,
+  "symbols_total": 30,
+  "n_trades": 101,
+  "entry_style": "pit_quality",
+  "benchmark_source": "yahoo_E1VFVN30:5y",
+  "recommended_horizon_days": 40,
+  "recommendation_vi": "Van hanh (paper/nightly): horizon **40d** theo `time40_atr2` (hit=53.47%, avg=4.323%, median=1.033%). Raw-avg leader `time90` khong dung mac dinh.",
+  "best": {
+    "label": "time40_atr2",
+    "config": {
+      "time_stop_days": 40,
+      "atr_stop_mult": 2.0,
+      "giveback_arm_pct": null,
+      "giveback_pct": 4.0,
+      "roundtrip_cost_pct": 0.3,
+      "max_hold_days": 90
+    },
+    "summary": {
+      "samples": 101,
+      "hit_rate_pct": 53.47,
+      "avg_return_pct": 4.323,
+      "median_return_pct": 1.033,
+      "avg_hold_days": 29.53,
+      "exit_reasons": {
+        "atr_stop": 42,
+        "time_stop": 59
+      }
+    }
+  },
+  "ranked": [
+    {
+      "label": "time90",
+      "config": {
+        "time_stop_days": 90,
+        "atr_stop_mult": null,
+        "giveback_arm_pct": null,
+        "giveback_pct": 4.0,
+        "roundtrip_cost_pct": 0.3,
+        "max_hold_days": 90
+      },
+      "summary": {
+        "samples": 101,
+        "hit_rate_pct": 55.45,
+        "avg_return_pct": 4.377,
+        "median_return_pct": 1.007,
+        "avg_hold_days": 90.0,
+        "exit_reasons": {
+          "time_stop": 101
+        }
+      }
+    },
+    {
+      "label": "time40_atr2",
+      "config": {
+        "time_stop_days": 40,
+        "atr_stop_mult": 2.0,
+        "giveback_arm_pct": null,
+        "giveback_pct": 4.0,
+        "roundtrip_cost_pct": 0.3,
+        "max_hold_days": 90
+      },
+      "summary": {
+        "samples": 101,
+        "hit_rate_pct": 53.47,
+        "avg_return_pct": 4.323,
+        "median_return_pct": 1.033,
+        "avg_hold_days": 29.53,
+        "exit_reasons": {
+          "atr_stop": 42,
+          "time_stop": 59
+        }
+      }
+    },
+    {
+      "label": "time60_atr2",
+      "config": {
+        "time_stop_days": 60,
+        "atr_stop_mult": 2.0,
+        "giveback_arm_pct": null,
+        "giveback_pct": 4.0,
+        "roundtrip_cost_pct": 0.3,
+        "max_hold_days": 90
+      },
+      "summary": {
+        "samples": 101,
+        "hit_rate_pct": 43.56,
+        "avg_return_pct": 3.788,
+        "median_return_pct": -3.033,
+        "avg_hold_days": 40.3,
+        "exit_reasons": {
+          "atr_stop": 52,
+          "time_stop": 49
+        }
+      }
+    },
+    {
+      "label": "time40",
+      "config": {
+        "time_stop_days": 40,
+        "atr_stop_mult": null,
+        "giveback_arm_pct": null,
+        "giveback_pct": 4.0,
+        "roundtrip_cost_pct": 0.3,
+        "max_hold_days": 90
+      },
+      "summary": {
+        "samples": 101,
+        "hit_rate_pct": 58.42,
+        "avg_return_pct": 3.475,
+        "median_return_pct": 1.724,
+        "avg_hold_days": 40.0,
+        "exit_reasons": {
+          "time_stop": 101
+        }
+      }
+    },
+    {
+      "label": "time60",
+      "config": {
+        "time_stop_days": 60,
+        "atr_stop_mult": null,
+        "giveback_arm_pct": null,
+        "giveback_pct": 4.0,
+        "roundtrip_cost_pct": 0.3,
+        "max_hold_days": 90
+      },
+      "summary": {
+        "samples": 101,
+        "hit_rate_pct": 55.45,
+        "avg_return_pct": 3.426,
+        "median_return_pct": 1.725,
+        "avg_hold_days": 60.0,
+        "exit_reasons": {
+          "time_stop": 101
+        }
+      }
+    },
+    {
+      "label": "time40_atr2_gb",
+      "config": {
+        "time_stop_days": 40,
+        "atr_stop_mult": 2.0,
+        "giveback_arm_pct": 8.0,
+        "giveback_pct": 4.0,
+        "roundtrip_cost_pct": 0.3,
+        "max_hold_days": 90
+      },
+      "summary": {
+        "samples": 101,
+        "hit_rate_pct": 55.45,
+        "avg_return_pct": 2.313,
+        "median_return_pct": 2.581,
+        "avg_hold_days": 25.17,
+        "exit_reasons": {
+          "atr_stop": 40,
+          "giveback": 28,
+          "time_stop": 33
+        }
+      }
+    },
+    {
+      "label": "time60_atr2_gb",
+      "config": {
+        "time_stop_days": 60,
+        "atr_stop_mult": 2.0,
+        "giveback_arm_pct": 8.0,
+        "giveback_pct": 4.0,
+        "roundtrip_cost_pct": 0.3,
+        "max_hold_days": 90
+      },
+      "summary": {
+        "samples": 101,
+        "hit_rate_pct": 53.47,
+        "avg_return_pct": 2.052,
+        "median_return_pct": 2.581,
+        "avg_hold_days": 29.68,
+        "exit_reasons": {
+          "atr_stop": 46,
+          "giveback": 41,
+          "time_stop": 14
+        }
+      }
+    },
+    {
+      "label": "time60_gb",
+      "config": {
+        "time_stop_days": 60,
+        "atr_stop_mult": null,
+        "giveback_arm_pct": 8.0,
+        "giveback_pct": 4.0,
+        "roundtrip_cost_pct": 0.3,
+        "max_hold_days": 90
+      },
+      "summary": {
+        "samples": 101,
+        "hit_rate_pct": 62.38,
+        "avg_return_pct": 1.614,
+        "median_return_pct": 4.032,
+        "avg_hold_days": 48.02,
+        "exit_reasons": {
+          "time_stop": 60,
+          "giveback": 41
+        }
+      }
+    },
+    {
+      "label": "time40_gb",
+      "config": {
+        "time_stop_days": 40,
+        "atr_stop_mult": null,
+        "giveback_arm_pct": 8.0,
+        "giveback_pct": 4.0,
+        "roundtrip_cost_pct": 0.3,
+        "max_hold_days": 90
+      },
+      "summary": {
+        "samples": 101,
+        "hit_rate_pct": 58.42,
+        "avg_return_pct": 1.359,
+        "median_return_pct": 2.795,
+        "avg_hold_days": 35.13,
+        "exit_reasons": {
+          "time_stop": 73,
+          "giveback": 28
+        }
+      }
+    },
+    {
+      "label": "time20",
+      "config": {
+        "time_stop_days": 20,
+        "atr_stop_mult": null,
+        "giveback_arm_pct": null,
+        "giveback_pct": 4.0,
+        "roundtrip_cost_pct": 0.3,
+        "max_hold_days": 90
+      },
+      "summary": {
+        "samples": 101,
+        "hit_rate_pct": 55.45,
+        "avg_return_pct": 1.0,
+        "median_return_pct": 0.588,
+        "avg_hold_days": 20.0,
+        "exit_reasons": {
+          "time_stop": 101
+        }
+      }
+    }
+  ],
+  "recommended_variant": "time40_atr2",
+  "raw_avg_best_variant": "time90",
+  "raw_avg_best": {
+    "label": "time90",
+    "config": {
+      "time_stop_days": 90,
+      "atr_stop_mult": null,
+      "giveback_arm_pct": null,
+      "giveback_pct": 4.0,
+      "roundtrip_cost_pct": 0.3,
+      "max_hold_days": 90
+    },
+    "summary": {
+      "samples": 101,
+      "hit_rate_pct": 55.45,
+      "avg_return_pct": 4.377,
+      "median_return_pct": 1.007,
+      "avg_hold_days": 90.0,
+      "exit_reasons": {
+        "time_stop": 101
+      }
+    }
+  }
+}

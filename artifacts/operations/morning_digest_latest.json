@@ -1,0 +1,48 @@
+{
+  "user_id": "default_user",
+  "meta": {
+    "target_count": 49,
+    "scanned_count": 49,
+    "ready_count": 49,
+    "fail_count": 0,
+    "liquidity_filtered_count": 0,
+    "data_error_count": 0,
+    "prefilter_skipped_count": 243,
+    "ready_rate_pct": 100.0,
+    "coverage_pct": 100.0,
+    "batch_count": 4,
+    "universe_mode": "dynamic_liquid",
+    "source": "board_raw",
+    "health_ok": false,
+    "health_severity": "warn",
+    "paper": {
+      "samples": 0,
+      "hit_rate_pct": null,
+      "avg_realized_pct": null,
+      "open_count": 20,
+      "lookback_days": 40
+    }
+  },
+  "paper": {
+    "samples": 0,
+    "hit_rate_pct": null,
+    "avg_realized_pct": null,
+    "open_count": 20,
+    "lookback_days": 40
+  },
+  "top_symbols": [
+    "ACB",
+    "BCM"
+  ],
+  "text": "☀️ Morning Digest — Autopilot\nCập nhật: 2026-08-02 14:00 UTC\n\nBoard đêm: coverage 100.0% (49/49)\n\nPaper ledger (40d · ops lock time40_atr2):\n   closed=0 · open=20 · chưa đủ mẫu để chấm edge live\n\nTop cơ hội (mobile card):\n1. ACB · WATCH\n   giá 22,350 | MOS 34.8% | E[R] 25.7% | risk 18.5% | ready MEDIUM\n   khung: Trung hạn (2-6 tháng)\n   note: Định giá Legend và khuyến nghị hành động cùng hướng.\n2. BCM · WATCH\n   giá 36,300 | MOS 9.4% | E[R] 9.2% | risk 19.9% | ready MEDIUM\n   khung: Trung hạn (2-6 tháng)\n   note: Legend=Bỏ qua; action=WATCH; pha=neutral.\n\n⚠️ Không phải lời khuyên đầu tư. Tự quyết định & quản trị rủi ro.",
+  "send": {
+    "sent": 0,
+    "failed": 0,
+    "dry_run": true
+  },
+  "channels_configured": {
+    "telegram": false,
+    "webhook": false,
+    "email": false
+  }
+}

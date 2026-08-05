@@ -23,10 +23,9 @@ def _skip_network() -> bool:
 
 
 def main() -> None:
-    try:
-        sys.stdout.reconfigure(encoding="utf-8")
-    except Exception:
-        pass
+    reconfigure = getattr(sys.stdout, "reconfigure", None)
+    if callable(reconfigure):
+        reconfigure(encoding="utf-8")
     failures: list[str] = []
 
     print("=== 1. Snapshot (fetch_financial_snapshot) ===")

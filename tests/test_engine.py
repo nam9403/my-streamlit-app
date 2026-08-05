@@ -3,7 +3,7 @@ from __future__ import annotations
 import pandas as pd
 import pytest
 
-from core.engine import OhlcvDataError, compute_technical_indicators, detect_market_phase_from_ohlcv
+from core.engine import OhlcvDataError, backtest_action_strategy, compute_technical_indicators, detect_market_phase_from_ohlcv
 
 
 def _sample_ohlcv(n: int = 60) -> pd.DataFrame:
@@ -39,3 +39,11 @@ def test_detect_phase_returns_struct() -> None:
 def test_ohlcv_too_short() -> None:
     with pytest.raises(OhlcvDataError):
         compute_technical_indicators(_sample_ohlcv(10))
+
+
+def test_backtest_skips_rows_without_valid_ma50() -> None:
+    df = _sample_ohlcv(80)
+    out = backtest_action_strategy(df, horizon_days=5)
+    assert out["samples"] > 0
+    # Warm-up rows (MA50 NaN) must not inflate buy_signals via ma50=0 coercion.
+    assert out["buy_signals"] <= out["samples"]

@@ -1,0 +1,10 @@
+{
+  "saved_at": "2026-08-03T15:24:31.582350+00:00",
+  "ttl_sec": 7200.0,
+  "market_bias": 0.0,
+  "usd_vnd": 26179.97891,
+  "policy_rate_pct": 4.5,
+  "cpi_yoy_pct": null,
+  "notes_vi": "Macro blend: USD/VND (optional) + policy/CPI env + VNINDEX disk proxy; fail-soft.",
+  "source": "policy_env+open_er_api"
+}

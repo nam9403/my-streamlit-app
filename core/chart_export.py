@@ -103,7 +103,6 @@ def allocation_png_for_pdf(allocated_vnd: float, remaining_vnd: float) -> bytes:
 
 def build_candlestick_valuation_figure(ohlcv: Any, valuation: dict[str, Any]) -> go.Figure:
     """Giống render_candlestick_with_intrinsic trong app — dùng cho PDF."""
-    import pandas as pd
 
     if ohlcv is None or (hasattr(ohlcv, "empty") and ohlcv.empty):
         fig = go.Figure()

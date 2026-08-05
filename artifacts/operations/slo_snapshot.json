@@ -1,0 +1,78 @@
+{
+  "autopilot_timing": {},
+  "nightly_health": {
+    "ok": false,
+    "severity": "warn",
+    "reasons": [
+      "stale"
+    ],
+    "path": "E:\\Du an 1\\data\\runtime\\autopilot_nightly_board.json",
+    "updated_at": "2026-07-30T13:47:25.278182+00:00",
+    "age_hours": 67.53438268472222,
+    "max_age_hours": 36.0,
+    "min_coverage_pct": 25.0,
+    "target_count": 49,
+    "scanned_count": 49,
+    "ready_count": 49,
+    "fail_count": 0,
+    "liquidity_filtered_count": 0,
+    "data_error_count": 0,
+    "prefilter_skipped_count": 243,
+    "ready_rate_pct": 100.0,
+    "coverage_pct": 100.0,
+    "batch_count": 4,
+    "universe_mode": "dynamic_liquid"
+  },
+  "go_live": {
+    "generated_at_utc": "2026-07-28T12:51:43.913039+00:00",
+    "env": "preprod",
+    "dry_run": true,
+    "decision": "PASS",
+    "steps": [
+      {
+        "command": "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\python.exe E:\\Du an 1\\scripts\\preflight_check.py --prod",
+        "exit_code": 0,
+        "elapsed_ms": 0.0
+      },
+      {
+        "command": "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\python.exe E:\\Du an 1\\scripts\\scale_gate_check.py --min-cx-samples 12 --require-go",
+        "exit_code": 0,
+        "elapsed_ms": 0.0
+      },
+      {
+        "command": "C:\\Users\\Admin\\AppData\\Local\\Programs\\Python\\Python312\\python.exe E:\\Du an 1\\scripts\\slo_gate_check.py --min-cx-samples 12 --require-go",
+        "exit_code": 0,
+        "elapsed_ms": 0.0
+      }
+    ]
+  },
+  "paper_hitrate": {
+    "samples": 0,
+    "hit_rate_pct": null,
+    "avg_realized_pct": null,
+    "open_count": 20,
+    "lookback_days": 30
+  },
+  "paper_accountability": {
+    "windows": {
+      "30": {
+        "samples": 0,
+        "hit_rate_pct": null,
+        "avg_realized_pct": null
+      },
+      "90": {
+        "samples": 0,
+        "hit_rate_pct": null,
+        "avg_realized_pct": null
+      },
+      "365": {
+        "samples": 0,
+        "hit_rate_pct": null,
+        "avg_realized_pct": null
+      }
+    },
+    "open_count": 20
+  },
+  "fail_rate_pct": 0.0,
+  "generated_at": "2026-08-02T09:19:29.060850+00:00"
+}

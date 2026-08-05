@@ -6,15 +6,12 @@ Piotroski F-Score, Margin of Safety.
 
 from __future__ import annotations
 
-import json
 import os
 import re
-from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
 _ROOT = Path(__file__).resolve().parent.parent
-_STOCK_META_PATH = _ROOT / "data" / "stock_metadata.json"
 
 # Mặc định khi snapshot không có P/E ngành 5 năm / P/B tham chiếu (nên thay bằng số liệu thật trong JSON/API)
 _DEFAULT_SECTOR_PE_5Y_NON_BANK = 14.0
@@ -99,7 +96,6 @@ def piotroski_f_score(metrics: dict[str, Any]) -> tuple[int, list[str]]:
     ni = float(metrics.get("net_income") or 0)
     ni_p = float(metrics.get("net_income_prior") or 0)
     ocf = float(metrics.get("operating_cash_flow") or 0)
-    ocf_p = float(metrics.get("operating_cash_flow_prior") or 0)
     ta = float(metrics.get("total_assets") or 0)
     ta_p = float(metrics.get("total_assets_prior") or 0)
     ltd = float(metrics.get("long_term_debt") or 0)
@@ -467,16 +463,13 @@ def _classify_industry_subtype(industry_text: str, cluster_id: str) -> str:
     return "other"
 
 
-@lru_cache(maxsize=1)
 def _load_stock_metadata_file() -> dict[str, Any]:
-    if not _STOCK_META_PATH.exists():
-        return {}
-    try:
-        with open(_STOCK_META_PATH, encoding="utf-8") as f:
-            data = json.load(f)
-        return data if isinstance(data, dict) else {}
-    except (OSError, json.JSONDecodeError):
-        return {}
+    """
+    Cùng nguồn với scrapers.financial_data (cache theo mtime) — tránh đọc JSON lặp + stale LRU.
+    """
+    from scrapers.financial_data import _load_stock_metadata
+
+    return _load_stock_metadata()
 
 
 def _metadata_for_symbol(symbol: str) -> dict[str, Any]:
@@ -691,6 +684,10 @@ def _resolve_hybrid_inputs(snapshot: dict[str, Any]) -> tuple[float, float, floa
             notes.append("Suy luận CR từ piotroski (tài sản NH / nợ NH).")
 
     roe = _pick_positive_float(snapshot, ("roe_5y_avg", "roe", "roe_avg_5y"))
+    # vnstock hay trả ROE dạng tỉ lệ (0.27); Legend dùng ngưỡng % (15).
+    if 0 < roe <= 1.5:
+        roe = roe * 100.0
+        notes.append("Chuẩn hóa ROE từ tỉ lệ → %.")
     if roe <= 0 and pio:
         ni = float(pio.get("net_income") or 0)
         ta = float(pio.get("total_assets") or 0)
@@ -750,27 +747,66 @@ def _legend_thresholds(snapshot: dict[str, Any]) -> tuple[str, dict[str, float]]
 
 def value_investing_summary(snapshot: dict[str, Any], include_extensions: bool = True) -> dict[str, Any]:
     """Định giá theo Hybrid Legend Model + giữ tương thích key cũ."""
+    # P0 data integrity: chuẩn hóa EPS one-off + P/E sanity trước khi Graham/Buffett/Lynch.
+    eps_norm_meta: dict[str, Any] = {}
+    try:
+        from core.eps_normalizer import get_eps_normalizer
+
+        eps_norm_meta = get_eps_normalizer().apply_to_snapshot(snapshot) or {}
+    except Exception:
+        eps_norm_meta = {}
+
     price = float(snapshot.get("price") or 0)
     eps_reported = float(snapshot.get("eps") or 0)
     eps_ttm = _pick_positive_float(snapshot, ("eps_ttm",))
-    eps_for_graham = eps_ttm if eps_ttm > 0 else max(eps_reported, 0.0)
-    eps_basis_key = "ttm" if eps_ttm > 0 else "reported"
+    eps_normalized = _pick_positive_float(snapshot, ("normalized_eps",))
+    # Ưu tiên normalized_eps (đã trừ lợi nhuận đột biến) cho Graham / hybrid.
+    if eps_normalized > 0:
+        eps_for_graham = eps_normalized
+        eps_basis_key = "normalized"
+    elif eps_ttm > 0:
+        eps_for_graham = eps_ttm
+        eps_basis_key = "ttm"
+    else:
+        eps_for_graham = max(eps_reported, 0.0)
+        eps_basis_key = "reported"
     g = float(snapshot.get("growth_rate_pct") or 0)
     bond = float(snapshot.get("bond_yield_pct") or 4.4)
     bv = _pick_positive_float(snapshot, ("book_value_per_share", "bvps"))
 
     de, cr, roe, fallback_notes = _resolve_hybrid_inputs(snapshot)
-    has_graham_inputs = de > 0 and cr > 0 and eps_for_graham > 0 and bv > 0
+    is_bank = _is_bank_sector(snapshot)
+    pe = (price / eps_for_graham) if price > 0 and eps_for_graham > 0 else 0.0
+    pe_anomaly_flag = bool(snapshot.get("pe_anomaly_flag") or (eps_norm_meta or {}).get("pe_anomaly_flag"))
+    try:
+        mos_bump = float(snapshot.get("mos_requirement_bump_pct") or 0.0)
+    except (TypeError, ValueError):
+        mos_bump = 0.0
+    if pe_anomaly_flag and mos_bump <= 0:
+        mos_bump = 12.0
 
     # Step 1 - Graham survival + Graham Number
-    graham_pass = bool(has_graham_inputs and de <= 0.5 and cr >= 1.5)
+    # Ngân hàng: D/E & CR công nghiệp không áp dụng — dùng P/E + ROE + sổ sách.
+    if is_bank:
+        has_graham_inputs = eps_for_graham > 0 and bv > 0 and roe > 0
+        try:
+            bank_max_pe = float(os.environ.get("II_BANK_GRAHAM_MAX_PE", "12") or 12)
+        except (TypeError, ValueError):
+            bank_max_pe = 12.0
+        bank_max_pe = max(5.0, min(25.0, bank_max_pe))
+        graham_pass = bool(has_graham_inputs and pe > 0 and pe <= bank_max_pe)
+    else:
+        has_graham_inputs = de > 0 and cr > 0 and eps_for_graham > 0 and bv > 0
+        graham_pass = bool(has_graham_inputs and de <= 0.5 and cr >= 1.5)
     graham_number = float((22.5 * eps_for_graham * bv) ** 0.5) if eps_for_graham > 0 and bv > 0 else 0.0
 
     # Step 2 - Buffett quality / moat proxy
-    buffett_pass = bool(roe > 0 and de > 0 and roe >= 15 and de <= 0.5)
+    if is_bank:
+        buffett_pass = bool(roe >= 15)
+    else:
+        buffett_pass = bool(roe > 0 and de > 0 and roe >= 15 and de <= 0.5)
 
     # Step 3 - Lynch PEG/GARP
-    pe = (price / eps_for_graham) if price > 0 and eps_for_graham > 0 else 0.0
     peg = (pe / g) if pe > 0 and g > 0 else 0.0
     if peg <= 0:
         peg_label = "Không xác định"
@@ -806,6 +842,11 @@ def value_investing_summary(snapshot: dict[str, Any], include_extensions: bool =
     safe_buy_price = intrinsic * 0.7 if intrinsic > 0 else 0.0
 
     profile, thresholds = _legend_thresholds(snapshot)
+    # P/E anomaly → siết MOS requirement thêm 10–15% (mặc định +12pp).
+    if pe_anomaly_flag and mos_bump > 0:
+        thresholds = dict(thresholds)
+        thresholds["strong_buy_mos_min"] = float(thresholds.get("strong_buy_mos_min", 30.0)) + mos_bump
+        thresholds["watch_buy_mos_min"] = float(thresholds.get("watch_buy_mos_min", 15.0)) + mos_bump
     if not has_graham_inputs:
         decision = "Theo dõi"
     elif not graham_pass:
@@ -844,15 +885,111 @@ def value_investing_summary(snapshot: dict[str, Any], include_extensions: bool =
         f_score, f_reasons = (0, [])
 
     if not has_graham_inputs:
-        value_trap_warning = "Thiếu dữ liệu đầu vào cho bộ lọc Graham/Buffett; cần xác minh D/E, CR, ROE trước khi giải ngân."
+        if is_bank:
+            value_trap_warning = (
+                "Thiếu ROE/EPS/BVPS đủ tin cậy cho lọc ngân hàng; chưa đánh giá Graham/Buffett NH."
+            )
+        else:
+            missing = []
+            if de <= 0:
+                missing.append("D/E")
+            if cr <= 0:
+                missing.append("CR")
+            if roe <= 0:
+                missing.append("ROE")
+            miss_txt = ", ".join(missing) if missing else "D/E/CR/ROE"
+            value_trap_warning = (
+                f"Thiếu {miss_txt} để chốt bộ lọc Graham/Buffett; xác minh BCTC trước khi giải ngân."
+            )
     elif not graham_pass:
-        value_trap_warning = "Đòn bẩy cao hoặc thanh khoản yếu (D/E > 0.5 hoặc CR < 1.5) là rủi ro lớn nhất."
+        if is_bank:
+            value_trap_warning = "P/E ngân hàng chưa đủ hấp dẫn theo ngưỡng lọc NH (hoặc thiếu chất lượng ROE)."
+        else:
+            value_trap_warning = "Đòn bẩy cao hoặc thanh khoản yếu (D/E > 0.5 hoặc CR < 1.5) là rủi ro lớn nhất."
     elif roe < 15:
         value_trap_warning = "ROE chưa đủ mạnh, doanh nghiệp có thể rẻ nhưng thiếu chất lượng sinh lời bền vững."
     elif peg > 1.5:
         value_trap_warning = "Tăng trưởng không đủ bù định giá (PEG cao), dễ mua phải cổ phiếu đắt."
     else:
         value_trap_warning = "Không thấy bẫy giá trị lớn theo bộ lọc hiện tại."
+
+    pe_sanity_notes: list[str] = []
+    source_pe = None
+    try:
+        source_pe = float(snapshot.get("pe_ratio")) if snapshot.get("pe_ratio") not in (None, "") else None
+    except (TypeError, ValueError):
+        source_pe = None
+    if price > 0 and eps_for_graham > 0:
+        earnings_yield = eps_for_graham / price
+        if pe > 0 and pe < 5.0 and earnings_yield > 0.2:
+            pe_sanity_notes.append(
+                f"P/E tính lại={pe:.2f} rất thấp (EPS/giá={earnings_yield:.1%}) — nghi EPS lệch đơn vị/scale; "
+                "không tin MOS chỉ dựa P/E này."
+            )
+        if source_pe is not None and pe > 0:
+            pe_gap = abs(source_pe - pe) / max(source_pe, pe, 1e-6)
+            if pe_gap > 0.15:
+                pe_sanity_notes.append(
+                    f"P/E nguồn ({source_pe:.2f}) lệch {pe_gap * 100:.0f}% so với price/EPS ({pe:.2f})."
+                )
+    pe_sanity_block = snapshot.get("pe_sanity") if isinstance(snapshot.get("pe_sanity"), dict) else {}
+    if pe_anomaly_flag:
+        warn_vi = str(
+            snapshot.get("eps_pe_anomaly_warning_vi")
+            or pe_sanity_block.get("warning_vi")
+            or "P/E hiện tại có dấu hiệu bị méo mó do lợi nhuận đột biến. MOS đã được điều chỉnh thận trọng."
+        )
+        pe_sanity_notes.append(warn_vi)
+        for reason in pe_sanity_block.get("reasons") or []:
+            if reason and str(reason) not in pe_sanity_notes:
+                pe_sanity_notes.append(str(reason))
+        value_trap_warning = (value_trap_warning + " " + warn_vi).strip()
+    elif pe_sanity_notes:
+        value_trap_warning = (value_trap_warning + " " + " ".join(pe_sanity_notes)).strip()
+
+    # P0: MOS hard clamp + unit/PE sanity block
+    mos_raw = mos
+    mos_composite_raw = mos_composite
+    mos_gate: dict[str, Any] = {
+        "mos_integrity_blocked": False,
+        "reasons": [],
+        "note_vi": "",
+        "mos_raw_pct": mos_composite,
+        "mos_display_pct": mos_composite,
+    }
+    try:
+        from core.data_integrity import apply_mos_integrity_clamp
+
+        ey = (eps_for_graham / price) if price > 0 and eps_for_graham > 0 else None
+        mos_gate = apply_mos_integrity_clamp(
+            mos_composite,
+            pe_sanity_notes=pe_sanity_notes,
+            pe_anomaly_flag=bool(pe_anomaly_flag),
+            eps_anomaly_flag=bool(snapshot.get("eps_anomaly_flag")),
+            pe=pe if pe > 0 else None,
+            earnings_yield=ey,
+            price=price,
+            eps=eps_for_graham,
+        )
+        mos_composite = mos_gate.get("mos_display_pct")
+        if mos_gate.get("mos_integrity_blocked"):
+            if decision == "Mua mạnh":
+                decision = "Theo dõi"
+            if mos_gate.get("note_vi"):
+                value_trap_warning = (value_trap_warning + " " + str(mos_gate["note_vi"])).strip()
+                if str(mos_gate["note_vi"]) not in pe_sanity_notes:
+                    pe_sanity_notes.append(str(mos_gate["note_vi"]))
+        mos_g_gate = apply_mos_integrity_clamp(
+            mos,
+            pe_sanity_notes=pe_sanity_notes,
+            pe_anomaly_flag=bool(pe_anomaly_flag),
+            eps_anomaly_flag=bool(snapshot.get("eps_anomaly_flag")),
+            pe=pe if pe > 0 else None,
+            earnings_yield=ey,
+        )
+        mos = mos_g_gate.get("mos_display_pct")
+    except Exception:
+        pass
 
     advice = (
         f"Kết luận: {decision}. "
@@ -869,8 +1006,21 @@ def value_investing_summary(snapshot: dict[str, Any], include_extensions: bool =
         "price": price,
         "currency": snapshot.get("currency", "VND"),
         "eps": eps_reported,
+        "normalized_eps": eps_normalized if eps_normalized > 0 else None,
         "eps_for_graham": eps_for_graham,
         "eps_basis_key": eps_basis_key,
+        "eps_anomaly_flag": bool(snapshot.get("eps_anomaly_flag")),
+        "pe_anomaly_flag": pe_anomaly_flag,
+        "mos_requirement_bump_pct": mos_bump if pe_anomaly_flag else 0.0,
+        "eps_pe_anomaly_warning_vi": (
+            str(snapshot.get("eps_pe_anomaly_warning_vi") or "") if pe_anomaly_flag else ""
+        ),
+        "eps_normalizer_meta": (
+            snapshot.get("eps_normalizer_meta")
+            if isinstance(snapshot.get("eps_normalizer_meta"), dict)
+            else {}
+        ),
+        "pe_sanity_detail": pe_sanity_block,
         "growth_rate_pct_source": str(snapshot.get("growth_rate_pct_source") or "unspecified"),
         "growth_rate_pct_source_label_vi": str(snapshot.get("growth_rate_pct_source_label_vi") or "Không chỉ định"),
         "bond_yield_pct_used": bond,
@@ -881,10 +1031,15 @@ def value_investing_summary(snapshot: dict[str, Any], include_extensions: bool =
         "roe_5y_avg": roe,
         "intrinsic_value_graham": graham_number,
         "margin_of_safety_pct": mos,
+        "margin_of_safety_pct_raw": mos_raw,
         "target_price_forward_pe": tgt_pe,
         "target_price_pb_fair": tgt_pb,
         "composite_target_price": intrinsic,
         "margin_of_safety_composite_pct": mos_composite,
+        "margin_of_safety_composite_pct_raw": mos_composite_raw,
+        "mos_integrity_blocked": bool(mos_gate.get("mos_integrity_blocked")),
+        "mos_integrity_reasons": list(mos_gate.get("reasons") or []),
+        "mos_integrity_note_vi": str(mos_gate.get("note_vi") or ""),
         "composite_weights_base": {"graham": w_g, "forward_pe": w_pe, "pb": w_pb},
         "industry_weights_template": dict(w_tpl),
         "industry_display_vi": industry_display,
@@ -925,9 +1080,17 @@ def value_investing_summary(snapshot: dict[str, Any], include_extensions: bool =
         "peg": peg if peg > 0 else None,
         "peg_label": peg_label,
         "value_trap_warning": value_trap_warning,
+        "pe_sanity_notes": pe_sanity_notes,
         "data_trust": snapshot.get("data_trust") if isinstance(snapshot.get("data_trust"), dict) else {},
         "data_source": snapshot.get("source", "unknown"),
     }
+
+    try:
+        from core.decision_completeness import apply_completeness_to_valuation
+
+        result = apply_completeness_to_valuation(snapshot, result)
+    except Exception:
+        pass
 
     if include_extensions:
         try:

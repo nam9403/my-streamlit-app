@@ -9,6 +9,63 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      II_PYTEST_WORKERS: auto
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+          pip install pip-audit
+
+      - name: Run quality gate (advisory static + strict tests)
+        run: python scripts/quality_gate.py
+
+      - name: Run secret scan
+        run: python scripts/check_secrets.py
+
+      - name: Dependency vulnerability audit
+        run: pip-audit -r requirements.txt --progress-spinner off
+
+      - name: Run offline health check
+        run: python scripts/health_check.py
+
+      - name: Upload architecture artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: architecture-artifacts-${{ github.run_id }}
+          path: artifacts/architecture/
+          retention-days: 14
+
+  postgres-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ii_user
+          POSTGRES_PASSWORD: ii_pass
+          POSTGRES_DB: ii_app
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ii_user -d ii_app"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      II_DB_URL: ${{ secrets.II_DB_URL_SMOKE != '' && secrets.II_DB_URL_SMOKE || 'postgresql://ii_user:ii_pass@localhost:5432/ii_app' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,12 +81,8 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
 
-      - name: Run tests
-        run: python -m pytest -q
-
-      - name: Run secret scan
-        run: python scripts/check_secrets.py
-
-      - name: Run offline health check
-        run: python scripts/health_check.py
+      - name: Run PostgreSQL integration smoke
+        run: |
+          python scripts/preflight_check.py --prod
+          python -m pytest -q tests/test_postgres_integration_smoke.py
 

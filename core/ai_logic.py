@@ -2,18 +2,31 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
+import logging
 import os
 import time
-import hashlib
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
-import requests
+import pandas as pd
+import requests  # type: ignore
 
+from core.deep_insight_service import analyze_earnings_quality, analyze_smart_money_flow
 from core.engine import backtest_action_strategy, build_investment_context, detect_market_phase_from_ohlcv
+from core.exceptions import DataProviderError
+from core.portfolio_protector_service import build_portfolio_protector
+from core.probabilistic_forecast_service import (
+    estimate_gbm_mu_sigma,
+    monte_carlo_forecast_range,
+    signal_alignment_summary,
+)
 from core.valuation import value_investing_summary
 from scrapers.portal import PortalDataError, fetch_financial_indicators, fetch_latest_news, fetch_ohlcv_history
+
+logger = logging.getLogger(__name__)
 
 
 class AILogicError(Exception):
@@ -28,6 +41,39 @@ PROFILE_LABELS = {
 CONFIDENCE_GATE_MIN = 65.0
 _KEY_HEALTH: dict[str, dict[str, Any]] = {}
 _LLM_RESPONSE_CACHE: dict[str, dict[str, Any]] = {}
+ROOT = Path(__file__).resolve().parent.parent
+RECOMMENDATION_AUDIT_PATH = ROOT / "data" / "reports" / "recommendation_audit.jsonl"
+
+
+def _as_dict(value: Any) -> dict[str, Any]:
+    return value if isinstance(value, dict) else {}
+
+
+def _extract_llm_text_openai_style(js: Any) -> str:
+    root = _as_dict(js)
+    choices = root.get("choices")
+    if isinstance(choices, list) and choices:
+        first = _as_dict(choices[0])
+        message = _as_dict(first.get("message"))
+        content = message.get("content")
+        if content is not None:
+            return str(content)
+    raise KeyError("missing choices[0].message.content")
+
+
+def _extract_llm_text_gemini(js: Any) -> str:
+    root = _as_dict(js)
+    candidates = root.get("candidates")
+    if isinstance(candidates, list) and candidates:
+        first = _as_dict(candidates[0])
+        content = _as_dict(first.get("content"))
+        parts = content.get("parts")
+        if isinstance(parts, list) and parts:
+            first_part = _as_dict(parts[0])
+            text = first_part.get("text")
+            if text is not None:
+                return str(text)
+    raise KeyError("missing candidates[0].content.parts[0].text")
 
 
 def _mask_key(key: str) -> str:
@@ -181,10 +227,37 @@ def _probabilistic_forecast(
     phase: dict[str, Any],
     financials: dict[str, Any],
     news: list[dict[str, Any]],
+    technical_ohlcv: Any | None = None,
     *,
     horizon_days: int = 90,
+    ohlcv_integrity: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     price = _safe_num(valuation.get("price"), 0.0)
+    # P0: block MC when OHLCV integrity / RSI indicator fail
+    try:
+        from core.data_integrity import degraded_forecast_payload
+
+        integrity = ohlcv_integrity if isinstance(ohlcv_integrity, dict) else {}
+        if not integrity and isinstance(technical_ohlcv, pd.DataFrame):
+            raw_i = technical_ohlcv.attrs.get("ohlcv_integrity")
+            if isinstance(raw_i, dict):
+                integrity = raw_i
+        metrics = (phase or {}).get("metrics") if isinstance((phase or {}).get("metrics"), dict) else {}
+        if not integrity and isinstance(metrics.get("ohlcv_integrity"), dict):
+            integrity = metrics["ohlcv_integrity"]
+        if integrity.get("block_forecast_mc") or integrity.get("critical"):
+            return degraded_forecast_payload(
+                horizon_days=horizon_days,
+                reason_vi=str(integrity.get("note_vi") or "")
+                or "Dự phóng MC bị chặn — OHLCV integrity fail (P0).",
+            )
+        if metrics.get("rsi_indicator_fail") or valuation.get("mos_integrity_blocked"):
+            return degraded_forecast_payload(
+                horizon_days=horizon_days,
+                reason_vi="Dự phóng MC bị chặn — RSI fail hoặc MOS integrity block (P0).",
+            )
+    except Exception:
+        pass
     intrinsic = _safe_num(
         valuation.get("composite_target_price") or valuation.get("intrinsic_value_graham"),
         0.0,
@@ -259,15 +332,79 @@ def _probabilistic_forecast(
         {"name": "base", "probability": round(p_base, 3), "target_price": round(base_px, 2), "return_pct": round(base_ret * 100.0, 2)},
         {"name": "bear", "probability": round(p_bear, 3), "target_price": round(bear_px, 2), "return_pct": round(bear_ret * 100.0, 2)},
     ]
+    mc_target = intrinsic if intrinsic > 0 else expected_price
+    mu_annual, sigma_annual = estimate_gbm_mu_sigma(technical_ohlcv) if technical_ohlcv is not None else (0.12, 0.28)
+    mc = monte_carlo_forecast_range(
+        s0=price,
+        horizon_days=horizon_days,
+        mu_annual=mu_annual,
+        sigma_annual=sigma_annual,
+        simulations=8000,
+        target_price=mc_target,
+        random_seed=42,
+    )
+    forecast_range = {}
+    if mc is not None:
+        forecast_range = {
+            "p10_price": mc.p10_price,
+            "p50_price": mc.p50_price,
+            "p90_price": mc.p90_price,
+            "expected_price_mc": mc.expected_price,
+            "prob_reach_target_pct": mc.prob_reach_target_pct,
+            "simulations": mc.simulations,
+            "mu_annual": mc.mu_annual,
+            "sigma_annual": mc.sigma_annual,
+            "target_price": round(float(mc_target), 2),
+        }
+
     summary = (
         f"Dự phóng {horizon_days} ngày: expected return {expected_ret:.2f}% "
         f"(bull {p_bull*100:.0f}% / base {p_base*100:.0f}% / bear {p_bear*100:.0f}%)."
     )
+    if forecast_range:
+        try:
+            from core.forecast_range_sanity import assess_forecast_range_sanity, estimate_atr_pct
+
+            atr_pct = estimate_atr_pct(technical_ohlcv if isinstance(technical_ohlcv, pd.DataFrame) else None)
+            sanity = assess_forecast_range_sanity(
+                price=price,
+                p10=forecast_range.get("p10_price"),
+                p50=forecast_range.get("p50_price"),
+                p90=forecast_range.get("p90_price"),
+                atr_pct=atr_pct,
+                horizon_days=horizon_days,
+            )
+            forecast_range["range_sanity"] = sanity
+            if not sanity.get("ok"):
+                forecast_range = {
+                    "suppressed": True,
+                    "suppressed_reason_vi": sanity.get("note_vi"),
+                    "range_sanity": sanity,
+                    "target_price": round(float(mc_target), 2),
+                }
+                summary = (
+                    f"Dự phóng {horizon_days} ngày: expected return {expected_ret:.2f}% "
+                    f"(bull {p_bull*100:.0f}% / base {p_base*100:.0f}% / bear {p_bear*100:.0f}%). "
+                    f"{sanity.get('note_vi')}"
+                )
+            else:
+                summary += (
+                    f" Monte Carlo range P10/P50/P90: "
+                    f"{forecast_range['p10_price']:,.0f}/{forecast_range['p50_price']:,.0f}/{forecast_range['p90_price']:,.0f} VND "
+                    f"| P(đạt target)={forecast_range['prob_reach_target_pct']:.1f}%."
+                )
+        except Exception:
+            summary += (
+                f" Monte Carlo range P10/P50/P90: "
+                f"{forecast_range['p10_price']:,.0f}/{forecast_range['p50_price']:,.0f}/{forecast_range['p90_price']:,.0f} VND "
+                f"| P(đạt target)={forecast_range.get('prob_reach_target_pct', 0):.1f}%."
+            )
     return {
         "horizon_days": horizon_days,
         "expected_price": round(expected_price, 2),
         "expected_return_pct": round(expected_ret, 2),
         "scenarios": scenarios,
+        "forecast_range": forecast_range,
         "summary": summary,
     }
 
@@ -477,7 +614,7 @@ def _build_fallback_7whys(
         f"Why 4 (tăng trưởng): Rev YoY={financials.get('revenue_growth_yoy')}, Profit YoY={financials.get('profit_growth_yoy')}.",
         f"Why 5 (định giá ngành): {valuation.get('valuation_transparency_line', '')}",
         f"Why 6 (tin tức): Headline dẫn dắt gần nhất: {head}",
-        f"Why 7 (hành động): Ưu tiên kỷ luật điểm mua/chốt/cắt lỗ theo vùng giá định lượng.",
+        "Why 7 (hành động): Ưu tiên kỷ luật điểm mua/chốt/cắt lỗ theo vùng giá định lượng.",
     ]
 
     return {
@@ -499,7 +636,7 @@ def _build_fallback_7whys(
 
 def _derive_financials_from_snapshot(sym: str, snapshot: dict[str, Any]) -> dict[str, Any]:
     """Best-effort financial ratios when live ratio API is unavailable."""
-    pio = snapshot.get("piotroski") if isinstance(snapshot.get("piotroski"), dict) else {}
+    pio = _as_dict(snapshot.get("piotroski"))
     rev = _safe_num(pio.get("revenue"))
     rev_p = _safe_num(pio.get("revenue_prior"))
     ni = _safe_num(pio.get("net_income"))
@@ -530,6 +667,11 @@ def _derive_financials_from_snapshot(sym: str, snapshot: dict[str, Any]) -> dict
     }
 
 
+def _strict_real_financial_data() -> bool:
+    v = str(os.environ.get("II_STRICT_REAL_FINANCIAL_DATA", "1") or "").strip().lower()
+    return v in ("1", "true", "yes", "on")
+
+
 def _call_openai(messages: list[dict[str, str]]) -> str:
     model = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
     url = "https://api.openai.com/v1/chat/completions"
@@ -549,7 +691,7 @@ def _call_openai(messages: list[dict[str, str]]) -> str:
             js = r.json()
             elapsed_ms = (time.perf_counter() - started) * 1000.0
             _record_key_health("openai", api_key, elapsed_ms, True)
-            return js["choices"][0]["message"]["content"]
+            return _extract_llm_text_openai_style(js)
         except (requests.RequestException, KeyError, ValueError) as e:
             elapsed_ms = (time.perf_counter() - started) * 1000.0
             _record_key_health("openai", api_key, elapsed_ms, False, str(e))
@@ -580,7 +722,7 @@ def _call_groq(messages: list[dict[str, str]]) -> str:
             js = r.json()
             elapsed_ms = (time.perf_counter() - started) * 1000.0
             _record_key_health("groq", api_key, elapsed_ms, True)
-            return js["choices"][0]["message"]["content"]
+            return _extract_llm_text_openai_style(js)
         except (requests.RequestException, KeyError, ValueError) as e:
             elapsed_ms = (time.perf_counter() - started) * 1000.0
             _record_key_health("groq", api_key, elapsed_ms, False, str(e))
@@ -611,7 +753,7 @@ def _call_gemini(messages: list[dict[str, str]]) -> str:
             js = r.json()
             elapsed_ms = (time.perf_counter() - started) * 1000.0
             _record_key_health("gemini", api_key, elapsed_ms, True)
-            return js["candidates"][0]["content"]["parts"][0]["text"]
+            return _extract_llm_text_gemini(js)
         except (requests.RequestException, KeyError, ValueError) as e:
             elapsed_ms = (time.perf_counter() - started) * 1000.0
             _record_key_health("gemini", api_key, elapsed_ms, False, str(e))
@@ -680,16 +822,97 @@ def _confidence_score(
 
 
 def _final_action(valuation: dict[str, Any], phase: dict[str, Any], confidence: float) -> str:
+    """Legacy heuristic — P1 playbook may upgrade WATCH→CONDITIONAL_BUY afterward."""
     if confidence < CONFIDENCE_GATE_MIN:
         return "WATCH"
     mos = float(valuation.get("margin_of_safety_composite_pct") or 0)
     fscore = int(valuation.get("piotroski_score") or 0)
     ph = str(phase.get("phase", "neutral"))
+    legend = valuation.get("legend_scorecard") if isinstance(valuation.get("legend_scorecard"), dict) else {}
+    legend_quality = bool(legend.get("buffett_pass") or legend.get("graham_pass"))
+    is_bank = bool(valuation.get("is_bank_sector"))
+    if valuation.get("mos_integrity_blocked"):
+        if mos >= 12 and (legend_quality or fscore >= 2):
+            return "WATCH"
+        return "AVOID" if mos < -10 else "WATCH"
+
+    # BUY cứng: đủ F-Score + pha thuận
     if confidence >= 65 and mos >= 15 and fscore >= 6 and ph in ("accumulation", "breakout"):
+        return "BUY"
+    # Ngân hàng: F-Score công nghiệp thường thấp — dùng Legend quality thay F>=6
+    if (
+        is_bank
+        and confidence >= 65
+        and mos >= 15
+        and legend.get("buffett_pass")
+        and ph in ("accumulation", "breakout")
+    ):
         return "BUY"
     if mos >= 3 and fscore >= 4:
         return "HOLD"
+    # Định giá hấp dẫn nhưng F-Score/pha chưa đủ → WATCH (playbook → CONDITIONAL_BUY)
+    if mos >= 12 and (legend_quality or fscore >= 2):
+        return "WATCH"
     return "AVOID"
+
+
+def _decision_alignment(
+    valuation: dict[str, Any],
+    final_action: str,
+    phase: dict[str, Any],
+) -> dict[str, Any]:
+    """
+    Thống nhất Legend (instant_conclusion) với final_action để UI không mâu thuẫn.
+    """
+    legend_vi = str(valuation.get("instant_conclusion") or "").strip()
+    action = str(final_action or "WATCH").upper()
+    ph = str((phase or {}).get("phase") or "neutral")
+    legend_map = {
+        "mua mạnh": "BUY",
+        "theo dõi": "WATCH",
+        "bỏ qua": "AVOID",
+    }
+    legend_action = legend_map.get(legend_vi.lower(), "WATCH")
+    if legend_action == action or (legend_action == "BUY" and action in ("BUY", "HOLD", "CONDITIONAL_BUY")):
+        level = "aligned"
+        note = "Định giá Legend và khuyến nghị hành động cùng hướng."
+        unified = action
+    elif action == "CONDITIONAL_BUY":
+        level = "soft_aligned"
+        note = "MUA CÓ ĐIỀU KIỆN: thesis hấp dẫn, chờ trigger/pha/regime."
+        unified = "CONDITIONAL_BUY"
+    elif legend_action == "BUY" and action in ("WATCH", "AVOID", "HOLD"):
+        level = "valuation_vs_timing"
+        mos = float(valuation.get("margin_of_safety_composite_pct") or 0.0)
+        blocked = bool(valuation.get("mos_integrity_blocked"))
+        # Tuned: attractive + timing chưa sẵn → HOLD (không COND sớm; backtest đã chứng minh COND sớm thua WATCH)
+        if action in ("WATCH", "HOLD") and (not blocked) and mos >= 8.0:
+            unified = "HOLD"
+            note = (
+                f"Định giá hấp dẫn ({legend_vi}) nhưng pha/gate kỹ thuật ({ph}) "
+                f"chưa ARMED+READY — HOLD/theo dõi, không COND sớm."
+            )
+        else:
+            unified = "WATCH" if action == "AVOID" else action
+            note = (
+                f"Định giá hấp dẫn ({legend_vi}) nhưng pha/gate kỹ thuật ({ph}) "
+                f"chưa ủng hộ giải ngân — ưu tiên {unified}."
+            )
+    elif legend_action == "AVOID" and action in ("BUY", "CONDITIONAL_BUY"):
+        level = "conflict"
+        note = "Legend cảnh báo rủi ro trong khi action nghiêng mua — ưu tiên thận trọng WATCH."
+        unified = "WATCH"
+    else:
+        level = "soft_divergence"
+        note = f"Legend={legend_vi or '—'}; action={action}; pha={ph}."
+        unified = action
+    return {
+        "legend_view": legend_vi or None,
+        "action_view": action,
+        "unified_action": unified,
+        "alignment": level,
+        "note_vi": note,
+    }
 
 
 def _data_reliability(
@@ -725,6 +948,93 @@ def _data_reliability(
     }
 
 
+def _data_reliability_score(rel: dict[str, Any]) -> float:
+    tech = 1.0 if bool((rel.get("technical") or {}).get("ok")) else 0.0
+    fin = float((rel.get("financial") or {}).get("quality_score") or 0.0) / 5.0
+    fin = max(0.0, min(fin, 1.0))
+    news_count = int((rel.get("news") or {}).get("count") or 0)
+    news = min(news_count, 5) / 5.0
+    bt_ok = 1.0 if bool((rel.get("backtest") or {}).get("ok")) else 0.0
+    # Trọng số: financial + technical quan trọng nhất cho action gate.
+    score = tech * 0.30 + fin * 0.35 + news * 0.15 + bt_ok * 0.20
+    return round(score * 100.0, 1)
+
+
+def _data_reliability_breakdown(rel: dict[str, Any]) -> dict[str, float]:
+    """
+    Normalized component scores (0-100) for UI explainability.
+    """
+    tech = 100.0 if bool((rel.get("technical") or {}).get("ok")) else 0.0
+    fin_raw = float((rel.get("financial") or {}).get("quality_score") or 0.0)
+    fin = max(0.0, min(fin_raw / 5.0, 1.0)) * 100.0
+    news_count = int((rel.get("news") or {}).get("count") or 0)
+    news = (min(news_count, 5) / 5.0) * 100.0
+    bt = 100.0 if bool((rel.get("backtest") or {}).get("ok")) else 0.0
+    return {
+        "technical_score": round(tech, 1),
+        "financial_score": round(fin, 1),
+        "news_score": round(news, 1),
+        "backtest_score": round(bt, 1),
+    }
+
+
+def _decision_readiness_label(
+    *,
+    confidence_score: float,
+    reliability_score: float,
+    confidence_gate_passed: bool,
+    output_gate_passed: bool,
+    reliability_gate_passed: bool,
+) -> str:
+    if not confidence_gate_passed or not output_gate_passed or not reliability_gate_passed:
+        return "LOW"
+    if confidence_score >= 78.0 and reliability_score >= 75.0:
+        return "HIGH"
+    if confidence_score >= 65.0 and reliability_score >= 55.0:
+        return "MEDIUM"
+    return "LOW"
+
+
+def _analysis_verdict(
+    *,
+    final_action: str,
+    confidence_score: float,
+    reliability_score: float,
+    confidence_gate_passed: bool,
+    output_gate_passed: bool,
+    reliability_gate_passed: bool,
+    decision_readiness: str,
+) -> str:
+    """
+    Unified verdict for execution safety across modules.
+    - GO: all gates pass, readiness medium/high, action BUY with strong confidence.
+    - CAUTION: data usable but not strong enough for aggressive execution.
+    - NO-GO: one or more hard gates fail, or action is explicitly avoid.
+    """
+    action = str(final_action or "WATCH").upper()
+    readiness = str(decision_readiness or "LOW").upper()
+    if not confidence_gate_passed or not output_gate_passed or not reliability_gate_passed:
+        return "NO-GO"
+    if action == "AVOID":
+        return "NO-GO"
+    if action == "CONDITIONAL_BUY":
+        return "CAUTION"
+    if action == "BUY" and confidence_score >= 75.0 and reliability_score >= 65.0 and readiness in ("HIGH", "MEDIUM"):
+        return "GO"
+    return "CAUTION"
+
+
+def _smart_money_reliability(sm: dict[str, Any] | None) -> str:
+    data = sm if isinstance(sm, dict) else {}
+    avg_conf = float(data.get("avg_event_confidence") or 0.0)
+    structured_n = int(data.get("structured_event_count") or 0)
+    if structured_n >= 5 and avg_conf >= 0.75:
+        return "HIGH"
+    if structured_n >= 2 and avg_conf >= 0.55:
+        return "MEDIUM"
+    return "LOW"
+
+
 def _output_quality_gate(valuation: dict[str, Any], risk_plan: dict[str, Any]) -> dict[str, Any]:
     """
     Guardrail for practical actionability of generated plan.
@@ -758,6 +1068,100 @@ def _output_quality_gate(valuation: dict[str, Any], risk_plan: dict[str, Any]) -
     return {"passed": len(reasons) == 0, "reasons": reasons}
 
 
+def _parse_iso_utc(ts: str) -> datetime | None:
+    raw = str(ts or "").strip()
+    if not raw:
+        return None
+    try:
+        return datetime.fromisoformat(raw.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
+def _freshness_hours(ts: str, now_utc: datetime) -> float | None:
+    parsed = _parse_iso_utc(ts)
+    if parsed is None:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    delta_h = (now_utc - parsed.astimezone(timezone.utc)).total_seconds() / 3600.0
+    if delta_h < 0:
+        return 0.0
+    return round(delta_h, 2)
+
+
+def _build_data_provenance(
+    *,
+    financials: dict[str, Any],
+    phase: dict[str, Any],
+    news: list[dict[str, str]],
+    used_fallback: bool,
+    now_utc: datetime,
+) -> dict[str, Any]:
+    fin_as_of = str(financials.get("as_of_utc") or financials.get("updated_at") or "")
+    tech_as_of = str((phase.get("metrics") or {}).get("as_of_utc") or "")
+    news_as_of = ""
+    if news:
+        first = news[0] if isinstance(news[0], dict) else {}
+        news_as_of = str(first.get("published_at") or first.get("time") or "")
+    return {
+        "financials": {
+            "source": str(financials.get("source") or "unknown"),
+            "as_of_utc": fin_as_of or None,
+            "freshness_hours": _freshness_hours(fin_as_of, now_utc),
+            "fallback_used": bool(str(financials.get("source") or "").startswith("snapshot_derived") or used_fallback),
+        },
+        "technical": {
+            "source": "portal_ohlcv",
+            "as_of_utc": tech_as_of or None,
+            "freshness_hours": _freshness_hours(tech_as_of, now_utc),
+            "fallback_used": bool(phase.get("phase") == "neutral" and not bool(phase.get("metrics"))),
+        },
+        "news": {
+            "source": "cafef_vietstock",
+            "as_of_utc": news_as_of or None,
+            "freshness_hours": _freshness_hours(news_as_of, now_utc),
+            "fallback_used": len(news) == 0,
+        },
+    }
+
+
+def _do_not_act_reasons(parsed: dict[str, Any]) -> list[str]:
+    reasons: list[str] = []
+    if not bool(parsed.get("gate_passed")):
+        reasons.append("confidence_below_gate")
+    if not bool(parsed.get("output_gate_passed")):
+        reasons.append("output_quality_gate_failed")
+    if not bool(parsed.get("data_reliability_gate_passed")):
+        reasons.append("data_reliability_too_low")
+    if str(parsed.get("analysis_verdict") or "").upper() == "NO-GO":
+        reasons.append("analysis_verdict_no_go")
+    return reasons
+
+
+def _write_recommendation_audit(parsed: dict[str, Any]) -> str | None:
+    payload = {
+        "as_of_utc": parsed.get("as_of_utc"),
+        "ticker": parsed.get("ticker"),
+        "investor_profile": parsed.get("investor_profile"),
+        "analysis_verdict": parsed.get("analysis_verdict"),
+        "final_action": parsed.get("final_action"),
+        "confidence_score": parsed.get("confidence_score"),
+        "data_reliability_score": parsed.get("data_reliability_score"),
+        "confidence_gate_min": parsed.get("confidence_gate_min"),
+        "do_not_act_reasons": parsed.get("do_not_act_reasons"),
+        "data_provenance": parsed.get("data_provenance"),
+        "risk_plan": parsed.get("risk_plan"),
+    }
+    try:
+        RECOMMENDATION_AUDIT_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with open(RECOMMENDATION_AUDIT_PATH, "a", encoding="utf-8") as f:
+            f.write(json.dumps(payload, ensure_ascii=False) + "\n")
+        return str(RECOMMENDATION_AUDIT_PATH)
+    except OSError:
+        return None
+
+
 def generate_strategic_report(
     ticker: str,
     snapshot: dict[str, Any],
@@ -787,6 +1191,8 @@ def generate_strategic_report(
     financials: dict[str, Any] = {}
     news: list[dict[str, str]] = []
     backtest_summary: dict[str, Any] = {}
+    technical_ohlcv = None
+    used_context_fallback = False
     try:
         context_pack = build_investment_context(
             sym,
@@ -795,6 +1201,7 @@ def generate_strategic_report(
             news_limit=news_limit,
             fast_mode=fast_mode,
         )
+        technical_ohlcv = context_pack["technical"]["ohlcv"]
         phase = dict(context_pack["technical"]["market_phase"])
         valuation = dict(context_pack["valuation"])
         financials = dict(context_pack["financials"])
@@ -802,26 +1209,53 @@ def generate_strategic_report(
         try:
             backtest_summary = backtest_action_strategy(context_pack["technical"]["ohlcv"], horizon_days=10)
         except Exception:
+            logger.warning("strategic_report_backtest_failed symbol=%s", sym, exc_info=True)
             backtest_summary = {}
-    except Exception:
+    except Exception as ctx_err:
+        used_context_fallback = True
+        logger.warning(
+            "strategic_report_context_failed symbol=%s falling_back err=%r",
+            sym,
+            ctx_err,
+            exc_info=True,
+        )
         # Fallback mềm: lấy từng mảnh độc lập, tránh lỗi một nguồn làm hỏng toàn bộ report.
         try:
             ohlcv = fetch_ohlcv_history(sym, sessions=sessions)
+            technical_ohlcv = ohlcv
             ph = detect_market_phase_from_ohlcv(ohlcv)
             phase = {"phase": ph.phase, "reason": ph.reason, "metrics": dict(ph.metrics)}
             try:
                 backtest_summary = backtest_action_strategy(ohlcv, horizon_days=10)
             except Exception:
+                logger.warning("strategic_report_backtest_fallback_failed symbol=%s", sym, exc_info=True)
                 backtest_summary = {}
-        except Exception:
-            pass
+        except Exception as ohlcv_err:
+            logger.error(
+                "strategic_report_ohlcv_unavailable symbol=%s err=%r",
+                sym,
+                ohlcv_err,
+                exc_info=True,
+            )
+            if str(os.environ.get("II_STRICT_DATA_PROVIDER", "0")).strip().lower() in (
+                "1",
+                "true",
+                "yes",
+                "on",
+            ):
+                raise DataProviderError(f"OHLCV unavailable for {sym}: {ohlcv_err}") from ohlcv_err
         try:
             financials = fetch_financial_indicators(sym, fast_mode=fast_mode)
-        except PortalDataError:
-            financials = _derive_financials_from_snapshot(sym, snapshot)
+        except PortalDataError as fin_err:
+            logger.warning("strategic_report_financials_failed symbol=%s err=%r", sym, fin_err, exc_info=True)
+            if _strict_real_financial_data():
+                financials = {"symbol": sym, "source": "unavailable_live"}
+            else:
+                financials = _derive_financials_from_snapshot(sym, snapshot)
         try:
             news = fetch_latest_news(sym, limit=news_limit)
-        except PortalDataError:
+        except PortalDataError as news_err:
+            logger.warning("strategic_report_news_failed symbol=%s err=%r", sym, news_err, exc_info=True)
             news = []
 
     context = {
@@ -906,6 +1340,13 @@ def generate_strategic_report(
                         break
                     except AILogicError as e:
                         last_llm_err = e
+                        logger.warning(
+                            "llm_provider_failed provider=%s symbol=%s err=%r",
+                            provider_name,
+                            sym,
+                            e,
+                            exc_info=True,
+                        )
                         continue
                 if not llm_used and last_llm_err is not None:
                     raise last_llm_err
@@ -935,11 +1376,22 @@ def generate_strategic_report(
                                         _llm_cache_set(quality_cache_key, llm_text, llm_provider)
                                     break
                             except AILogicError:
+                                logger.warning(
+                                    "llm_quality_escalation_provider_failed provider=%s symbol=%s",
+                                    provider_name,
+                                    sym,
+                                    exc_info=True,
+                                )
                                 continue
             if llm_used and (not llm_cache_hit) and preferred_llm in ("groq", "openai", "gemini"):
                 if llm_cache_key:
                     _llm_cache_set(llm_cache_key, llm_text, llm_provider)
         except AILogicError:
+            logger.warning(
+                "llm_providers_exhausted falling_back_to_template symbol=%s",
+                sym,
+                exc_info=True,
+            )
             llm_text = ""
             llm_used = False
             llm_provider = "fallback_template"
@@ -983,18 +1435,131 @@ def generate_strategic_report(
     parsed["valuation"] = valuation
     parsed["financials"] = financials
     parsed["news"] = news
+    for _k in (
+        "ohlcv_close",
+        "ohlcv_close_source",
+        "price_crosscheck_note_vi",
+        "price_crosscheck",
+        "eps_normalized",
+        "ohlcv_integrity",
+        "rsi_anomaly",
+        "rsi_indicator_fail",
+    ):
+        if snapshot.get(_k) is not None:
+            parsed[_k] = snapshot.get(_k)
+    # Ensure phase RSI flags visible on report root for trust / trade-plan
+    try:
+        _pm = (phase or {}).get("metrics") if isinstance(phase, dict) else {}
+        if isinstance(_pm, dict):
+            if _pm.get("rsi_anomaly") in (1, 1.0, True):
+                parsed["rsi_anomaly"] = 1
+                snapshot["rsi_anomaly"] = 1
+            if _pm.get("rsi_indicator_fail"):
+                parsed["rsi_indicator_fail"] = True
+                snapshot["rsi_indicator_fail"] = True
+            if isinstance(_pm.get("ohlcv_integrity"), dict) and not parsed.get("ohlcv_integrity"):
+                parsed["ohlcv_integrity"] = _pm["ohlcv_integrity"]
+                snapshot["ohlcv_integrity"] = _pm["ohlcv_integrity"]
+        if isinstance(valuation, dict) and valuation.get("mos_integrity_blocked"):
+            snapshot["mos_integrity_blocked"] = True
+            parsed["mos_integrity_blocked"] = True
+    except Exception:
+        pass
+    try:
+        from core.data_trust_score import compute_data_trust_score
+
+        ohlcv_trust = {}
+        if isinstance(technical_ohlcv, pd.DataFrame) and not technical_ohlcv.empty:
+            raw_trust = technical_ohlcv.attrs.get("data_trust")
+            if isinstance(raw_trust, dict):
+                ohlcv_trust = raw_trust
+            if not snapshot.get("ohlcv_integrity"):
+                raw_i = technical_ohlcv.attrs.get("ohlcv_integrity")
+                if isinstance(raw_i, dict):
+                    snapshot["ohlcv_integrity"] = raw_i
+                    parsed["ohlcv_integrity"] = raw_i
+        fin_trust = (financials or {}).get("data_trust") if isinstance(financials, dict) else {}
+        # Attach phase metrics onto valuation for trust RSI lookup
+        val_for_trust = dict(valuation) if isinstance(valuation, dict) else {}
+        if isinstance(phase, dict) and isinstance(phase.get("metrics"), dict):
+            val_for_trust["phase_metrics"] = phase["metrics"]
+        parsed["data_trust_score"] = compute_data_trust_score(
+            snapshot=snapshot,
+            financials=financials if isinstance(financials, dict) else {},
+            valuation=val_for_trust,
+            ohlcv_trust=ohlcv_trust,
+            fin_trust=fin_trust if isinstance(fin_trust, dict) else None,
+        )
+    except Exception:
+        pass
     parsed["risk_plan"] = risk_plan
     parsed["backtest_summary"] = backtest_summary
     parsed["probabilistic_forecast"] = _probabilistic_forecast(
-        valuation, phase, financials, news, horizon_days=90 if not fast_mode else 45
+        valuation,
+        phase,
+        financials,
+        news,
+        technical_ohlcv=technical_ohlcv,
+        horizon_days=90 if not fast_mode else 45,
+        ohlcv_integrity=snapshot.get("ohlcv_integrity")
+        if isinstance(snapshot.get("ohlcv_integrity"), dict)
+        else None,
     )
+    try:
+        bench_ohlcv = fetch_ohlcv_history("VNINDEX", sessions=sessions)
+    except Exception:
+        logger.warning("benchmark_ohlcv_failed symbol=VNINDEX", exc_info=True)
+        bench_ohlcv = pd.DataFrame(columns=["open", "high", "low", "close", "volume"])
+    parsed["portfolio_protector"] = build_portfolio_protector(
+        stock_symbol=sym,
+        stock_ohlcv=technical_ohlcv if isinstance(technical_ohlcv, pd.DataFrame) else pd.DataFrame(technical_ohlcv or []),
+        benchmark_ohlcv=bench_ohlcv if isinstance(bench_ohlcv, pd.DataFrame) else pd.DataFrame(bench_ohlcv or []),
+        expected_return_3m_pct=float((parsed.get("probabilistic_forecast") or {}).get("expected_return_pct") or 0.0),
+    )
+    deep_insight = {
+        "earnings_quality": analyze_earnings_quality(snapshot, valuation),
+        "smart_money_flow": analyze_smart_money_flow(
+            news,
+            symbol=sym,
+            structured_events=snapshot.get("smart_money_events")
+            if isinstance(snapshot.get("smart_money_events"), list)
+            else None,
+        ),
+    }
+    parsed["deep_insight"] = deep_insight
     parsed["llm_used"] = llm_used and ("analysis_text" in parsed)
     parsed["llm_provider"] = llm_provider
     parsed["llm_cache_hit"] = llm_cache_hit
     parsed["llm_escalated"] = llm_escalated
     parsed["llm_escalation_attempted"] = llm_escalation_attempted
+    align = signal_alignment_summary(
+        phase_name=str((phase or {}).get("phase") or "neutral"),
+        f_score=int((valuation or {}).get("piotroski_score") or 0),
+        mos_pct=float((valuation or {}).get("margin_of_safety_composite_pct") or 0.0),
+        news=news,
+    )
+    parsed["signal_alignment"] = align
     parsed["data_reliability"] = _data_reliability(phase, financials, news, parsed["llm_used"], backtest_summary)
-    conf = _confidence_score(phase, financials, news, parsed["llm_used"], backtest_summary)
+    parsed["data_reliability_score"] = _data_reliability_score(parsed["data_reliability"])
+    parsed["data_reliability_breakdown"] = _data_reliability_breakdown(parsed["data_reliability"])
+    conf_raw = _safe_num(_confidence_score(phase, financials, news, parsed["llm_used"], backtest_summary), 0.0)
+    if str(align.get("level") or "") == "high_alignment":
+        conf_raw += 8.0
+    elif bool(align.get("stand_aside")):
+        conf_raw -= 18.0
+    if bool((deep_insight.get("earnings_quality") or {}).get("warning")):
+        conf_raw -= 8.0
+    sm_bias = str((deep_insight.get("smart_money_flow") or {}).get("bias") or "neutral")
+    if sm_bias == "bullish":
+        conf_raw += 3.0
+    elif sm_bias == "bearish":
+        conf_raw -= 5.0
+    sm_rel = _smart_money_reliability(deep_insight.get("smart_money_flow"))
+    if sm_rel == "HIGH":
+        conf_raw += 2.0
+    elif sm_rel == "LOW":
+        conf_raw -= 4.0
+    conf = max(0.0, min(100.0, conf_raw))
     parsed["forecast_reliability"] = _forecast_reliability_summary(
         parsed["probabilistic_forecast"], backtest_summary, conf
     )
@@ -1002,10 +1567,223 @@ def generate_strategic_report(
     parsed["confidence_gate_min"] = CONFIDENCE_GATE_MIN
     parsed["gate_passed"] = conf >= CONFIDENCE_GATE_MIN
     parsed["final_action"] = _final_action(valuation, phase, conf)
+    if bool(align.get("stand_aside")):
+        parsed["final_action"] = "WATCH"
+        parsed["signal_conflict_warning"] = "Rủi ro cao - Nên đứng ngoài do tín hiệu kỹ thuật/cơ bản/tin tức xung đột."
+    else:
+        parsed["signal_conflict_warning"] = ""
+    if bool((deep_insight.get("earnings_quality") or {}).get("warning")):
+        parsed["final_action"] = "WATCH"
+        parsed["signal_conflict_warning"] = (
+            str(parsed.get("signal_conflict_warning") or "")
+            + (" " if parsed.get("signal_conflict_warning") else "")
+            + "Cảnh báo chất lượng lợi nhuận: lợi nhuận và CFO lệch pha."
+        ).strip()
+    parsed["smart_money_reliability"] = sm_rel
+    if sm_rel == "LOW" and str(parsed.get("final_action") or "").upper() == "BUY":
+        parsed["final_action"] = "HOLD"
+        parsed["signal_conflict_warning"] = (
+            str(parsed.get("signal_conflict_warning") or "")
+            + (" " if parsed.get("signal_conflict_warning") else "")
+            + "Độ tin cậy smart-money thấp, hạ khuyến nghị xuống HOLD."
+        ).strip()
     out_gate = _output_quality_gate(valuation, risk_plan)
     parsed["output_quality"] = out_gate
     parsed["output_gate_passed"] = bool(out_gate.get("passed"))
     if not parsed["output_gate_passed"]:
         parsed["final_action"] = "WATCH"
-    parsed["as_of_utc"] = parsed.get("as_of_utc") or datetime.now(timezone.utc).isoformat()
+    if float(parsed.get("data_reliability_score") or 0.0) < 55.0:
+        parsed["final_action"] = "WATCH"
+        parsed["data_reliability_gate_passed"] = False
+    else:
+        parsed["data_reliability_gate_passed"] = True
+    parsed["decision_readiness"] = _decision_readiness_label(
+        confidence_score=float(parsed.get("confidence_score") or 0.0),
+        reliability_score=float(parsed.get("data_reliability_score") or 0.0),
+        confidence_gate_passed=bool(parsed.get("gate_passed")),
+        output_gate_passed=bool(parsed.get("output_gate_passed")),
+        reliability_gate_passed=bool(parsed.get("data_reliability_gate_passed")),
+    )
+    try:
+        from core.decision_completeness import apply_completeness_to_report, cap_readiness_label
+
+        if isinstance(valuation.get("decision_completeness"), dict):
+            parsed["decision_completeness"] = valuation.get("decision_completeness")
+            parsed["missing_items"] = list(
+                valuation.get("missing_items")
+                or (valuation.get("decision_completeness") or {}).get("missing_items")
+                or []
+            )
+            cap = (valuation.get("decision_completeness") or {}).get("readiness_cap")
+            parsed["decision_readiness"] = cap_readiness_label(str(parsed.get("decision_readiness") or "LOW"), cap)
+            if (valuation.get("decision_completeness") or {}).get("severity") == "high" and str(
+                parsed.get("final_action") or ""
+            ).upper() in ("BUY", "CONDITIONAL_BUY"):
+                parsed["final_action"] = "WATCH"
+        else:
+            snap_for_gate = {
+                "price": valuation.get("price"),
+                "eps": valuation.get("eps") or valuation.get("eps_for_graham"),
+                "roe": valuation.get("roe_5y_avg"),
+                "net_income": (financials or {}).get("net_income") if isinstance(financials, dict) else None,
+                "operating_cash_flow": (financials or {}).get("operating_cash_flow")
+                if isinstance(financials, dict)
+                else None,
+                "is_bank": valuation.get("is_bank_sector"),
+                "pe_ratio": valuation.get("pe_current"),
+            }
+            parsed = apply_completeness_to_report(parsed, snap_for_gate)
+    except Exception:
+        pass
+
+    # P1: Thesis / Setup / Trigger playbook + market regime
+    try:
+        from core.decision_playbook import apply_playbook_to_action, build_decision_playbook
+        from core.market_regime import assess_market_regime
+
+        regime = None
+        try:
+            from core.news_macro_service import get_macro_snapshot
+
+            macro = get_macro_snapshot()
+        except Exception:
+            macro = None
+        try:
+            regime = assess_market_regime(
+                vnindex_ohlcv=bench_ohlcv if isinstance(bench_ohlcv, pd.DataFrame) else None,
+                macro=macro if isinstance(macro, dict) else None,
+            )
+        except Exception:
+            regime = {"label": "neutral", "score": 0.0, "size_mult": 0.7, "allow_hard_buy": False, "note_vi": ""}
+        parsed["market_regime"] = regime
+        trust = parsed.get("data_trust_score") if isinstance(parsed.get("data_trust_score"), dict) else {}
+        integrity = parsed.get("ohlcv_integrity") if isinstance(parsed.get("ohlcv_integrity"), dict) else {}
+        if not integrity and isinstance(phase, dict):
+            pm = phase.get("metrics") if isinstance(phase.get("metrics"), dict) else {}
+            if isinstance(pm.get("ohlcv_integrity"), dict):
+                integrity = pm["ohlcv_integrity"]
+        val_pb = dict(valuation) if isinstance(valuation, dict) else {}
+        try:
+            from core.sector_relative import attach_sector_relative_to_valuation
+
+            val_pb = attach_sector_relative_to_valuation(
+                val_pb,
+                symbol=str(sym or ""),
+                financials=financials if isinstance(financials, dict) else {},
+                snapshot=snapshot if isinstance(snapshot, dict) else {},
+            )
+            if isinstance(parsed.get("valuation"), dict):
+                parsed["valuation"]["sector_relative"] = val_pb.get("sector_relative")
+        except Exception:
+            pass
+        playbook = build_decision_playbook(
+            valuation=val_pb,
+            phase=phase if isinstance(phase, dict) else {},
+            financials=financials if isinstance(financials, dict) else {},
+            confidence=float(parsed.get("confidence_score") or 0.0),
+            risk_plan=risk_plan if isinstance(risk_plan, dict) else {},
+            deep_insight=deep_insight if isinstance(deep_insight, dict) else {},
+            market_regime=regime,
+            data_trust=trust,
+            ohlcv_integrity=integrity,
+            base_max_position_pct=float((risk_plan or {}).get("max_position_pct") or 20.0),
+            news=news if isinstance(news, list) else None,
+            snapshot=snapshot if isinstance(snapshot, dict) else None,
+        )
+        parsed["decision_playbook"] = playbook
+        merged = apply_playbook_to_action(str(parsed.get("final_action") or "WATCH"), playbook)
+        parsed["final_action"] = merged
+        # Apply size cap onto risk plan early
+        if isinstance(parsed.get("risk_plan"), dict) and playbook.get("size_cap_pct") is not None:
+            parsed["risk_plan"]["playbook_size_cap_pct"] = playbook.get("size_cap_pct")
+            if float(playbook.get("size_cap_pct") or 0) > 0:
+                parsed["risk_plan"]["max_position_pct"] = min(
+                    float(parsed["risk_plan"].get("max_position_pct") or 20.0),
+                    float(playbook["size_cap_pct"]),
+                )
+    except Exception:
+        parsed.setdefault("decision_playbook", {})
+        parsed.setdefault("market_regime", {"label": "neutral", "size_mult": 0.7})
+
+    parsed["analysis_verdict"] = _analysis_verdict(
+        final_action=str(parsed.get("final_action") or "WATCH"),
+        confidence_score=float(parsed.get("confidence_score") or 0.0),
+        reliability_score=float(parsed.get("data_reliability_score") or 0.0),
+        confidence_gate_passed=bool(parsed.get("gate_passed")),
+        output_gate_passed=bool(parsed.get("output_gate_passed")),
+        reliability_gate_passed=bool(parsed.get("data_reliability_gate_passed")),
+        decision_readiness=str(parsed.get("decision_readiness") or "LOW"),
+    )
+    if parsed["analysis_verdict"] == "NO-GO" and str(parsed.get("final_action") or "").upper() == "BUY":
+        # Keep CONDITIONAL_BUY if playbook thesis still attractive
+        pb = parsed.get("decision_playbook") if isinstance(parsed.get("decision_playbook"), dict) else {}
+        thesis = pb.get("thesis") if isinstance(pb.get("thesis"), dict) else {}
+        if str(thesis.get("grade") or "") in ("A", "B") and thesis.get("attractive"):
+            parsed["final_action"] = "CONDITIONAL_BUY"
+            parsed["analysis_verdict"] = "CAUTION"
+        else:
+            parsed["final_action"] = "WATCH"
+    # Alias ổn định cho UI/script (tránh readiness_score null).
+    parsed["readiness_score"] = str(parsed.get("decision_readiness") or "LOW")
+    # Thống nhất Legend vs action (tránh "Mua mạnh" + AVOID gây rối)
+    align_dec = _decision_alignment(valuation, str(parsed.get("final_action") or "WATCH"), phase)
+    parsed["decision_alignment"] = align_dec
+    if str(align_dec.get("unified_action") or ""):
+        # Chỉ nâng AVOID→WATCH khi lệch valuation/timing; không tự nâng lên BUY.
+        if str(parsed.get("final_action") or "").upper() == "AVOID" and str(align_dec.get("unified_action")).upper() == "WATCH":
+            parsed["final_action"] = "WATCH"
+            parsed["signal_conflict_warning"] = (
+                str(parsed.get("signal_conflict_warning") or "")
+                + (" " if parsed.get("signal_conflict_warning") else "")
+                + str(align_dec.get("note_vi") or "")
+            ).strip()
+        # Tuned: promote WATCH→HOLD when valuation attractive but timing not ready
+        # (CONDITIONAL_BUY chỉ khi playbook ARMED+READY — tránh vào sớm)
+        if (
+            str(parsed.get("final_action") or "").upper() == "WATCH"
+            and str(align_dec.get("unified_action")).upper() == "HOLD"
+        ):
+            parsed["final_action"] = "HOLD"
+        if (
+            str(parsed.get("final_action") or "").upper() == "WATCH"
+            and str(align_dec.get("unified_action")).upper() == "CONDITIONAL_BUY"
+        ):
+            # Legacy alignment path — chỉ COND nếu playbook cũng COND
+            pb2 = parsed.get("decision_playbook") if isinstance(parsed.get("decision_playbook"), dict) else {}
+            if str(pb2.get("recommended_action") or "").upper() == "CONDITIONAL_BUY":
+                parsed["final_action"] = "CONDITIONAL_BUY"
+            else:
+                parsed["final_action"] = "HOLD"
+    now_utc = datetime.now(timezone.utc)
+    parsed["as_of_utc"] = parsed.get("as_of_utc") or now_utc.isoformat()
+    parsed["data_provenance"] = _build_data_provenance(
+        financials=financials,
+        phase=phase,
+        news=news,
+        used_fallback=used_context_fallback,
+        now_utc=now_utc,
+    )
+    parsed["do_not_act_reasons"] = _do_not_act_reasons(parsed)
+    parsed["confidence_explanation"] = {
+        "score": float(parsed.get("confidence_score") or 0.0),
+        "gate_min": float(parsed.get("confidence_gate_min") or CONFIDENCE_GATE_MIN),
+        "gate_passed": bool(parsed.get("gate_passed")),
+        "when_not_to_act": list(parsed["do_not_act_reasons"]),
+    }
+    parsed["recommendation_audit_log"] = _write_recommendation_audit(parsed)
+    try:
+        from core.proprietary_signal import compute_blend_signal
+
+        parsed["proprietary_signal"] = compute_blend_signal(
+            parsed,
+            ohlcv=technical_ohlcv if isinstance(technical_ohlcv, pd.DataFrame) else None,
+        )
+    except Exception:
+        pass
+    try:
+        from core.decision_action_gate import apply_trade_plan_visibility
+
+        parsed = apply_trade_plan_visibility(parsed)
+    except Exception:
+        pass
     return parsed

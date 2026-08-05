@@ -1,8 +1,13 @@
 from __future__ import annotations
 
-import time
+import argparse
+import json
 import sys
+import time
+from datetime import datetime, timezone
 from pathlib import Path
+
+import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
@@ -15,7 +20,15 @@ from scrapers.portal import fetch_financial_indicators, fetch_latest_news, fetch
 
 
 def main() -> None:
-    sym = "FPT"
+    ap = argparse.ArgumentParser(description="Đo thời gian các bước snapshot/OHLCV/tin/báo cáo cho một mã.")
+    ap.add_argument("--symbol", default="FPT", help="Mã VN (mặc định FPT).")
+    ap.add_argument(
+        "--out-json",
+        default="",
+        help="Ghi kết quả JSON (để trống = chỉ in stdout).",
+    )
+    args = ap.parse_args()
+    sym = str(args.symbol or "FPT").strip().upper()
     rows: list[tuple[str, float, bool, str]] = []
 
     def run(name: str, fn):
@@ -32,7 +45,7 @@ def main() -> None:
         extra = ""
         if name == "fetch_financial_snapshot" and isinstance(val, dict):
             extra = f" source={val.get('source')} price_source={val.get('price_source')}"
-        elif name.startswith("fetch_ohlcv_history") and hasattr(val, "attrs"):
+        elif name.startswith("fetch_ohlcv_history") and isinstance(val, pd.DataFrame):
             extra = f" source={val.attrs.get('source')} rows={len(val)}"
         elif name.startswith("fetch_latest_news") and isinstance(val, list):
             extra = f" items={len(val)}"
@@ -71,6 +84,25 @@ def main() -> None:
     print("\n=== Slowest stages ===")
     for i, (name, dt, ok, meta) in enumerate(rows_sorted[:5], start=1):
         print(f"{i}. {name}: {dt:.3f}s ok={ok}{meta}")
+
+    out_path = str(args.out_json or "").strip()
+    if out_path:
+        outp = Path(out_path)
+        outp.parent.mkdir(parents=True, exist_ok=True)
+        payload = {
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "symbol": sym,
+            "stages": [
+                {"name": name, "seconds": round(dt, 6), "ok": ok, "meta": meta.strip()}
+                for name, dt, ok, meta in rows
+            ],
+            "slowest_top5": [
+                {"name": name, "seconds": round(dt, 6), "ok": ok, "meta": meta.strip()}
+                for name, dt, ok, meta in rows_sorted[:5]
+            ],
+        }
+        outp.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(f"\nWrote {outp}")
 
 
 if __name__ == "__main__":

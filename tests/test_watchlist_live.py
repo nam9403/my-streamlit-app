@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from unittest.mock import patch
 
-from scrapers.finance_scraper import ScraperError
-
 from core.watchlist_live import build_watchlist_price_dataframe
+from scrapers.finance_scraper import ScraperError
 
 
 def test_build_watchlist_live_uses_quote_then_fallback() -> None:

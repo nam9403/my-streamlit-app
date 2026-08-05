@@ -1,0 +1,22 @@
+{
+  "batch": "week4",
+  "status": "ok",
+  "steps": [
+    {
+      "step": 1,
+      "command": "python scripts/export_pilot_kpi_snapshot.py",
+      "return_code": 0
+    },
+    {
+      "step": 2,
+      "command": "python scripts/release_readiness_summary.py --strict",
+      "return_code": 0
+    },
+    {
+      "step": 3,
+      "command": "python scripts/quality_gate.py --strict-static",
+      "return_code": 0
+    }
+  ],
+  "generated_at_utc": "2026-04-24T12:50:31.130351+00:00"
+}

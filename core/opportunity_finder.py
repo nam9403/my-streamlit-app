@@ -15,6 +15,16 @@ from typing import Any
 
 import pandas as pd
 
+from core.deep_insight_service import analyze_smart_money_flow
+from core.engine import detect_market_phase_from_ohlcv
+
+PHASE_LABELS_VI: dict[str, str] = {
+    "accumulation": "Tích lũy",
+    "breakout": "Breakout",
+    "distribution": "Phân phối",
+    "neutral": "Trung tính",
+}
+
 
 @dataclass(frozen=True)
 class OpportunityResult:
@@ -39,6 +49,11 @@ class OpportunityResult:
     risks: str
     invalidation: str
     status: str
+    market_phase: str = "neutral"
+    market_phase_label: str = "Trung tính"
+    market_phase_reason: str = ""
+    smart_money_bias: str = "neutral"
+    smart_money_score: float = 0.0
 
 
 def _pct(a: float, b: float) -> float:
@@ -169,7 +184,7 @@ def _walkforward_reliability_3m(ohlcv: pd.DataFrame, threshold_pct: float = 8.0)
     var = sum((x - avg) ** 2 for x in hits) / len(hits)
     stability_penalty = min(25.0, (var ** 0.5) * 0.8)
     score = max(0.0, min(100.0, avg - stability_penalty))
-    return round(score, 2)
+    return float(round(float(score), 2))
 
 
 def _recent_return_3m_pct(ohlcv: pd.DataFrame) -> float:
@@ -245,10 +260,45 @@ def evaluate_stock_opportunity_3m(
     valuation: dict[str, Any],
     financials: dict[str, Any],
     benchmark_return_3m_pct: float | None = None,
+    news_items: list[dict[str, Any]] | None = None,
 ) -> OpportunityResult:
     t_score, t_reasons, t_risks, exp_tech = _technical_score(ohlcv)
     f_score, f_reasons, f_risks = _fundamental_score(valuation, financials)
 
+    phase_name = "neutral"
+    phase_reason = ""
+    try:
+        if ohlcv is not None and not ohlcv.empty and len(ohlcv) >= 50:
+            ph = detect_market_phase_from_ohlcv(ohlcv)
+            phase_name = str(ph.phase or "neutral").strip().lower()
+            phase_reason = str(ph.reason or "")
+    except Exception:
+        phase_name = "neutral"
+
+    if phase_name == "accumulation":
+        t_score += 8.0
+        t_reasons.append(phase_reason or "Pha tích lũy: biên hẹp, thanh khoản dưới trung bình.")
+    elif phase_name == "breakout":
+        t_score += 10.0
+        t_reasons.append(phase_reason or "Pha breakout: giá và volume bùng nổ.")
+    elif phase_name == "distribution":
+        t_score = max(0.0, t_score - 8.0)
+        t_risks.append(phase_reason or "Pha phân phối: giá yếu kèm volume lớn.")
+
+    sm = analyze_smart_money_flow(list(news_items or []), symbol=str(symbol or "").upper())
+    sm_bias = str(sm.get("bias") or "neutral")
+    sm_score = _safe_float(sm.get("score"), 0.0)
+    if sm_bias == "bullish" and sm_score >= 2.0:
+        boost = min(8.0, 4.0 + sm_score)
+        f_score += boost
+        sig = sm.get("signals") or []
+        sm_note = str(sig[0]) if sig else str(sm.get("label") or "Smart money nghiêng mua")
+        f_reasons.append(sm_note)
+    elif sm_bias == "bearish" and sm_score <= -2.0:
+        t_risks.append(str(sm.get("label") or "Smart money nghiêng bán"))
+
+    t_score = max(0.0, min(50.0, t_score))
+    f_score = max(0.0, min(50.0, f_score))
     total = max(0.0, min(100.0, t_score + f_score))
     prob = max(5.0, min(95.0, 20.0 + total * 0.65))
     confidence = max(10.0, min(95.0, 35.0 + len(t_reasons) * 8.0 + len(f_reasons) * 6.0))
@@ -289,6 +339,13 @@ def evaluate_stock_opportunity_3m(
     elif prob < 45 or total < 40:
         status = "THẬN TRỌNG"
 
+    mos = _safe_float(valuation.get("margin_of_safety_composite_pct"), 0.0)
+    if status == "THẬN TRỌNG" and phase_name in ("accumulation", "breakout") and mos >= 5.0 and total >= 52.0:
+        status = "THEO DÕI"
+        reco_reason_extra = "Pha tích lũy/breakout + MOS dương — theo dõi thêm."
+    else:
+        reco_reason_extra = ""
+
     invalidation = "Thesis bị vô hiệu nếu giá thủng MA50 kèm khối lượng tăng mạnh hoặc biên an toàn chuyển âm sâu."
     # Data quality guard: prevent overconfident output on thin/partial inputs.
     quality = 0.0
@@ -304,6 +361,8 @@ def evaluate_stock_opportunity_3m(
         reco_reason = "Xác suất tăng + điểm cơ hội + độ tin cậy đều cao, phù hợp giải ngân có kỷ luật."
     elif status == "THẬN TRỌNG":
         reco_reason = "Điểm/xác suất thấp hoặc rủi ro nổi trội, ưu tiên phòng thủ."
+    if reco_reason_extra:
+        reco_reason = f"{reco_reason} {reco_reason_extra}".strip()
     if quality < 55:
         status = "THẬN TRỌNG"
         reco_reason = "Chất lượng dữ liệu chưa đủ dày để kết luận mạnh, ưu tiên theo dõi thêm."
@@ -330,5 +389,10 @@ def evaluate_stock_opportunity_3m(
         risks=risk_text,
         invalidation=invalidation,
         status=status,
+        market_phase=phase_name,
+        market_phase_label=PHASE_LABELS_VI.get(phase_name, phase_name),
+        market_phase_reason=phase_reason,
+        smart_money_bias=sm_bias,
+        smart_money_score=round(sm_score, 2),
     )
 
