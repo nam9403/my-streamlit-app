@@ -1,7 +1,7 @@
 {
   "symbol": "VPB",
   "source": "fireant_quarterly",
-  "cached_at": "2026-08-02T12:22:15.769610+00:00",
+  "cached_at": "2026-08-06T14:42:49.606295+00:00",
   "rows": [
     {
       "year": 2026,
@@ -14,6 +14,7 @@
       "profit_growth_ttm_pct": 59.4116,
       "roe_ttm_pct": 16.0942,
       "eps_ttm": 3314.083084526541,
+      "bvps": 23519.863611552817,
       "_provider": "fireant"
     },
     {
@@ -27,6 +28,7 @@
       "profit_growth_ttm_pct": 52.3417,
       "roe_ttm_pct": 15.7224,
       "eps_ttm": 3023.715781303501,
+      "bvps": 21162.712353171297,
       "_provider": "fireant"
     },
     {
@@ -40,6 +42,7 @@
       "profit_growth_ttm_pct": 62.9266,
       "roe_ttm_pct": 14.6093,
       "eps_ttm": 2602.7737395148633,
+      "bvps": 19406.68536064468,
       "_provider": "fireant"
     },
     {
@@ -53,6 +56,7 @@
       "profit_growth_ttm_pct": 59.6575,
       "roe_ttm_pct": 12.9134,
       "eps_ttm": 2193.4369266936933,
+      "bvps": 18489.819461018025,
       "_provider": "fireant"
     },
     {
@@ -66,6 +70,7 @@
       "profit_growth_ttm_pct": 65.5973,
       "roe_ttm_pct": 11.8168,
       "eps_ttm": 2030.1439502101905,
+      "bvps": 18377.110031866563,
       "_provider": "fireant"
     },
     {
@@ -79,6 +84,7 @@
       "profit_growth_ttm_pct": 85.0158,
       "roe_ttm_pct": 11.5587,
       "eps_ttm": 1988.775767643039,
+      "bvps": 17885.850953003144,
       "_provider": "fireant"
     },
     {
@@ -92,6 +98,7 @@
       "profit_growth_ttm_pct": 70.2521,
       "roe_ttm_pct": 10.7862,
       "eps_ttm": 1675.7715401650023,
+      "bvps": 17304.387577250633,
       "_provider": "fireant"
     },
     {
@@ -105,6 +112,7 @@
       "profit_growth_ttm_pct": 28.88,
       "roe_ttm_pct": 9.6079,
       "eps_ttm": 1532.0057082089952,
+      "bvps": 16796.715433862166,
       "_provider": "fireant"
     },
     {
@@ -118,6 +126,7 @@
       "profit_growth_ttm_pct": 4.9321,
       "roe_ttm_pct": 8.5314,
       "eps_ttm": 1526.6617075804995,
+      "bvps": 17418.585929234487,
       "_provider": "fireant"
     },
     {
@@ -131,6 +140,7 @@
       "profit_growth_ttm_pct": -48.9429,
       "roe_ttm_pct": 7.4631,
       "eps_ttm": 1445.1326411209798,
+      "bvps": 16979.50506896997,
       "_provider": "fireant"
     },
     {
@@ -144,6 +154,7 @@
       "profit_growth_ttm_pct": -57.5179,
       "roe_ttm_pct": 7.6924,
       "eps_ttm": 1532.518898348312,
+      "bvps": 15617.00657158385,
       "_provider": "fireant"
     },
     {
@@ -157,6 +168,7 @@
       "profit_growth_ttm_pct": -47.3118,
       "roe_ttm_pct": 9.1051,
       "eps_ttm": 1881.3260233990377,
+      "bvps": 15255.815998552134,
       "_provider": "fireant"
     },
     {
@@ -170,6 +182,7 @@
       "profit_growth_ttm_pct": -44.3917,
       "roe_ttm_pct": 10.3618,
       "eps_ttm": 2151.7291483837384,
+      "bvps": 14798.68807579828,
       "_provider": "fireant"
     },
     {
@@ -183,6 +196,7 @@
       "profit_growth_ttm_pct": 45.262,
       "roe_ttm_pct": 19.308,
       "eps_ttm": 3610.0364071228414,
+      "bvps": 14426.036209472253,
       "_provider": "fireant"
     },
     {
@@ -196,6 +210,7 @@
       "profit_growth_ttm_pct": 47.0718,
       "roe_ttm_pct": 23.0142,
       "eps_ttm": 4140.63593728002,
+      "bvps": 14088.527324048468,
       "_provider": "fireant"
     },
     {
@@ -209,6 +224,7 @@
       "profit_growth_ttm_pct": 34.8214,
       "roe_ttm_pct": 22.1482,
       "eps_ttm": 4286.868353096253,
+      "bvps": 20368.838168010385,
       "_provider": "fireant"
     },
     {
@@ -222,6 +238,7 @@
       "profit_growth_ttm_pct": 53.6559,
       "roe_ttm_pct": 24.2809,
       "eps_ttm": 5060.607738434463,
+      "bvps": 19580.185150706875,
       "_provider": "fireant"
     },
     {
@@ -235,6 +252,7 @@
       "profit_growth_ttm_pct": 11.8762,
       "roe_ttm_pct": 17.7529,
       "eps_ttm": 4041.1343273775424,
+      "bvps": 17649.040983900057,
       "_provider": "fireant"
     },
     {
@@ -248,6 +266,7 @@
       "profit_growth_ttm_pct": 22.3852,
       "roe_ttm_pct": 21.9123,
       "eps_ttm": 5004.225057337024,
+      "bvps": 25234.350129741113,
       "_provider": "fireant"
     },
     {
@@ -261,6 +280,7 @@
       "profit_growth_ttm_pct": 22.9084,
       "roe_ttm_pct": 23.0111,
       "eps_ttm": 5054.207720711885,
+      "bvps": 24447.179935509528,
       "_provider": "fireant"
     },
     {
@@ -274,6 +294,7 @@
       "profit_growth_ttm_pct": 23.3777,
       "roe_ttm_pct": 22.4864,
       "eps_ttm": 4626.8523357477015,
+      "bvps": 22811.019156005827,
       "_provider": "fireant"
     },
     {
@@ -287,6 +308,7 @@
       "profit_growth_ttm_pct": 25.9521,
       "roe_ttm_pct": 21.9212,
       "eps_ttm": 4270.734172527743,
+      "bvps": 21506.685871035632,
       "_provider": "fireant"
     },
     {
@@ -300,6 +322,7 @@
       "profit_growth_ttm_pct": 22.1902,
       "roe_ttm_pct": 22.2369,
       "eps_ttm": 4120.743961392404,
+      "bvps": 20398.44378260984,
       "_provider": "fireant"
     },
     {
@@ -313,6 +336,7 @@
       "profit_growth_ttm_pct": 37.3501,
       "roe_ttm_pct": 23.4863,
       "eps_ttm": 4125.398957394532,
+      "bvps": 19474.839840791017,
       "_provider": "fireant"
     },
     {
@@ -326,6 +350,7 @@
       "profit_growth_ttm_pct": 36.9606,
       "roe_ttm_pct": 22.7007,
       "eps_ttm": 3748.397800463225,
+      "bvps": 18264.287496193527,
       "_provider": "fireant"
     },
     {
@@ -339,6 +364,7 @@
       "profit_growth_ttm_pct": 12.4051,
       "roe_ttm_pct": 21.4844,
       "eps_ttm": 3376.8250443286015,
+      "bvps": 17318.239072096254,
       "_provider": "fireant"
     },
     {
@@ -352,6 +378,7 @@
       "profit_growth_ttm_pct": 20.0565,
       "roe_ttm_pct": 22.6528,
       "eps_ttm": 3341.4805983430538,
+      "bvps": 16481.641164547334,
       "_provider": "fireant"
     },
     {
@@ -365,6 +392,7 @@
       "profit_growth_ttm_pct": -0.1012,
       "roe_ttm_pct": 20.5787,
       "eps_ttm": 2990.781852493495,
+      "bvps": 15552.423898508456,
       "_provider": "fireant"
     },
     {
@@ -378,6 +406,7 @@
       "profit_growth_ttm_pct": -4.3225,
       "roe_ttm_pct": 19.7247,
       "eps_ttm": 2982.246819115569,
+      "bvps": 14726.743894779494,
       "_provider": "fireant"
     },
     {
@@ -391,6 +420,7 @@
       "profit_growth_ttm_pct": 14.2465,
       "roe_ttm_pct": 22.828,
       "eps_ttm": 3667.7756854704216,
+      "bvps": 14144.740861913735,
       "_provider": "fireant"
     },
     {
@@ -404,6 +434,7 @@
       "profit_growth_ttm_pct": 15.0121,
       "roe_ttm_pct": 22.9412,
       "eps_ttm": 3878.5109121272367,
+      "bvps": 13020.04081601575,
       "_provider": "fireant"
     },
     {
@@ -417,6 +448,7 @@
       "profit_growth_ttm_pct": 35.3506,
       "roe_ttm_pct": 27.9297,
       "eps_ttm": 4942.891378966564,
+      "bvps": 13614.488538574731,
       "_provider": "fireant"
     },
     {
@@ -430,6 +462,7 @@
       "profit_growth_ttm_pct": 47.647,
       "roe_ttm_pct": 27.7868,
       "eps_ttm": 5257.698172626734,
+      "bvps": 21126.72355565584,
       "_provider": "fireant"
     }
   ]

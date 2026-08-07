@@ -1,0 +1,33 @@
+{
+  "next_offset": 40,
+  "session_date": "2026-08-07",
+  "batches_run": 1,
+  "last_status": "ok",
+  "last_batch_id": "ov_0000_194303",
+  "last_symbols": [
+    "STB",
+    "PLX",
+    "SHB",
+    "VIX",
+    "HPG",
+    "SSI",
+    "ACB",
+    "NVL",
+    "VPB",
+    "MBB",
+    "GEX",
+    "VND",
+    "PNJ",
+    "TCB",
+    "DXG",
+    "HDB",
+    "DIG",
+    "VCI",
+    "TPB",
+    "VSC"
+  ],
+  "pool_size": 157,
+  "wrapped": false,
+  "board": "E:\\Du an 1\\data\\runtime\\autopilot_nightly_board.json",
+  "updated_at": "2026-08-07T12:45:42.893393+00:00"
+}

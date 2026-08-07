@@ -84,7 +84,7 @@ def render_sidebar_auth_section(
         ).strip()
         c_auth1, c_auth2 = st.columns(2)
         with c_auth1:
-            if st.button("Đăng nhập", width="stretch"):
+            if st.button("Đăng nhập", use_container_width=True):
                 if has_auth_user(user_id):
                     if verify_user_pin(user_id, user_pin):
                         start_authenticated_session(user_id)
@@ -96,7 +96,7 @@ def render_sidebar_auth_section(
                     clear_authenticated_session()
                     st.warning("Tài khoản chưa tồn tại. Bấm 'Đăng ký'.")
         with c_auth2:
-            if st.button("Đăng ký", width="stretch"):
+            if st.button("Đăng ký", use_container_width=True):
                 clear_authenticated_session()
                 ok_reg, msg_reg = register_user_pin(user_id, user_pin, referrer_code=referrer_code)
                 if ok_reg:
@@ -106,7 +106,7 @@ def render_sidebar_auth_section(
 
         if is_authenticated_session(user_id):
             st.caption(f"Đã xác thực: {user_id}")
-            if st.button("Đăng xuất", width="stretch"):
+            if st.button("Đăng xuất", use_container_width=True):
                 clear_authenticated_session()
                 st.rerun()
         elif st.session_state.get("auth_ok"):
@@ -181,7 +181,9 @@ def render_sidebar_account_sections(
         smtp_password = str(notify_channels["smtp_password"])
         smtp_from = str(notify_channels["smtp_from"])
         auth_ready = bool(has_auth and is_authenticated_session(user_id))
-        with st.expander("🚀 Onboarding P2 (3 bước)", expanded=not bool(st.session_state.get("onboarding_p2_done"))):
+        st.markdown("---")
+        st.markdown("**🚀 Onboarding P2 (3 bước)**")
+        with st.container():
             profile_ready = bool(profile) and float(total_capital_vnd or 0) >= 10_000_000.0
             autopilot_ready = bool(st.session_state.get("autopilot_onboarding_seen") or st.session_state.get("autopilot_df") is not None)
             deep_ready = bool(st.session_state.get("onboarding_deep_analysis_done") or st.session_state.get("last_analysis_ticker"))
@@ -245,7 +247,9 @@ def render_sidebar_account_sections(
             get_plan_features=get_plan_features,
         )
 
-        with st.expander("🚀 Onboarding nền (auth / kênh / watch)", expanded=False):
+        st.markdown("---")
+        st.markdown("**🚀 Onboarding nền (auth / kênh / watch)**")
+        with st.container():
             channel_ready = notify_cfg.has_any_channel()
             watch_seed = str(st.session_state.get("onboarding_watch_seed") or "FPT,HPG,VNM")
             watch_seed_ready = is_watch_seed_ready(watch_seed, minimum_symbols=3)
@@ -269,7 +273,7 @@ def render_sidebar_account_sections(
                 seed_default = str(st.session_state.get("onboarding_watch_seed") or "FPT,HPG,VNM")
                 seed_watch = st.text_input("Watchlist gợi ý (phân tách bằng dấu phẩy)", value=seed_default)
                 st.session_state["onboarding_watch_seed"] = seed_watch
-                if st.button("Áp dụng watchlist gợi ý", width="stretch"):
+                if st.button("Áp dụng watchlist gợi ý", use_container_width=True):
                     cleaned = normalize_watch_seed(seed_watch.replace(" ", ","))
                     if cleaned:
                         st.session_state["onboarding_watch_seed"] = ",".join(cleaned)
@@ -282,17 +286,19 @@ def render_sidebar_account_sections(
                 watch_seed_ready=watch_seed_ready,
             )
             st.progress(done_score / 3.0, text=onboarding_progress_text(done_score, total_steps=3))
-        with st.expander("💳 Billing / Upgrade", expanded=False):
+        st.markdown("---")
+        st.markdown("**💳 Billing / Upgrade**")
+        with st.container():
             import pandas as pd
 
-            st.dataframe(pd.DataFrame(plan_feature_matrix()), width="stretch", hide_index=True)
+            st.dataframe(pd.DataFrame(plan_feature_matrix()), use_container_width=True, hide_index=True)
             target_plan_label = st.selectbox("Nâng lên gói", options=["Pro", "Expert"], index=0)
             target_plan_id = target_plan_label.lower()
-            if st.button("✅ Xác nhận nâng cấp (mock checkout)", width="stretch"):
+            if st.button("✅ Xác nhận nâng cấp (mock checkout)", use_container_width=True):
                 set_user_plan(user_id, target_plan_id)
                 log_event(user_id, "upgrade_success", {"from": plan_id, "to": target_plan_id})
                 st.success(f"Đã nâng gói lên {target_plan_label} (mock).")
-            if st.button("🧪 Tôi quan tâm nâng cấp", width="stretch"):
+            if st.button("🧪 Tôi quan tâm nâng cấp", use_container_width=True):
                 log_event(user_id, "upgrade_intent", {"from": plan_id, "to": target_plan_id})
                 st.info("Đã ghi nhận tín hiệu quan tâm nâng cấp.")
             try:
@@ -303,8 +309,10 @@ def render_sidebar_account_sections(
                     st.caption(f"Giới thiệu bạn bè: mã **{ref_code}** — {referral_link_hint(user_id)}")
             except Exception:
                 pass
-        with st.expander("🛠️ Notification Queue", expanded=False):
-            if st.button("Xử lý hàng đợi notification", width="stretch"):
+        st.markdown("---")
+        st.markdown("**🛠️ Notification Queue**")
+        with st.container():
+            if st.button("Xử lý hàng đợi notification", use_container_width=True):
                 q_stat = process_notification_queue(max_jobs=30)
                 st.session_state["cmd_last_queue_stat"] = dict(q_stat)
                 st.session_state["cmd_last_queue_ts"] = time.time()
@@ -312,13 +320,13 @@ def render_sidebar_account_sections(
                     f"Queue processed={q_stat['processed']} | sent={q_stat['sent']} | "
                     f"retried={q_stat['retried']} | failed={q_stat['failed']}"
                 )
-            if st.button("Migrate user_state.json -> SQLite", width="stretch"):
+            if st.button("Migrate user_state.json -> SQLite", use_container_width=True):
                 mg = migrate_legacy_json_to_sqlite()
                 st.caption(
                     f"Migrated users={mg['users']} | holdings={mg['holdings']} | "
                     f"alerts={mg['alerts']} | events={mg['events']}"
                 )
-            if st.button("Chạy 1 vòng background jobs", width="stretch"):
+            if st.button("Chạy 1 vòng background jobs", use_container_width=True):
                 bj = run_background_cycle(universe_limit=30, watchlist=watchlist_default, queue_jobs=30)
                 st.caption(
                     f"Prefetch ok={bj['prefetch']['ok']}/{bj['prefetch']['total']} | "

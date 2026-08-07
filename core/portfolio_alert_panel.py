@@ -24,7 +24,7 @@ def render_portfolio_alert_panel(
         h_qty = st.number_input("Số lượng", min_value=0.0, value=0.0, step=100.0)
     with c2:
         h_cost = st.number_input("Giá vốn", min_value=0.0, value=0.0, step=100.0)
-        if st.button("➕ Lưu vị thế", width="stretch"):
+        if st.button("➕ Lưu vị thế", use_container_width=True):
             if h_symbol and h_qty > 0 and h_cost > 0:
                 add_holding(user_id, h_symbol, h_qty, h_cost)
                 log_event(user_id, "holding_added", {"symbol": h_symbol.upper(), "qty": h_qty})
@@ -42,7 +42,7 @@ def render_portfolio_alert_panel(
     )
     a_threshold = st.number_input("Ngưỡng giá", min_value=0.0, value=0.0, step=100.0)
     a_note = st.text_input("Ghi chú", value="")
-    if st.button("🔔 Tạo cảnh báo", width="stretch"):
+    if st.button("🔔 Tạo cảnh báo", use_container_width=True):
         ok_alert, msg_alert = can_use_feature(user_id, "alert", 1, plan_id=plan_id)
         if not ok_alert:
             st.error(msg_alert)

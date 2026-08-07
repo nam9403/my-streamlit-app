@@ -385,7 +385,7 @@ def render_finder_panel(
             st.metric("Data Quality TB", f"{float(opportunity_df['Data Quality %'].mean()):.1f}%")
         else:
             st.metric("Data Quality TB", "N/A")
-    st.dataframe(opportunity_df, width="stretch", hide_index=True)
+    st.dataframe(opportunity_df, use_container_width=True, hide_index=True)
     with st.expander("Sector Calibration Report", expanded=False):
         if "Ngành con" in opportunity_df.columns:
             agg_map: dict[str, tuple[str, str]] = {"so_ma": ("Mã", "count")}
@@ -428,14 +428,14 @@ def render_finder_panel(
             ]
             if sort_cols:
                 sector_df = sector_df.sort_values(sort_cols, ascending=[False] * len(sort_cols))
-            st.dataframe(sector_df, width="stretch", hide_index=True)
+            st.dataframe(sector_df, use_container_width=True, hide_index=True)
             sector_csv = sector_df.to_csv(index=False).encode("utf-8-sig")
             st.download_button(
                 "⬇️ Export Sector Report CSV",
                 data=sector_csv,
                 file_name=f"sector_calibration_report_{export_tag}_{run_id}.csv",
                 mime="text/csv",
-                width="content",
+                use_container_width=True,
             )
             sector_json_payload = {
                 "exported_at": export_dt.isoformat(),
@@ -449,7 +449,7 @@ def render_finder_panel(
                 data=sector_json,
                 file_name=f"sector_calibration_report_{export_tag}_{run_id}.json",
                 mime="application/json",
-                width="content",
+                use_container_width=True,
             )
             if "Ghi chú hiệu chỉnh ngành" in opportunity_df.columns:
                 note_df = (
@@ -457,14 +457,14 @@ def render_finder_panel(
                     .drop_duplicates(subset=["Ngành con"])
                     .rename(columns={"Ngành con": "Ngành", "Ghi chú hiệu chỉnh ngành": "Ghi chú"})
                 )
-                st.dataframe(note_df, width="stretch", hide_index=True)
+                st.dataframe(note_df, use_container_width=True, hide_index=True)
                 note_csv = note_df.to_csv(index=False).encode("utf-8-sig")
                 st.download_button(
                     "⬇️ Export Sector Notes CSV",
                     data=note_csv,
                     file_name=f"sector_calibration_notes_{export_tag}_{run_id}.csv",
                     mime="text/csv",
-                    width="content",
+                    use_container_width=True,
                 )
         else:
             st.caption("Chưa có dữ liệu ngành để dựng report.")
@@ -483,7 +483,7 @@ def render_finder_panel(
             "Lý do khuyến nghị",
         ]
         explain_df = opportunity_df[[c for c in explain_cols if c in opportunity_df.columns]].head(10).copy()
-        st.dataframe(explain_df, width="stretch", hide_index=True)
+        st.dataframe(explain_df, use_container_width=True, hide_index=True)
         st.caption(
             "Điểm cơ hội (hiệu chỉnh ngành) = Điểm kỹ thuật/Điểm cơ bản sau hiệu chỉnh theo ngành con. "
             "Data Quality càng cao thì độ tin cậy khuyến nghị càng tốt."
@@ -494,7 +494,7 @@ def render_finder_panel(
         data=csv_bytes,
         file_name=f"finder_co_phieu_co_hoi_tang_truong_3_thang_toi_{export_tag}_{run_id}.csv",
         mime="text/csv",
-        width="content",
+        use_container_width=True,
     )
     finder_json_payload = {
         "exported_at": export_dt.isoformat(),
@@ -508,7 +508,7 @@ def render_finder_panel(
         data=json_bytes,
         file_name=f"finder_co_phieu_co_hoi_tang_truong_3_thang_toi_{export_tag}_{run_id}.json",
         mime="application/json",
-        width="content",
+        use_container_width=True,
     )
     manifest_payload = {
         "run_id": run_id,
@@ -548,6 +548,6 @@ def render_finder_panel(
         data=manifest_bytes,
         file_name=f"finder_manifest_{export_tag}_{run_id}.json",
         mime="application/json",
-        width="content",
+        use_container_width=True,
     )
 

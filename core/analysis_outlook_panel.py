@@ -79,7 +79,7 @@ def render_probabilistic_forecast(report: dict) -> None:
                 "return_pct": "Lợi suất",
             }
         )
-        st.dataframe(df, width="stretch", hide_index=True)
+        st.dataframe(df, use_container_width=True, hide_index=True)
     if fr:
         st.caption(
             "Forecast range (Monte Carlo): "

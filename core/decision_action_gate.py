@@ -30,6 +30,55 @@ _ACTION_ALIASES = {
 }
 
 
+def quality_offset_from_valuation(valuation: dict[str, Any] | None) -> dict[str, Any]:
+    """Đọc Quality Offset từ valuation (sau value_investing_summary)."""
+    val = valuation if isinstance(valuation, dict) else {}
+    qo = val.get("quality_offset") if isinstance(val.get("quality_offset"), dict) else {}
+    if qo:
+        return dict(qo)
+    return {
+        "is_quality_compensated": bool(val.get("is_quality_compensated")),
+        "conf_boost": 0.0,
+        "note_vi": str(val.get("quality_offset_note_vi") or ""),
+        "effective_f_score_for_buy_gate": int(val.get("piotroski_score") or 0),
+    }
+
+
+def effective_f_score_for_gate(valuation: dict[str, Any] | None) -> int:
+    """
+    F-Score dùng cho ngưỡng BUY/alignment.
+    Khi Quality Offset: F=4 được coi như đạt ngưỡng F>=6 (không demote cứng vì F=4).
+    """
+    val = valuation if isinstance(valuation, dict) else {}
+    qo = quality_offset_from_valuation(val)
+    raw = int(val.get("piotroski_score") or 0)
+    if bool(qo.get("is_quality_compensated")):
+        try:
+            return max(raw, int(qo.get("effective_f_score_for_buy_gate") or 6))
+        except (TypeError, ValueError):
+            return max(raw, 6)
+    return raw
+
+
+def quality_offset_conf_boost(valuation: dict[str, Any] | None) -> float:
+    """Điểm thưởng conf (+5..+10) khi Quality Offset kích hoạt."""
+    qo = quality_offset_from_valuation(valuation)
+    if not qo.get("is_quality_compensated"):
+        return 0.0
+    try:
+        boost = float(qo.get("conf_boost") or 0.0)
+    except (TypeError, ValueError):
+        boost = 0.0
+    return max(0.0, min(10.0, boost))
+
+
+def should_skip_fscore_hard_demote(valuation: dict[str, Any] | None, *, raw_f_score: int | None = None) -> bool:
+    """True nếu không được hạ BUY→WATCH chỉ vì F-Score = 4 (đã bù trừ chất lượng)."""
+    val = valuation if isinstance(valuation, dict) else {}
+    fs = int(raw_f_score if raw_f_score is not None else (val.get("piotroski_score") or 0))
+    return bool(val.get("is_quality_compensated") or quality_offset_from_valuation(val).get("is_quality_compensated")) and fs == 4
+
+
 def normalize_action(action: str | None, *, default: str = "WATCH") -> str:
     raw = str(action or default).strip().upper()
     if raw in VALID_ACTIONS:
@@ -72,6 +121,24 @@ def _alignment_from_report(report: dict[str, Any], base_action: str) -> dict[str
             "alignment": "unknown",
             "note_vi": "",
         }
+
+
+def trade_plan_visibility_flags(action: str | None) -> dict[str, bool]:
+    """
+    Phân lớp hiển thị Trade Plan theo khuyến nghị.
+
+    - BUY / CONDITIONAL_BUY: entry_allowed + risk_management_visible
+    - HOLD: chỉ risk_management_visible (SL / quản trị vị thế); Entry khóa
+    - WATCH / AVOID: khóa toàn bộ
+    """
+    act = normalize_action(action)
+    entry_allowed = act in ("BUY", "CONDITIONAL_BUY")
+    risk_management_visible = act in ("BUY", "CONDITIONAL_BUY", "HOLD")
+    return {
+        "entry_allowed": bool(entry_allowed),
+        "risk_management_visible": bool(risk_management_visible),
+        "show_trade_plan": bool(risk_management_visible),
+    }
 
 
 def resolve_display_action(report: dict[str, Any] | None) -> dict[str, Any]:
@@ -148,7 +215,21 @@ def resolve_display_action(report: dict[str, Any] | None) -> dict[str, Any]:
         display = "WATCH"
         notes.append("Thiếu dữ liệu then chốt — cap hành động ở QUAN SÁT.")
 
-    show_plan = display in ("BUY", "HOLD", "CONDITIONAL_BUY")
+    val = rep.get("valuation") if isinstance(rep.get("valuation"), dict) else {}
+    qo_note = str(rep.get("quality_offset_note_vi") or val.get("quality_offset_note_vi") or "").strip()
+    if bool(rep.get("is_quality_compensated") or val.get("is_quality_compensated")) and qo_note:
+        if qo_note not in notes:
+            notes.append(qo_note)
+
+    # Phân lớp Trade Plan:
+    # - BUY / CONDITIONAL_BUY: mở Entry + SL/TP
+    # - HOLD: khóa Entry ("Không mở mua mới"), vẫn mở SL / quản trị rủi ro
+    # - WATCH / AVOID: khóa toàn bộ
+    plan_flags = trade_plan_visibility_flags(display)
+    entry_allowed = bool(plan_flags["entry_allowed"])
+    risk_management_visible = bool(plan_flags["risk_management_visible"])
+    show_plan = bool(plan_flags["show_trade_plan"])
+
     return {
         "display_action": display,
         "final_action": base,
@@ -160,20 +241,21 @@ def resolve_display_action(report: dict[str, Any] | None) -> dict[str, Any]:
         "missing_items": missing,
         "missing_summary": format_missing_items(missing),
         "show_trade_plan": show_plan,
+        "entry_allowed": entry_allowed,
+        "risk_management_visible": risk_management_visible,
         "completeness_score": dc.get("completeness_score"),
         "is_conditional": display == "CONDITIONAL_BUY",
+        "is_quality_compensated": bool(rep.get("is_quality_compensated") or val.get("is_quality_compensated")),
+        "quality_offset_note_vi": qo_note,
     }
 
 
-def autopilot_board_action_for_symbol(
+def autopilot_board_row_for_symbol(
     symbol: str,
     *,
     max_age_hours: float = 36.0,
-) -> str | None:
-    """
-    Canonical action from fresh Autopilot nightly board (same source as Top 10).
-    Returns None if board missing/stale/symbol absent.
-    """
+) -> dict[str, Any] | None:
+    """Fresh Autopilot nightly board row for symbol, or None."""
     sym = str(symbol or "").strip().upper()
     if not sym:
         return None
@@ -198,13 +280,26 @@ def autopilot_board_action_for_symbol(
                 pass
         rows = board.get("rows") or {}
         row = rows.get(sym) if isinstance(rows, dict) else None
-        if not isinstance(row, dict):
-            return None
-        raw = row.get("Khuyến nghị") or row.get("gate_action")
-        act = normalize_action(raw)
-        return act if act in VALID_ACTIONS else None
+        return row if isinstance(row, dict) else None
     except Exception:
         return None
+
+
+def autopilot_board_action_for_symbol(
+    symbol: str,
+    *,
+    max_age_hours: float = 36.0,
+) -> str | None:
+    """
+    Canonical action from fresh Autopilot nightly board (same source as Top 10).
+    Returns None if board missing/stale/symbol absent.
+    """
+    row = autopilot_board_row_for_symbol(symbol, max_age_hours=max_age_hours)
+    if not row:
+        return None
+    raw = row.get("Khuyến nghị") or row.get("gate_action")
+    act = normalize_action(raw)
+    return act if act in VALID_ACTIONS else None
 
 
 def align_report_action_with_autopilot_board(
@@ -215,16 +310,47 @@ def align_report_action_with_autopilot_board(
 ) -> dict[str, Any]:
     """
     Force deep-analysis display to match Autopilot Top for the same symbol.
-    One action only: GIỮ or QUAN SÁT (etc.) — not HOLD on board and WATCH on card.
+
+    Skip lock when board quote/MOS lệch mạnh so với phân tích live (board đêm cũ)
+    — tránh TRÁNH cứng trong khi định giá live đã MOS dương.
     """
     rep = dict(report) if isinstance(report, dict) else {}
     sym = str(symbol or rep.get("symbol") or rep.get("ticker") or "").strip().upper()
-    board_act = autopilot_board_action_for_symbol(sym, max_age_hours=max_age_hours)
-    if not board_act:
+    row = autopilot_board_row_for_symbol(sym, max_age_hours=max_age_hours)
+    if not row:
         return rep
+    board_act = normalize_action(row.get("Khuyến nghị") or row.get("gate_action"))
+    if board_act not in VALID_ACTIONS:
+        return rep
+
+    val = rep.get("valuation") if isinstance(rep.get("valuation"), dict) else {}
+    live_price = _num_or_none(val.get("price")) or _num_or_none(
+        (rep.get("snapshot") or {}).get("price") if isinstance(rep.get("snapshot"), dict) else None
+    )
+    board_price = _num_or_none(row.get("Giá") or row.get("price"))
+    live_mos = _num_or_none(val.get("margin_of_safety_composite_pct"))
+    board_mos = _num_or_none(row.get("MOS%"))
+
+    desync_reasons: list[str] = []
+    if live_price and board_price and live_price > 0 and board_price > 0:
+        rel = abs(live_price - board_price) / max(live_price, board_price)
+        if rel >= 0.12:
+            desync_reasons.append(f"giá board {board_price:,.0f} vs live {live_price:,.0f} ({rel*100:.0f}%)")
+    if live_mos is not None and board_mos is not None and abs(live_mos - board_mos) >= 20.0:
+        desync_reasons.append(f"MOS board {board_mos:+.1f}% vs live {live_mos:+.1f}%")
+
+    if desync_reasons:
+        align = dict(rep.get("decision_alignment") or {})
+        note = str(align.get("note_vi") or "").strip()
+        skip = "Không khóa Autopilot (board lệch live: " + "; ".join(desync_reasons) + ")."
+        align["note_vi"] = f"{note} {skip}".strip() if note else skip
+        rep["decision_alignment"] = align
+        rep["action_locked_to_autopilot_board"] = False
+        rep["action_autopilot_sync_skipped"] = "board_live_desync"
+        return rep
+
     live = normalize_action(rep.get("final_action"))
     if live == board_act:
-        # Still stamp source for UI/debug
         rep["action_locked_to_autopilot_board"] = True
         return rep
     rep["final_action"] = board_act
@@ -420,15 +546,21 @@ def apply_gate_fields_to_scan_row(
 
 def apply_trade_plan_visibility(report: dict[str, Any] | None) -> dict[str, Any]:
     """
-    Mark risk_plan as inactive when display action is not BUY/HOLD/CONDITIONAL_BUY,
-    or when P0 integrity blockers fire (desync / OHLCV / RSI fail / MOS block / trust LOW).
+    Gắn cờ hiển thị Trade Plan theo action:
 
-    Keeps internal numbers for gates/audit but sets ``trade_plan_active=False``
-    so UI does not present Entry/SL/TP as an actionable order.
+    - ``entry_allowed``: được mở vùng mua (BUY / CONDITIONAL_BUY)
+    - ``risk_management_visible``: hiện SL / TP / quản trị rủi ro (BUY / COND / HOLD)
+    - ``trade_plan_active`` / ``show_trade_plan``: còn phần plan nào được hiện
+
+    Integrity P0 khóa Entry (không giải ngân mới); với HOLD vẫn giữ SL/risk visible kèm cảnh báo.
     """
     out = dict(report or {})
     gate = resolve_display_action(out)
-    active = bool(gate.get("show_trade_plan"))
+    display = normalize_action(gate.get("display_action"))
+    flags = trade_plan_visibility_flags(display)
+    entry_allowed = bool(flags["entry_allowed"])
+    risk_visible = bool(flags["risk_management_visible"])
+
     integrity_block = False
     integrity_reasons: list[str] = []
     try:
@@ -437,14 +569,24 @@ def apply_trade_plan_visibility(report: dict[str, Any] | None) -> dict[str, Any]
         integrity_block, integrity_reasons = integrity_blocks_trade_plan(out)
     except Exception:
         integrity_block, integrity_reasons = False, []
+
     if integrity_block:
-        active = False
-    out["show_trade_plan"] = active
+        # Không cho mở mua mới khi integrity fail; HOLD vẫn xem được SL bảo vệ vị thế.
+        entry_allowed = False
+
+    show_plan = bool(entry_allowed or risk_visible)
+    out["show_trade_plan"] = show_plan
+    out["entry_allowed"] = bool(entry_allowed)
+    out["risk_management_visible"] = bool(risk_visible)
     out["trade_plan_integrity_block"] = bool(integrity_block)
     out["trade_plan_integrity_reasons"] = list(integrity_reasons)
-    out["is_conditional_buy"] = bool(gate.get("is_conditional") or gate.get("display_action") == "CONDITIONAL_BUY")
+    out["is_conditional_buy"] = bool(gate.get("is_conditional") or display == "CONDITIONAL_BUY")
+
     rp = dict(out.get("risk_plan") or {}) if isinstance(out.get("risk_plan"), dict) else {}
-    rp["trade_plan_active"] = active
+    rp["trade_plan_active"] = show_plan
+    rp["entry_allowed"] = bool(entry_allowed)
+    rp["risk_management_visible"] = bool(risk_visible)
+
     pb = out.get("decision_playbook") if isinstance(out.get("decision_playbook"), dict) else {}
     trig = pb.get("trigger") if isinstance(pb.get("trigger"), dict) else {}
     if pb.get("size_cap_pct") is not None:
@@ -455,7 +597,8 @@ def apply_trade_plan_visibility(report: dict[str, Any] | None) -> dict[str, Any]
         rp["cancel_if_vi"] = trig.get("cancel_if_vi")
     if trig.get("entry_hint_vi"):
         rp["entry_hint_vi"] = trig.get("entry_hint_vi")
-    if not active:
+
+    if not show_plan:
         if integrity_block:
             rp["display_note_vi"] = (
                 "P0 integrity: không đề xuất vào lệnh ("
@@ -464,24 +607,70 @@ def apply_trade_plan_visibility(report: dict[str, Any] | None) -> dict[str, Any]
             )
         else:
             rp["display_note_vi"] = (
-                "Khuyến nghị không phải MUA / MUA CÓ ĐIỀU KIỆN / GIỮ — không đề xuất vào lệnh. "
+                "Khuyến nghị QUAN SÁT / TRÁNH — khóa toàn bộ kế hoạch giao dịch. "
                 "Entry/SL/TP chỉ là tham chiếu nội bộ, không phải lệnh giao dịch."
             )
+    elif display == "HOLD":
+        note = "GIỮ: Không mở mua mới. Hiển thị SL / quản trị rủi ro để bảo vệ vị thế đang nắm."
+        if integrity_block:
+            note += " (Integrity cảnh báo — chỉ dùng SL tham chiếu thận trọng: " + ", ".join(integrity_reasons) + ")."
+        rp["display_note_vi"] = note
+        rp["entry_hint_vi"] = "Không mở mua mới"
+        rp["entry_locked_reason_vi"] = "Không mở mua mới"
     elif out.get("is_conditional_buy"):
         rp["display_note_vi"] = (
             str(trig.get("entry_hint_vi") or "Mua có điều kiện — chỉ vào khi đủ trigger.")
             + " "
             + str(trig.get("cancel_if_vi") or "")
         ).strip()
+    elif integrity_block and not entry_allowed:
+        rp["display_note_vi"] = (
+            "Integrity khóa Entry ("
+            + ", ".join(integrity_reasons)
+            + "). Có thể xem SL/TP tham chiếu nếu đang nắm giữ."
+        )
+
     out["risk_plan"] = rp
+
+    # Đồng bộ playbook flags
+    if isinstance(pb, dict) and pb:
+        pb2 = dict(pb)
+        pb2["entry_allowed"] = bool(entry_allowed)
+        pb2["risk_management_visible"] = bool(risk_visible)
+        out["decision_playbook"] = pb2
     return out
 
 
 def trade_plan_is_active(report: dict[str, Any] | None) -> bool:
+    """True nếu có phần Trade Plan được phép hiện (entry hoặc risk management)."""
     rep = report if isinstance(report, dict) else {}
+    if "risk_management_visible" in rep or "entry_allowed" in rep:
+        return bool(rep.get("risk_management_visible") or rep.get("entry_allowed"))
     rp = rep.get("risk_plan") if isinstance(rep.get("risk_plan"), dict) else {}
+    if "risk_management_visible" in rp or "entry_allowed" in rp:
+        return bool(rp.get("risk_management_visible") or rp.get("entry_allowed"))
     if "trade_plan_active" in rp:
         return bool(rp.get("trade_plan_active"))
     if "show_trade_plan" in rep:
         return bool(rep.get("show_trade_plan"))
     return bool(resolve_display_action(rep).get("show_trade_plan"))
+
+
+def trade_plan_entry_allowed(report: dict[str, Any] | None) -> bool:
+    rep = report if isinstance(report, dict) else {}
+    if "entry_allowed" in rep:
+        return bool(rep.get("entry_allowed"))
+    rp = rep.get("risk_plan") if isinstance(rep.get("risk_plan"), dict) else {}
+    if "entry_allowed" in rp:
+        return bool(rp.get("entry_allowed"))
+    return bool(resolve_display_action(rep).get("entry_allowed"))
+
+
+def trade_plan_risk_visible(report: dict[str, Any] | None) -> bool:
+    rep = report if isinstance(report, dict) else {}
+    if "risk_management_visible" in rep:
+        return bool(rep.get("risk_management_visible"))
+    rp = rep.get("risk_plan") if isinstance(rep.get("risk_plan"), dict) else {}
+    if "risk_management_visible" in rp:
+        return bool(rp.get("risk_management_visible"))
+    return bool(resolve_display_action(rep).get("risk_management_visible"))

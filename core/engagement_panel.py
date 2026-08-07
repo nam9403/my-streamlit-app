@@ -99,7 +99,7 @@ def render_next_best_action_cta(
     if nid == "create_first_alert":
         c1, c2 = st.columns(2)
         with c1:
-            if st.button("Tạo alert SL ngay", width="stretch"):
+            if st.button("Tạo alert SL ngay", use_container_width=True):
                 ok_alert, msg_alert = can_use_feature(user_id, "alert", 1, plan_id=plan_id)
                 if not ok_alert:
                     st.error(msg_alert)
@@ -110,7 +110,7 @@ def render_next_best_action_cta(
                 else:
                     st.warning("Không có mức SL hợp lệ từ risk plan.")
         with c2:
-            if st.button("Tạo alert TP ngay", width="stretch"):
+            if st.button("Tạo alert TP ngay", use_container_width=True):
                 ok_alert, msg_alert = can_use_feature(user_id, "alert", 1, plan_id=plan_id)
                 if not ok_alert:
                     st.error(msg_alert)
@@ -126,7 +126,7 @@ def render_next_best_action_cta(
         buy_blocked = side == "BUY" and readiness == "LOW"
         if buy_blocked:
             st.error("Decision readiness đang LOW: tạm khóa lưu decision BUY để tránh vào lệnh sớm.")
-        if st.button("Lưu decision từ risk plan", width="stretch", disabled=buy_blocked):
+        if st.button("Lưu decision từ risk plan", use_container_width=True, disabled=buy_blocked):
             if entry > 0 and sl > 0 and tp > 0:
                 ok_dec, msg_dec = add_decision(
                     user_id,

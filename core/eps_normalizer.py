@@ -54,6 +54,13 @@ _FINANCIAL_CLUSTER_HINTS = frozenset(
 OTHER_INCOME_RATIO_THRESHOLD = 0.20
 PE_DROP_VS_3Y_THRESHOLD = 0.50  # P/E giảm > 50% so với TB 3 năm
 EPS_GROWTH_SPIKE_PCT = 50.0  # tăng trưởng EPS đột biến kèm P/E sụt
+# Đồng bộ trần g với Graham Growth (core.valuation / core.config) — cảnh báo sớm khi g chu kỳ đỉnh.
+try:
+    from core.config import GRAHAM_GROWTH_G_CAP_PCT as _G_CAP
+
+    GRAHAM_GROWTH_G_CAP_PCT = float(_G_CAP)
+except Exception:  # pragma: no cover
+    GRAHAM_GROWTH_G_CAP_PCT = 15.0
 DEFAULT_MOS_REQUIREMENT_BUMP_PCT = 12.0  # giữa 10–15%
 PE_ANOMALY_TRUST_PENALTY = 18.0
 EPS_ONEOFF_TRUST_PENALTY = 10.0
@@ -62,6 +69,31 @@ EPS_ANOMALY_WARNING_VI = (
     "P/E hiện tại có dấu hiệu bị méo mó do lợi nhuận đột biến. "
     "MOS đã được điều chỉnh thận trọng."
 )
+
+
+def cap_growth_rate_for_graham(growth_rate_pct: float | None) -> dict[str, Any]:
+    """
+    Trần g cho định giá Graham Growth (ủy quyền cùng rule với valuation.normalize_graham_growth_pct).
+    """
+    try:
+        from core.valuation import normalize_graham_growth_pct
+
+        return normalize_graham_growth_pct(growth_rate_pct)
+    except Exception:
+        try:
+            raw = float(growth_rate_pct) if growth_rate_pct is not None else 0.0
+        except (TypeError, ValueError):
+            raw = 0.0
+        neg = raw < 0.0
+        g = 0.0 if neg else min(raw, float(GRAHAM_GROWTH_G_CAP_PCT))
+        return {
+            "g_pct": float(g),
+            "g_raw_pct": float(raw),
+            "g_capped": bool(not neg and raw > float(GRAHAM_GROWTH_G_CAP_PCT)),
+            "g_negative": bool(neg),
+            "g_cap_pct": float(GRAHAM_GROWTH_G_CAP_PCT),
+            "fallback_to_graham_number": bool(neg),
+        }
 
 
 def _f(v: Any) -> float | None:
@@ -328,7 +360,7 @@ class EPSNormalizer:
         price = _f(snapshot.get("price")) or 0.0
         raw_eps = _f(snapshot.get("eps")) or _f(snapshot.get("eps_ttm")) or 0.0
 
-        if norm_eps > 0:
+        if norm_eps > 0 and str(eps_detail.get("basis") or "") not in ("raw_eps", "unavailable", ""):
             snapshot["normalized_eps"] = round(norm_eps, 6)
             snapshot["eps_normalizer_meta"] = {
                 "basis": eps_detail.get("basis"),
@@ -342,6 +374,24 @@ class EPSNormalizer:
                     snapshot["pe_ratio_normalized"] = round(price / norm_eps, 4)
             elif price > 0 and (snapshot.get("pe_ratio_normalized") in (None, "")):
                 snapshot["pe_ratio_normalized"] = round(price / norm_eps, 4)
+        elif eps_detail.get("one_off_adjusted") and norm_eps > 0:
+            # Fail-soft: one-off đã chỉnh nhưng basis lạ — vẫn publish.
+            snapshot["normalized_eps"] = round(norm_eps, 6)
+            snapshot["eps_normalizer_meta"] = {
+                "basis": eps_detail.get("basis"),
+                "one_off_adjusted": True,
+                "other_income_ratio": eps_detail.get("other_income_ratio"),
+                "notes": list(eps_detail.get("notes") or []),
+            }
+            snapshot["eps_anomaly_flag"] = True
+        else:
+            # Không gắn normalized_eps khi chỉ copy raw — để Graham dùng eps/eps_ttm.
+            snapshot["eps_normalizer_meta"] = {
+                "basis": eps_detail.get("basis"),
+                "one_off_adjusted": False,
+                "other_income_ratio": eps_detail.get("other_income_ratio"),
+                "notes": list(eps_detail.get("notes") or []),
+            }
 
         current_pe = _f(snapshot.get("pe_ratio_normalized"))
         if current_pe is None and price > 0 and norm_eps > 0:
@@ -369,6 +419,19 @@ class EPSNormalizer:
             pe_avg_3y=pe_avg_3y,
             base_trust_score=float(_f(snapshot.get("data_trust_score")) or 100.0),
         )
+
+        g_cap_meta = cap_growth_rate_for_graham(eps_growth)
+        snapshot["graham_growth_g_meta"] = g_cap_meta
+        if g_cap_meta.get("g_capped"):
+            pe_check = dict(pe_check)
+            pe_check["reasons"] = list(pe_check.get("reasons") or [])
+            note_g = (
+                f"EPS growth {float(g_cap_meta.get('g_raw_pct') or 0):.1f}% > trần Graham "
+                f"{float(g_cap_meta.get('g_cap_pct') or GRAHAM_GROWTH_G_CAP_PCT):.0f}% — "
+                "định giá sẽ dùng g đã cap."
+            )
+            if note_g not in pe_check["reasons"]:
+                pe_check["reasons"].append(note_g)
 
         # One-off EPS cũng kích hoạt cảnh báo UI + bump MOS (dù P/E chưa sụt đủ 50%).
         if eps_detail.get("eps_anomaly_flag") and not pe_check.get("pe_anomaly_flag"):

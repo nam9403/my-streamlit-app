@@ -33,7 +33,7 @@ def render_trade_alert_kpi_panel(
     trades = list_trades(user_id, limit=200)
     if trades:
         tdf = pd.DataFrame(trades)
-        st.dataframe(tdf, width="stretch", hide_index=True)
+        st.dataframe(tdf, use_container_width=True, hide_index=True)
         rp = realized_performance(user_id, days=30)
         r1, r2, r3, r4 = st.columns(4)
         with r1:
@@ -48,7 +48,7 @@ def render_trade_alert_kpi_panel(
         evp = execution_vs_plan_report(user_id, limit=200)
         if evp:
             evp_df = pd.DataFrame(evp)
-            st.dataframe(evp_df, width="stretch", hide_index=True)
+            st.dataframe(evp_df, use_container_width=True, hide_index=True)
         else:
             st.caption("Chưa có trade nào được link với decision để so sánh.")
     else:
@@ -57,7 +57,7 @@ def render_trade_alert_kpi_panel(
     fired = evaluate_alerts(user_id)
     st.subheader("🔔 Cảnh báo kích hoạt")
     if fired:
-        st.dataframe(pd.DataFrame(fired), width="stretch", hide_index=True)
+        st.dataframe(pd.DataFrame(fired), use_container_width=True, hide_index=True)
         if channels.auto_notify:
             sent_stat = dispatch_alert_notifications(user_id, fired, channels.tg_bot, channels.tg_chat)
             ext_stat = dispatch_external_notifications(
@@ -100,7 +100,7 @@ def render_trade_alert_kpi_panel(
     by_event = kpi.get("by_event") or {}
     if by_event:
         ev_df = pd.DataFrame([{"event": k, "count": v} for k, v in by_event.items()]).sort_values("count", ascending=False)
-        st.dataframe(ev_df, width="stretch", hide_index=True)
+        st.dataframe(ev_df, use_container_width=True, hide_index=True)
 
     cohort = get_cohort_kpi(user_id)
     st.subheader("📅 Cohort KPI (7/30 ngày)")
@@ -122,13 +122,13 @@ def render_trade_alert_kpi_panel(
             },
         ]
     )
-    st.dataframe(cohort_df, width="stretch", hide_index=True)
+    st.dataframe(cohort_df, use_container_width=True, hide_index=True)
 
     st.subheader("🎯 Outcome Tracker (7/30/90)")
     dec_rows = evaluate_decisions(user_id, limit=120)
     if dec_rows:
         dec_df = pd.DataFrame(dec_rows)
-        st.dataframe(dec_df, width="stretch", hide_index=True)
+        st.dataframe(dec_df, use_container_width=True, hide_index=True)
         closed = dec_df[dec_df["Trạng thái"].isin(["STOP_LOSS_HIT", "TAKE_PROFIT_HIT"])]
         tp_n = int((closed["Trạng thái"] == "TAKE_PROFIT_HIT").sum()) if not closed.empty else 0
         sl_n = int((closed["Trạng thái"] == "STOP_LOSS_HIT").sum()) if not closed.empty else 0
@@ -158,13 +158,13 @@ def render_trade_alert_kpi_panel(
         with c_pm1:
             st.caption("Post-mortem 7 ngày")
             if pm7:
-                st.dataframe(pd.DataFrame(pm7).head(10), width="stretch", hide_index=True)
+                st.dataframe(pd.DataFrame(pm7).head(10), use_container_width=True, hide_index=True)
             else:
                 st.caption("Chưa có quyết định đủ tuổi 7 ngày.")
         with c_pm2:
             st.caption("Post-mortem 30 ngày")
             if pm30:
-                st.dataframe(pd.DataFrame(pm30).head(10), width="stretch", hide_index=True)
+                st.dataframe(pd.DataFrame(pm30).head(10), use_container_width=True, hide_index=True)
             else:
                 st.caption("Chưa có quyết định đủ tuổi 30 ngày.")
 
@@ -182,7 +182,7 @@ def render_trade_alert_kpi_panel(
                 {"Chỉ số": "Win rate closed %", "Giá trị": mv.get("win_rate_closed_pct")},
             ]
         )
-        st.dataframe(mv_df, width="stretch", hide_index=True)
+        st.dataframe(mv_df, use_container_width=True, hide_index=True)
     else:
         st.caption("Chưa có quyết định nào. Hãy lưu quyết định để app hậu kiểm giá trị thực.")
 
@@ -203,7 +203,7 @@ def render_trade_alert_kpi_panel(
             st.info(f"💡 {sup.get('title')}\n\n{sup.get('message')}")
             cta1, cta2 = st.columns(2)
             with cta1:
-                if st.button("🚀 Nâng cấp ngay", width="stretch"):
+                if st.button("🚀 Nâng cấp ngay", use_container_width=True):
                     log_event(
                         user_id,
                         "upgrade_cta_click",
@@ -216,7 +216,7 @@ def render_trade_alert_kpi_panel(
                     )
                     st.success("Đã ghi nhận nhu cầu nâng cấp. Vào mục Billing để xác nhận.")
             with cta2:
-                if st.button("❓ Xem chi tiết giá trị", width="stretch"):
+                if st.button("❓ Xem chi tiết giá trị", use_container_width=True):
                     log_event(user_id, "upgrade_info_click", {"variant": sup.get("variant")})
                     st.caption(
                         f"ROI fee x: {sup.get('roi_fee_x')} | "

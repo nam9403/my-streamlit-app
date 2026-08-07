@@ -19,12 +19,12 @@ def render_opportunity_filter_panel(
     universe_total: int,
 ) -> dict[str, Any]:
     st.markdown("### Top 5 theo profile")
-    run_top5 = st.button("Tính Top 5", width="stretch")
+    run_top5 = st.button("Tính Top 5", use_container_width=True)
     if run_top5:
         top5 = compute_top5_for_profile(tuple((watchlist or watchlist_default)[:12]), profile)
         st.session_state["top5_df"] = top5
     if "top5_df" in st.session_state:
-        st.dataframe(st.session_state["top5_df"], width="stretch", hide_index=True)
+        st.dataframe(st.session_state["top5_df"], use_container_width=True, hide_index=True)
     else:
         st.caption("Chưa chạy Top 5. Bấm **Tính Top 5** khi cần.")
 
@@ -37,7 +37,7 @@ def render_opportunity_filter_panel(
         st.session_state[slider_key] = int(min(300, max_limit))
     c1, c2 = st.columns(2)
     with c1:
-        if st.button("Quét toàn thị trường (full)", width="stretch"):
+        if st.button("Quét toàn thị trường (full)", use_container_width=True):
             st.session_state[slider_key] = int(max_limit)
     with c2:
         st.caption(f"Universe hiện có: **{int(universe_total)}** mã")
@@ -59,7 +59,7 @@ def render_opportunity_filter_panel(
         default=[],
         help="Để trống = quét toàn bộ tiểu ngành trong universe.",
     )
-    run_scan = st.button("🔎 Quét cơ hội tự động", width="stretch")
+    run_scan = st.button("🔎 Quét cơ hội tự động", use_container_width=True)
 
     return {
         "min_avg_volume_20": min_avg_volume_20,

@@ -190,7 +190,7 @@ def render_primary_analysis_tab(
             slip_bps_pick = st.slider(
                 "Trượt giá (bps)", min_value=0, max_value=30, value=10, step=1, key="adv_backtest_slip"
             )
-            if st.button("Chạy backtest nâng cao", width="stretch", key="adv_backtest_run"):
+            if st.button("Chạy backtest nâng cao", use_container_width=True, key="adv_backtest_run"):
                 try:
                     res_adv, lbl_adv = svc.run_full_backtest_for_ticker(
                         ticker,
@@ -205,7 +205,7 @@ def render_primary_analysis_tab(
                     )
                     if res_adv.trades:
                         df_tr = pd.DataFrame(res_adv.trades)
-                        st.dataframe(df_tr, width="stretch", hide_index=True)
+                        st.dataframe(df_tr, use_container_width=True, hide_index=True)
                         st.download_button(
                             "Tải trade log CSV",
                             data=df_tr.to_csv(index=False).encode("utf-8"),
@@ -226,7 +226,7 @@ def render_primary_analysis_tab(
         default_tp = float(rp.get("take_profit_price") or 0) if plan_active else 0.0
         c_alert1, c_alert2 = st.columns(2)
         with c_alert1:
-            if st.button("Tạo cảnh báo thủng SL", width="stretch", disabled=not plan_active):
+            if st.button("Tạo cảnh báo thủng SL", use_container_width=True, disabled=not plan_active):
                 ok_alert, msg_alert = svc.pl.can_use_feature(user_id, "alert", 1, plan_id=plan_id)
                 if not ok_alert:
                     st.error(msg_alert)
@@ -237,7 +237,7 @@ def render_primary_analysis_tab(
                 else:
                     st.warning("Không có mức SL hợp lệ để tạo alert.")
         with c_alert2:
-            if st.button("Tạo cảnh báo chạm TP", width="stretch", disabled=not plan_active):
+            if st.button("Tạo cảnh báo chạm TP", use_container_width=True, disabled=not plan_active):
                 ok_alert, msg_alert = svc.pl.can_use_feature(user_id, "alert", 1, plan_id=plan_id)
                 if not ok_alert:
                     st.error(msg_alert)

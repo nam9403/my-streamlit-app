@@ -188,12 +188,16 @@ def format_mini_decision_card_html(analysis: dict[str, Any]) -> str:
         resolved = resolve_display_action(rep_v)
         action = str(resolved.get("display_action") or "WATCH")
         action_vi = action_display_vi(action)
-        show_plan = trade_plan_is_active(rep_v) and bool(resolved.get("show_trade_plan"))
+        show_plan = trade_plan_is_active(rep_v) and bool(
+            resolved.get("show_trade_plan") or resolved.get("risk_management_visible")
+        )
+        entry_allowed = bool(resolved.get("entry_allowed") or rep_v.get("entry_allowed"))
     except Exception:
         rep_v = rep
         action = str(rep.get("final_action") or "WATCH").upper()
         action_vi = action
-        show_plan = action in ("BUY", "HOLD")
+        show_plan = action in ("BUY", "HOLD", "CONDITIONAL_BUY")
+        entry_allowed = action in ("BUY", "CONDITIONAL_BUY")
 
     val = rep_v.get("valuation") if isinstance(rep_v.get("valuation"), dict) else {}
     phase = rep_v.get("phase") if isinstance(rep_v.get("phase"), dict) else {}
@@ -237,11 +241,19 @@ def format_mini_decision_card_html(analysis: dict[str, Any]) -> str:
     if show_plan:
         lines.append("")
         lines.append("<b>Kế hoạch giao dịch</b>")
-        lines.append(
-            f"Entry: {_fmt_num(rp.get('entry_price'), money=True)} · "
-            f"SL: {_fmt_num(rp.get('stop_loss_price'), money=True)} · "
-            f"TP: {_fmt_num(rp.get('take_profit_price'), money=True)}"
-        )
+        if entry_allowed:
+            lines.append(
+                f"Entry: {_fmt_num(rp.get('entry_price'), money=True)} · "
+                f"SL: {_fmt_num(rp.get('stop_loss_price'), money=True)} · "
+                f"TP: {_fmt_num(rp.get('take_profit_price'), money=True)}"
+            )
+        else:
+            lines.append("Entry: <b>Không mở mua mới</b>")
+            lines.append(
+                f"SL: {_fmt_num(rp.get('stop_loss_price'), money=True)} · "
+                f"TP: {_fmt_num(rp.get('take_profit_price'), money=True)} "
+                f"(quản trị vị thế đang nắm)"
+            )
     else:
         lines.append("")
         lines.append("<i>Không đề xuất Entry/SL/TP (QUAN SÁT / TRÁNH).</i>")

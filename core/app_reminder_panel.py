@@ -38,7 +38,7 @@ def render_action_reminders(
                 st.warning(f"{rm.get('title')}: {rm.get('message')}")
             else:
                 st.info(f"{rm.get('title')}: {rm.get('message')}")
-        if st.button("📨 Gửi nhắc việc qua kênh đã cấu hình", width="stretch"):
+        if st.button("📨 Gửi nhắc việc qua kênh đã cấu hình", use_container_width=True):
             text = "Nhắc việc quan trọng:\n" + "\n".join(
                 [f"- {x.get('title')}: {x.get('message')}" for x in reminders_now]
             )

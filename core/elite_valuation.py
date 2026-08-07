@@ -36,10 +36,19 @@ def merge_elite_valuation(snapshot: dict[str, Any], base: dict[str, Any]) -> dic
     Gắn thêm các trường elite vào dict kết quả value_investing_summary (đã tính xong base).
     Không gọi đệ quy include_extensions.
     """
+    from core.config import resolve_vn_10y_bond_yield_pct
     from core.valuation import value_investing_summary
 
     base_g = float(base.get("growth_rate_pct") or 0)
-    base_y = float(base.get("bond_yield_pct_used") or snapshot.get("bond_yield_pct") or 4.4)
+    try:
+        y_snap = float(snapshot["bond_yield_pct"]) if snapshot.get("bond_yield_pct") not in (None, "") else None
+    except (TypeError, ValueError, KeyError):
+        y_snap = None
+    base_y = float(
+        base.get("bond_yield_pct_used")
+        or base.get("vn_10y_bond_yield_pct")
+        or resolve_vn_10y_bond_yield_pct(y_snap)
+    )
 
     bear_g = _clip_g(base_g + _env_float("II_SCENARIO_BEAR_G_DELTA", "-3"))
     bull_g = _clip_g(base_g + _env_float("II_SCENARIO_BULL_G_DELTA", "4"))

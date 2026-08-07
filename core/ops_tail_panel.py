@@ -40,7 +40,7 @@ def render_ops_tail_panel(
     st.subheader("🛜 SLA nguồn dữ liệu")
     sla_rows = get_source_sla_report()
     if sla_rows:
-        st.dataframe(pd.DataFrame(sla_rows), width="stretch", hide_index=True)
+        st.dataframe(pd.DataFrame(sla_rows), use_container_width=True, hide_index=True)
     else:
         st.caption("Chưa có số liệu SLA nguồn.")
     render_5s_panel(report, sla_rows)
@@ -90,7 +90,7 @@ def render_ops_tail_panel(
     )
     playbook_text = build_daily_playbook_text(action_df_for_playbook, ticker, report)
     st.code(playbook_text)
-    if st.button("Gửi Daily Playbook ngay", width="stretch"):
+    if st.button("Gửi Daily Playbook ngay", use_container_width=True):
         ds = dispatch_text_notifications(
             playbook_text,
             **channels.dispatch_kwargs(),

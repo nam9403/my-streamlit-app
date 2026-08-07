@@ -27,23 +27,42 @@ copy .env.vps4gb.example .env
 
 Sau đó chỉ cần điền thêm các secret thực tế (`II_APP_SECRET_KEY`, Telegram/SMTP, API keys).
 
+### Bootstrap VPS một lệnh (khuyến nghị)
+
+Sau khi copy dự án lên VPS Windows, chạy **một lần**:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\bootstrap_vps.ps1 -Env preprod
+```
+
+Lệnh này tự đăng ký Task Scheduler:
+- `DuAn1_BackgroundJobs` — warm/prefetch định kỳ
+- `DuAn1_NightlyRuntimeCheck` — kiểm tra runtime ban đêm
+- `DuAn1_OvernightScan` — **quét Autopilot mỗi 30 phút từ 17:00 đến 07:00** (mặc định BẬT)
+
+Không cần bật tay thêm. Muốn tắt overnight: `-SkipOvernightScan`.
+
 ### Quét đêm Autopilot (khuyến nghị VPS)
 
-Ban đêm chạy batch liquid (~400 mã HOSE/VN30), sáng UI lấy Top 10 từ board đã lưu:
+Ban đêm chạy batch liquid (~400 mã HOSE/VN30), sáng UI lấy Top 10 từ board đã lưu.
+
+**Cách chính (tự động 17:00–07:00):** đã nằm trong `bootstrap_vps.ps1` ở trên.
+
+Chạy tay / one-shot cuối ngày (tuỳ chọn):
 
 ```bash
 python scripts/run_autopilot_nightly_scan.py --batch-size 40 --workers 3
 python scripts/autopilot_nightly_board_health.py --min-coverage 80 --require-ok
 ```
 
-Windows Task Scheduler:
+Windows Task Scheduler (one-shot 22:30, bổ sung — overnight tick đã cover phần lớn):
 
 ```powershell
 powershell -File scripts/setup_autopilot_nightly_scan_scheduler.ps1 -RunHour 22 -RunMinute 30 -BatchSize 40
 ```
 
 Env: `II_AUTOPILOT_NIGHTLY_BOARD=1`, `II_AUTOPILOT_NIGHTLY_MAX_AGE_HOURS=36`,
-`II_AUTOPILOT_NIGHTLY_REFRESH_PRICES=1`.
+`II_AUTOPILOT_NIGHTLY_REFRESH_PRICES=1`, `II_OVERNIGHT_SCAN_START=17:00`, `II_OVERNIGHT_SCAN_END=07:00`.
 
 Morning digest (Telegram/webhook):
 
@@ -136,7 +155,10 @@ run_app.bat
 Thiết lập một lần:
 
 ```powershell
+powershell -ExecutionPolicy Bypass -File "scripts/bootstrap_vps.ps1" -Env preprod
+# hoặc:
 powershell -ExecutionPolicy Bypass -File "scripts/setup_vps_24x7_scheduler.ps1" -Env preprod -EveryMinutes 15 -Watchlist "FPT,HPG,VNM" -UniverseLimit 30 -QueueJobs 30 -NightlyRunHour 23 -NightlyRunMinute 30
+# Overnight 17:00–07:00 đã BẬT mặc định; tắt bằng -SkipOvernightScan
 ```
 
 Lệnh trên sẽ tạo/cập nhật 2 task:

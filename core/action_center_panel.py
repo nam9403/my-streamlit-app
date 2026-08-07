@@ -190,7 +190,7 @@ def render_action_center_expander(
         if action_df.empty:
             st.caption("Chưa đủ dữ liệu để dựng Action Center.")
         else:
-            st.dataframe(action_df, width="stretch", hide_index=True)
+            st.dataframe(action_df, use_container_width=True, hide_index=True)
             log_event(user_id, "action_center_viewed", {"rows": int(len(action_df))})
 
 
@@ -212,8 +212,10 @@ def render_scan_results_expander(
         if final_df.empty:
             st.info("Chưa có mã nào đạt tiêu chí định giá rẻ >=20% trong lần quét gần nhất.")
             return
-        st.dataframe(final_df, width="stretch", hide_index=True)
-        with st.expander("Mở rộng dẫn chứng từng mã"):
+        st.dataframe(final_df, use_container_width=True, hide_index=True)
+        st.markdown("---")
+        st.markdown("**Mở rộng dẫn chứng từng mã**")
+        with st.container():
             for _, row in final_df.iterrows():
                 sym = str(row["Mã"])
                 st.markdown(f"**{sym}** · {row['Thông điệp cuối cùng']}")
@@ -256,16 +258,16 @@ def render_scan_candidates_overview(
         st.warning("Không tìm thấy mã phù hợp bộ lọc hiện tại.")
         return
     st.caption("Các mã có trạng thái `Sẵn sàng` được ưu tiên hiển thị trước.")
-    st.dataframe(candidates.head(20), width="stretch", hide_index=True)
+    st.dataframe(candidates.head(20), use_container_width=True, hide_index=True)
     plans = session_state.get("scan_portfolios") or build_portfolio_options(candidates, total_capital_vnd)
     st.markdown("### 📦 Gợi ý phân bổ danh mục theo mức rủi ro")
     c1, c2, c3 = st.columns(3)
     with c1:
         st.caption("An toàn")
-        st.dataframe(plans["an_toan"], width="stretch", hide_index=True)
+        st.dataframe(plans["an_toan"], use_container_width=True, hide_index=True)
     with c2:
         st.caption("Cân bằng")
-        st.dataframe(plans["can_bang"], width="stretch", hide_index=True)
+        st.dataframe(plans["can_bang"], use_container_width=True, hide_index=True)
     with c3:
         st.caption("Mạo hiểm")
-        st.dataframe(plans["mao_hiem"], width="stretch", hide_index=True)
+        st.dataframe(plans["mao_hiem"], use_container_width=True, hide_index=True)

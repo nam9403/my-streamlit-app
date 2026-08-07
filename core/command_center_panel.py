@@ -35,17 +35,20 @@ def render_command_center_panel(
     quick_autopilot_refresh = False
     quick_warm_async = False
 
-    with st.expander("🧠 Smart Command Center", expanded=False):
+    # Nested-safe: called from sidebar expander "Danh mục theo dõi".
+    st.markdown("---")
+    st.markdown("**🧠 Smart Command Center**")
+    with st.container():
         c_cmd1, c_cmd2 = st.columns(2)
         with c_cmd1:
-            if st.button("⚡ Phân tích mã chọn", width="stretch"):
+            if st.button("⚡ Phân tích mã chọn", use_container_width=True):
                 quick_run_analysis = True
-            if st.button("♻️ Quét lại cơ hội", width="stretch"):
+            if st.button("♻️ Quét lại cơ hội", use_container_width=True):
                 quick_autopilot_refresh = True
         with c_cmd2:
-            if st.button("♨️ Warm nền ngay", width="stretch"):
+            if st.button("♨️ Warm nền ngay", use_container_width=True):
                 quick_warm_async = True
-            if st.button("🛠️ Xử lý queue", width="stretch"):
+            if st.button("🛠️ Xử lý queue", use_container_width=True):
                 q_stat = process_notification_queue(max_jobs=30)
                 st.session_state["cmd_last_queue_stat"] = dict(q_stat)
                 st.session_state["cmd_last_queue_ts"] = time.time()
@@ -53,7 +56,7 @@ def render_command_center_panel(
                     f"Queue processed={q_stat['processed']} | sent={q_stat['sent']} | "
                     f"retried={q_stat['retried']} | failed={q_stat['failed']}"
                 )
-        if st.button("📨 Gửi Daily Playbook test", width="stretch"):
+        if st.button("📨 Gửi Daily Playbook test", use_container_width=True):
             ping = f"[PLAYBOOK TEST] {ticker} @ {datetime.now(timezone.utc).strftime('%H:%M:%SZ')}"
             ping_stat = dispatch_text_notifications(
                 ping,
@@ -173,16 +176,20 @@ def render_command_center_panel(
             prev = int(st.session_state["cx_score_history"][-2]["score"])
             delta = cx_score - prev
             st.caption(f"Trend phiên hiện tại: {delta:+d} điểm so với lần cập nhật trước.")
-        with st.expander("Lịch sử Experience Score (phiên hiện tại)", expanded=False):
-            st.dataframe(pd.DataFrame(st.session_state["cx_score_history"]), width="stretch", hide_index=True)
-        with st.expander("Lịch sử Experience Score (theo ngày)", expanded=False):
+        st.markdown("---")
+        st.markdown("**Lịch sử Experience Score (phiên hiện tại)**")
+        with st.container():
+            st.dataframe(pd.DataFrame(st.session_state["cx_score_history"]), use_container_width=True, hide_index=True)
+        st.markdown("---")
+        st.markdown("**Lịch sử Experience Score (theo ngày)**")
+        with st.container():
             cx_daily = get_recent_cx_scores(user_id, days=14)
             if cx_daily:
-                st.dataframe(pd.DataFrame(cx_daily), width="stretch", hide_index=True)
+                st.dataframe(pd.DataFrame(cx_daily), use_container_width=True, hide_index=True)
             else:
                 st.caption("Chưa có dữ liệu theo ngày.")
         if health_label in ("DEGRADED", "CRITICAL"):
-            if st.button("🩺 Auto-fix nhanh (Queue + Warm + Ping test)", width="stretch"):
+            if st.button("🩺 Auto-fix nhanh (Queue + Warm + Ping test)", use_container_width=True):
                 q_fix = process_notification_queue(max_jobs=30)
                 st.session_state["cmd_last_queue_stat"] = dict(q_fix)
                 st.session_state["cmd_last_queue_ts"] = time.time()

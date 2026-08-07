@@ -7,6 +7,80 @@ from datetime import datetime, timedelta
 from core.decision_card_dashboard import build_decision_dashboard_html, build_price_chart_svg
 
 
+def test_dashboard_html_marks_integrity_blocked_valuation() -> None:
+    html = build_decision_dashboard_html(
+        symbol="HII",
+        company_name="An Tien Industries",
+        price_txt="7,580",
+        fair_txt="32,863",
+        mos_disp="+40.0%",
+        mos_f=40.0,
+        mos_comment="Biên an toàn rộng",
+        legend="Theo dõi",
+        badge="QUAN SÁT",
+        accent="#b8860b",
+        soft="#fbf5e6",
+        fscore_txt="2/9 (Tạm tính - Đang chờ nạp BCTC)",
+        fscore=2,
+        fscore_prov=True,
+        cfo_txt="Cần thêm dữ liệu",
+        cfo=None,
+        cfo_prior=None,
+        cr_txt="Thanh khoản (CR): Đang cập nhật",
+        cr_ready=False,
+        pe_txt="P/E hiện tại: 2.38 — Đánh giá: Cần thận trọng",
+        pe_num="2.38",
+        eq_label="Yếu",
+        dividend_line="Đang cập nhật",
+        catalyst_lines=["Tin mẫu"],
+        confidence_pct=30.0,
+        readiness_vi="Thấp",
+        show_plan=False,
+        plan_html_inner="",
+        locked_reason="Chưa đủ điều kiện.",
+        radar=["Hạ khuyến nghị nếu F-Score < 3."],
+        valuation_integrity_blocked=True,
+        valuation_integrity_note="P/E tính lại=2.38 rất thấp — nghi EPS lệch đơn vị/scale.",
+        mos_raw_disp="+76.9%",
+    )
+    assert "Tham khảo" in html or "Không tin cậy" in html or "không giải ngân" in html
+    assert "ii-dd-integrity" in html
+    assert "Cảnh báo định giá" in html
+    assert "ii-dd-chip warn" in html
+    assert "32,863" in html
+    assert "\n\n" not in html
+
+
+def test_decision_card_payload_exposes_integrity_flags() -> None:
+    from core.decision_card_panel import build_decision_card_payload
+
+    card = build_decision_card_payload(
+        {
+            "symbol": "HII",
+            "valuation": {
+                "price": 7580,
+                "composite_target_price": 32863,
+                "composite_target_price_raw": 32863,
+                "fair_value_suppressed": False,
+                "fair_value_unreliable": True,
+                "margin_of_safety_composite_pct": 40.0,
+                "margin_of_safety_composite_pct_raw": 76.9,
+                "mos_integrity_blocked": True,
+                "mos_integrity_reasons": ["pe_sanity_notes", "mos_actionable_capped_on_integrity_fail"],
+                "pe_sanity_notes": ["P/E tính lại=2.38 rất thấp"],
+                "instant_conclusion": "Theo dõi",
+            },
+        },
+        symbol="HII",
+    )
+    assert card["mos_integrity_blocked"] is True
+    assert card["fair_price_unreliable"] is True
+    assert card["fair_value_unreliable"] is True
+    assert float(card["fair_price"]) == 32863
+    assert float(card["mos_pct_raw"]) == 76.9
+    assert "2.38" in str(card["mos_integrity_note_vi"])
+
+
 def test_dashboard_html_highlights_negative_mos_and_locked_plan() -> None:
     html = build_decision_dashboard_html(
         symbol="FPT",

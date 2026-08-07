@@ -11,7 +11,7 @@ def render_portfolio_overview(user_id: str, *, portfolio_snapshot: Callable[[str
     pf_rows = portfolio_snapshot(user_id)
     if pf_rows:
         pf_df = pd.DataFrame(pf_rows)
-        st.dataframe(pf_df, width="stretch", hide_index=True)
+        st.dataframe(pf_df, use_container_width=True, hide_index=True)
         total_value = float(pf_df["Giá trị"].sum())
         total_pnl = float(pf_df["Lãi/Lỗ"].sum())
         st.caption(f"Tổng giá trị: {total_value:,.0f} VND | Lãi/Lỗ: {total_pnl:,.0f} VND")

@@ -38,9 +38,15 @@ def _max_drawdown_pct(equity: np.ndarray) -> float:
 
 
 def _legacy_decision(snapshot: dict[str, Any], price: float) -> str:
+    from core.config import resolve_vn_10y_bond_yield_pct
+
     eps = float(snapshot.get("eps_ttm") or snapshot.get("eps") or 0)
     g = float(snapshot.get("growth_rate_pct") or 0)
-    y = float(snapshot.get("bond_yield_pct") or 4.4)
+    try:
+        y_ex = float(snapshot["bond_yield_pct"]) if snapshot.get("bond_yield_pct") not in (None, "") else None
+    except (TypeError, ValueError, KeyError):
+        y_ex = None
+    y = resolve_vn_10y_bond_yield_pct(y_ex)
     intrinsic = benjamin_graham_value(eps, g, bond_yield_pct=y)
     mos = margin_of_safety_pct(intrinsic, price)
     if intrinsic <= 0 or mos is None:

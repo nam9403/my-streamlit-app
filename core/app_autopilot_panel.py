@@ -342,9 +342,9 @@ def render_autopilot_panel(
             view_df["Khuyến nghị"] = view_df["Khuyến nghị"].map(
                 lambda x: action_display_vi(normalize_action(x))
             )
-        st.dataframe(view_df, width="stretch", hide_index=True)
+        st.dataframe(view_df, use_container_width=True, hide_index=True)
     except Exception:
-        st.dataframe(autopilot_df, width="stretch", hide_index=True)
+        st.dataframe(autopilot_df, use_container_width=True, hide_index=True)
     top_symbol = str(autopilot_df.iloc[0].get("Mã") or "").upper()
     st.caption(f"Gợi ý mặc định: **{top_symbol}** (xếp hạng #1 từ Auto Pilot)")
     simple_symbols = tuple(str(x).upper() for x in autopilot_df["Mã"].head(5).tolist())
@@ -364,13 +364,13 @@ def render_autopilot_panel(
         st.caption("Chưa dựng được bảng Simple View ở lần quét này.")
     else:
         simple_view = simple_view_for_plan(simple_df, plan_id)
-        st.dataframe(simple_view, width="stretch", hide_index=True)
+        st.dataframe(simple_view, use_container_width=True, hide_index=True)
         if plan_id == "free":
             st.info(
                 "🔒 Gói Free chỉ hiển thị bản rút gọn. Nâng Pro/Expert để mở full "
                 "Entry/SL/TP và hành động 1-click."
             )
-            if st.button("🚀 Mở khóa Pro để xem full plan", width="stretch", key="cta_unlock_simple_view"):
+            if st.button("🚀 Mở khóa Pro để xem full plan", use_container_width=True, key="cta_unlock_simple_view"):
                 log_event(user_id, "upgrade_cta_click", {"placement": "simple_view_paywall", "target_plan": "pro"})
                 st.success("Đã ghi nhận nhu cầu nâng cấp Pro.")
         cta_cols = st.columns([2, 1])
@@ -383,7 +383,7 @@ def render_autopilot_panel(
         with cta_cols[1]:
             apply_now = st.button(
                 "✅ Áp dụng kế hoạch 1-click",
-                width="stretch",
+                use_container_width=True,
                 disabled=(plan_id == "free"),
             )
         # Lazy: chỉ tính News/Macro Bias cho mã đang chọn — không chạy trong vòng scan.
@@ -397,11 +397,11 @@ def render_autopilot_panel(
         with thesis_col1:
             thesis_btn = st.button(
                 "✨ Luận Điểm Đầu Tư AI & Chất Xúc Tác (1-Page)",
-                width="stretch",
+                use_container_width=True,
                 key="autopilot_ai_thesis_btn",
             )
         with thesis_col2:
-            if st.button("🧹 Xóa luận điểm", width="stretch", key="autopilot_ai_thesis_clear"):
+            if st.button("🧹 Xóa luận điểm", use_container_width=True, key="autopilot_ai_thesis_clear"):
                 st.session_state.pop("autopilot_ai_thesis_md", None)
                 st.session_state.pop("autopilot_ai_thesis_symbol", None)
         if thesis_btn:
@@ -512,7 +512,7 @@ def render_autopilot_panel(
         if not buy_df.empty:
             if st.button(
                 "🚀 Batch 1-click Top 3 BUY",
-                width="stretch",
+                use_container_width=True,
                 disabled=(plan_id == "free"),
             ):
                 batch_results: list[str] = []
@@ -583,10 +583,10 @@ def render_autopilot_panel(
         if pf_df.empty:
             st.caption("Chưa có mã đạt đủ chuẩn Profit Focus ở lần quét này.")
         else:
-            st.dataframe(pf_df, width="stretch", hide_index=True)
+            st.dataframe(pf_df, use_container_width=True, hide_index=True)
             if plan_id in ("pro", "expert"):
                 pf_top3 = pf_df.head(3).copy()
-                if not pf_top3.empty and st.button("🚀 1-click Execute Top 3 Profit Focus", width="stretch"):
+                if not pf_top3.empty and st.button("🚀 1-click Execute Top 3 Profit Focus", use_container_width=True):
                     results: list[str] = []
                     for _, row in pf_top3.iterrows():
                         sym = str(row.get("Mã") or "").upper()
@@ -643,7 +643,7 @@ def render_autopilot_panel(
                         st.caption(f"- {line}")
             else:
                 st.info("🔒 1-click execute Profit Focus dành cho Pro/Expert.")
-    if top_symbol and st.button("⚡ Dùng mã #1 để phân tích ngay", width="stretch"):
+    if top_symbol and st.button("⚡ Dùng mã #1 để phân tích ngay", use_container_width=True):
         ticker = top_symbol
         run_analysis = True
     return ticker, run_analysis

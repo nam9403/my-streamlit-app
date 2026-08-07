@@ -75,5 +75,5 @@ def render_ai_health_panel(*, get_provider_health_snapshot: Callable[[], list[di
     df = pd.DataFrame(rows)
     if "avg_ms" in df.columns:
         df["avg_ms"] = df["avg_ms"].map(lambda x: round(float(x), 1))
-    st.dataframe(df, width="stretch", hide_index=True)
+    st.dataframe(df, use_container_width=True, hide_index=True)
     st.caption("Key được ẩn dạng ***xxxx. cooldown_sec > 0 nghĩa là key đang tạm nghỉ.")

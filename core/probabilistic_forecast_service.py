@@ -100,13 +100,16 @@ def signal_alignment_summary(
     f_score: int,
     mos_pct: float,
     news: list[dict[str, Any]],
+    quality_compensated: bool = False,
 ) -> dict[str, Any]:
     """
     Đánh giá đồng thuận tín hiệu kỹ thuật/cơ bản/tin tức.
     """
     p = str(phase_name or "neutral").strip().lower()
     tech = 1 if p in ("breakout", "accumulation") else (-1 if p == "distribution" else 0)
-    fund = 1 if (f_score >= 7 and mos_pct >= 8.0) else (-1 if (f_score <= 4 or mos_pct < 0) else 0)
+    # F-Score <= 4 thường là tín hiệu cơ bản âm — trừ khi Quality Offset (F=4 + ROE/CFO khỏe).
+    f_neg = int(f_score) <= 4 and not (bool(quality_compensated) and int(f_score) == 4)
+    fund = 1 if (f_score >= 7 and mos_pct >= 8.0) else (-1 if (f_neg or mos_pct < 0) else 0)
 
     news_text = " ".join(str(x.get("title") or "") for x in (news or [])[:8]).lower()
     neg_kw = ("điều tra", "lỗ", "thua lỗ", "hủy niêm yết", "xử phạt", "nợ xấu", "phá sản")
@@ -136,4 +139,5 @@ def signal_alignment_summary(
         "negative_count": neg,
         "level": level,
         "stand_aside": level in ("high_risk_conflict", "mixed_conflict"),
+        "quality_compensated": bool(quality_compensated),
     }

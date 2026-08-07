@@ -69,7 +69,7 @@ def render_decision_trade_panel(
     manual_buy_blocked = d_side == "BUY" and cache_readiness == "LOW"
     if manual_buy_blocked:
         st.error("Decision readiness đang LOW: tạm khóa lưu quyết định BUY. Hãy chờ tín hiệu mạnh hơn hoặc chọn WATCH.")
-    if st.button("💾 Lưu quyết định", width="stretch", disabled=manual_buy_blocked):
+    if st.button("💾 Lưu quyết định", use_container_width=True, disabled=manual_buy_blocked):
         if coach["verdict"] == "NO-GO":
             st.error("Coach Mode: NO-GO. Vui lòng chỉnh kế hoạch trước khi lưu.")
             st.stop()
@@ -109,7 +109,7 @@ def render_decision_trade_panel(
         t_entry = st.number_input("Giá mở thực tế", min_value=0.0, value=0.0, step=100.0)
         t_entry_fee = st.number_input("Phí mở", min_value=0.0, value=0.0, step=1000.0)
         t_entry_note = st.text_input("Ghi chú mở", value="")
-        if st.button("🟢 Mở trade", width="stretch"):
+        if st.button("🟢 Mở trade", use_container_width=True):
             linked_decision_id = d_map.get(selected_d) if selected_d != "(không link)" else None
             ok_tr, msg_tr = open_trade(
                 user_id,
@@ -130,7 +130,7 @@ def render_decision_trade_panel(
         close_price = st.number_input("Giá đóng thực tế", min_value=0.0, value=0.0, step=100.0)
         close_fee = st.number_input("Phí đóng", min_value=0.0, value=0.0, step=1000.0)
         close_note = st.text_input("Ghi chú đóng", value="")
-        if st.button("🔴 Đóng trade", width="stretch"):
+        if st.button("🔴 Đóng trade", use_container_width=True):
             ok_cl, msg_cl = close_trade(
                 user_id,
                 close_id,

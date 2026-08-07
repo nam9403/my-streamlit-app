@@ -82,7 +82,7 @@ def render_forecast_benchmark(
             "beat_expected_pct": "Tỷ lệ vượt dự báo",
         }
     )
-    st.dataframe(view, width="stretch", hide_index=True)
+    st.dataframe(view, use_container_width=True, hide_index=True)
     st.caption("Alpha dương: thực tế tốt hơn dự báo trung bình. Alpha âm: mô hình đang hơi lạc quan.")
 
 
@@ -206,7 +206,7 @@ def render_forecast_backtesting_report(
                 "avg_abs_error_pct": "Sai số TB %",
             }
         )
-        st.dataframe(df, width="stretch", hide_index=True)
+        st.dataframe(df, use_container_width=True, hide_index=True)
 
 
 def render_dss_readiness_panel(
@@ -226,7 +226,7 @@ def render_dss_readiness_panel(
     checks = gate.get("checks") or {}
     if checks:
         rows = [{"Check": k, "Pass": bool(v)} for k, v in checks.items()]
-        st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
+        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
     missing = gate.get("missing_items") or []
     if missing:
         st.caption("Thiếu: " + ", ".join(str(x) for x in missing))
@@ -260,7 +260,7 @@ def render_forecast_leaderboard(
             "score": "Điểm tổng hợp",
         }
     )
-    st.dataframe(view, width="stretch", hide_index=True)
+    st.dataframe(view, use_container_width=True, hide_index=True)
 
 
 def render_sector_mode_suggestions(
@@ -307,4 +307,4 @@ def render_sector_mode_suggestions(
     if not out:
         st.caption("Chưa đủ dữ liệu theo ngành để gợi ý mode.")
         return
-    st.dataframe(pd.DataFrame(out), width="stretch", hide_index=True)
+    st.dataframe(pd.DataFrame(out), use_container_width=True, hide_index=True)

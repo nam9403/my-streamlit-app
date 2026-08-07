@@ -827,17 +827,24 @@ def _final_action(valuation: dict[str, Any], phase: dict[str, Any], confidence: 
         return "WATCH"
     mos = float(valuation.get("margin_of_safety_composite_pct") or 0)
     fscore = int(valuation.get("piotroski_score") or 0)
+    try:
+        from core.decision_action_gate import effective_f_score_for_gate
+
+        fscore_gate = int(effective_f_score_for_gate(valuation))
+    except Exception:
+        fscore_gate = fscore
     ph = str(phase.get("phase", "neutral"))
     legend = valuation.get("legend_scorecard") if isinstance(valuation.get("legend_scorecard"), dict) else {}
     legend_quality = bool(legend.get("buffett_pass") or legend.get("graham_pass"))
     is_bank = bool(valuation.get("is_bank_sector"))
+    quality_compensated = bool(valuation.get("is_quality_compensated"))
     if valuation.get("mos_integrity_blocked"):
-        if mos >= 12 and (legend_quality or fscore >= 2):
+        if mos >= 12 and (legend_quality or fscore_gate >= 2):
             return "WATCH"
         return "AVOID" if mos < -10 else "WATCH"
 
-    # BUY cứng: đủ F-Score + pha thuận
-    if confidence >= 65 and mos >= 15 and fscore >= 6 and ph in ("accumulation", "breakout"):
+    # BUY cứng: đủ F-Score + pha thuận (Quality Offset: F=4 được tính như đạt ngưỡng F>=6)
+    if confidence >= 65 and mos >= 15 and fscore_gate >= 6 and ph in ("accumulation", "breakout"):
         return "BUY"
     # Ngân hàng: F-Score công nghiệp thường thấp — dùng Legend quality thay F>=6
     if (
@@ -848,10 +855,11 @@ def _final_action(valuation: dict[str, Any], phase: dict[str, Any], confidence: 
         and ph in ("accumulation", "breakout")
     ):
         return "BUY"
-    if mos >= 3 and fscore >= 4:
+    if mos >= 3 and (fscore_gate >= 4 or (quality_compensated and fscore == 4)):
         return "HOLD"
     # Định giá hấp dẫn nhưng F-Score/pha chưa đủ → WATCH (playbook → CONDITIONAL_BUY)
-    if mos >= 12 and (legend_quality or fscore >= 2):
+    # Không demote cứng chỉ vì F=4 khi đã Quality Offset.
+    if mos >= 12 and (legend_quality or fscore_gate >= 2 or quality_compensated):
         return "WATCH"
     return "AVOID"
 
@@ -1537,6 +1545,7 @@ def generate_strategic_report(
         f_score=int((valuation or {}).get("piotroski_score") or 0),
         mos_pct=float((valuation or {}).get("margin_of_safety_composite_pct") or 0.0),
         news=news,
+        quality_compensated=bool((valuation or {}).get("is_quality_compensated")),
     )
     parsed["signal_alignment"] = align
     parsed["data_reliability"] = _data_reliability(phase, financials, news, parsed["llm_used"], backtest_summary)
@@ -1546,7 +1555,13 @@ def generate_strategic_report(
     if str(align.get("level") or "") == "high_alignment":
         conf_raw += 8.0
     elif bool(align.get("stand_aside")):
-        conf_raw -= 18.0
+        # Quality Offset: không trừ conf nặng / demote chỉ vì F=4 khi đã bù trừ.
+        if bool((valuation or {}).get("is_quality_compensated")) and int(
+            (valuation or {}).get("piotroski_score") or 0
+        ) == 4:
+            conf_raw -= 4.0
+        else:
+            conf_raw -= 18.0
     if bool((deep_insight.get("earnings_quality") or {}).get("warning")):
         conf_raw -= 8.0
     sm_bias = str((deep_insight.get("smart_money_flow") or {}).get("bias") or "neutral")
@@ -1559,6 +1574,15 @@ def generate_strategic_report(
         conf_raw += 2.0
     elif sm_rel == "LOW":
         conf_raw -= 4.0
+    try:
+        from core.decision_action_gate import quality_offset_conf_boost
+
+        qo_boost = float(quality_offset_conf_boost(valuation))
+    except Exception:
+        qo_boost = 0.0
+    if qo_boost > 0:
+        conf_raw += qo_boost
+        parsed["quality_offset_conf_boost"] = qo_boost
     conf = max(0.0, min(100.0, conf_raw))
     parsed["forecast_reliability"] = _forecast_reliability_summary(
         parsed["probabilistic_forecast"], backtest_summary, conf
@@ -1566,12 +1590,39 @@ def generate_strategic_report(
     parsed["confidence_score"] = round(conf, 1)
     parsed["confidence_gate_min"] = CONFIDENCE_GATE_MIN
     parsed["gate_passed"] = conf >= CONFIDENCE_GATE_MIN
+    parsed["is_quality_compensated"] = bool((valuation or {}).get("is_quality_compensated"))
+    parsed["quality_offset_note_vi"] = str((valuation or {}).get("quality_offset_note_vi") or "")
     parsed["final_action"] = _final_action(valuation, phase, conf)
     if bool(align.get("stand_aside")):
-        parsed["final_action"] = "WATCH"
-        parsed["signal_conflict_warning"] = "Rủi ro cao - Nên đứng ngoài do tín hiệu kỹ thuật/cơ bản/tin tức xung đột."
+        # Không hard-demote BUY/HOLD → WATCH chỉ vì F-Score = 4 khi Quality Offset.
+        skip_f4_demote = False
+        try:
+            from core.decision_action_gate import should_skip_fscore_hard_demote
+
+            skip_f4_demote = should_skip_fscore_hard_demote(valuation)
+        except Exception:
+            skip_f4_demote = bool((valuation or {}).get("is_quality_compensated")) and int(
+                (valuation or {}).get("piotroski_score") or 0
+            ) == 4
+        fund_neg = int(align.get("fundamental_signal") or 0) < 0
+        if skip_f4_demote and not fund_neg and str(parsed.get("final_action") or "").upper() in (
+            "BUY",
+            "HOLD",
+            "CONDITIONAL_BUY",
+        ):
+            parsed["signal_conflict_warning"] = (
+                str((valuation or {}).get("quality_offset_note_vi") or "")
+                + " Giữ khuyến nghị — không hạ cấp cứng vì F-Score 4."
+            ).strip()
+        else:
+            parsed["final_action"] = "WATCH"
+            parsed["signal_conflict_warning"] = (
+                "Rủi ro cao - Nên đứng ngoài do tín hiệu kỹ thuật/cơ bản/tin tức xung đột."
+            )
     else:
         parsed["signal_conflict_warning"] = ""
+    if bool((valuation or {}).get("is_quality_compensated")) and not parsed.get("signal_conflict_warning"):
+        parsed["signal_conflict_warning"] = str((valuation or {}).get("quality_offset_note_vi") or "")
     if bool((deep_insight.get("earnings_quality") or {}).get("warning")):
         parsed["final_action"] = "WATCH"
         parsed["signal_conflict_warning"] = (

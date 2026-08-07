@@ -52,7 +52,7 @@ def render_growth_cohort_panel(
                 )
                 top = ref.get("top_referrers") or []
                 if top:
-                    st.dataframe(pd.DataFrame(top), width="stretch", hide_index=True)
+                    st.dataframe(pd.DataFrame(top), use_container_width=True, hide_index=True)
             except Exception:
                 st.caption("Referral stats chưa sẵn sàng.")
 
@@ -61,7 +61,7 @@ def render_growth_cohort_panel(
                 funnel = get_upgrade_funnel(days=30)
                 if funnel:
                     st.markdown("**Upgrade funnel**")
-                    st.dataframe(pd.DataFrame(funnel), width="stretch", hide_index=True)
+                    st.dataframe(pd.DataFrame(funnel), use_container_width=True, hide_index=True)
             except Exception:
                 pass
 

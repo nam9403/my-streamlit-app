@@ -159,6 +159,7 @@ def fetch_fireant_quarterly_rows(ticker: str) -> tuple[list[dict[str, Any]], str
                     "profit_growth_ttm_pct": profit,
                     "roe_ttm_pct": roe,
                     "eps_ttm": raw.get("BasicEPS_TTM") or raw.get("DilutedEPS_TTM"),
+                    "bvps": raw.get("BookValuePerShare_MRQ") or raw.get("BookValuePerShare"),
                     "_provider": "fireant",
                 }
             )

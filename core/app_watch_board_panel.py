@@ -30,7 +30,7 @@ def render_watch_board(
         with st.container():
             st.markdown("### 💹 Bảng giá theo dõi nhanh")
             st.caption("Watchlist trống — thêm mã ở sidebar để theo dõi giá.")
-            st.dataframe(watch_df, width="stretch", hide_index=True)
+            st.dataframe(watch_df, use_container_width=True, hide_index=True)
         return watch_df
 
     watch_df = pd.DataFrame(watch_rows)
@@ -42,6 +42,6 @@ def render_watch_board(
     watch_df = watch_df.sort_values(["__ready", "Mã"], ascending=[False, True]).drop(columns=["__ready"])
     with st.container():
         st.markdown("### 💹 Bảng giá theo dõi nhanh")
-        st.dataframe(watch_df, width="stretch", hide_index=True)
+        st.dataframe(watch_df, use_container_width=True, hide_index=True)
     return watch_df
 

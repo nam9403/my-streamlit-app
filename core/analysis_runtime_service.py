@@ -19,8 +19,9 @@ def _snapshot_impl(ticker: str):
     return fetch_financial_snapshot(ticker)
 
 
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=60)
 def load_snapshot_cached(ticker: str):
+    """TTL ngắn (60s): tránh Streamlit giữ giá cũ hàng phút khi đã có quote mới."""
     return _snapshot_impl(ticker)
 
 
@@ -33,7 +34,7 @@ def _ohlcv_impl(ticker: str):
     return fetch_ohlcv_history(ticker, sessions=sessions)
 
 
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=90)
 def load_ohlcv_cached(ticker: str):
     return _ohlcv_impl(ticker)
 

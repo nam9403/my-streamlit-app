@@ -204,6 +204,19 @@ def inject_decision_dashboard_css() -> None:
 .ii-dd-chip.neg .val { color: #c2410c; }
 .ii-dd-chip.pos { border-color: #86efac; background: #f0fdf4; }
 .ii-dd-chip.pos .val { color: #15803d; }
+.ii-dd-chip.warn { border-color: #fcd34d; background: #fffbeb; }
+.ii-dd-chip.warn .val { color: #b45309; }
+.ii-dd-chip .tag {
+  display: inline-block; margin-top: 6px; padding: 2px 8px; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em;
+  background: #fef3c7; color: #92400e; border: 1px solid #fcd34d;
+}
+.ii-dd-integrity {
+  margin-top: 10px; padding: 10px 12px; border-radius: 12px;
+  border: 1px solid #fcd34d; background: #fffbeb; color: #92400e;
+  font-size: 0.84rem; line-height: 1.45; font-weight: 550;
+}
+.ii-dd-integrity b { font-weight: 800; }
 .ii-dd-section-title {
   font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em;
   margin: 18px 0 12px 0; display: flex; align-items: center; gap: 8px;
@@ -672,10 +685,18 @@ def build_decision_dashboard_html(
     locked_reason: str,
     radar: list[str],
     price_chart_html: str = "",
+    valuation_integrity_blocked: bool = False,
+    valuation_integrity_note: str = "",
+    fair_method_label: str = "",
+    mos_raw_disp: str = "",
 ) -> str:
     sym = str(symbol or "").upper()
     name = company_name.strip() if company_name else "Đang cập nhật tên doanh nghiệp"
-    mos_cls = "neg" if (mos_f is not None and mos_f < 0) else ("pos" if (mos_f is not None and mos_f > 0) else "")
+    blocked = bool(valuation_integrity_blocked)
+    mos_cls = "warn" if blocked else (
+        "neg" if (mos_f is not None and mos_f < 0) else ("pos" if (mos_f is not None and mos_f > 0) else "")
+    )
+    fair_cls = "warn" if blocked else ""
     mos_arrow = "▼" if (mos_f is not None and mos_f < 0) else ("▲" if (mos_f is not None and mos_f > 0) else "●")
     fs_pct = _fscore_pct(fscore)
     fs_color = _fscore_bar_color(fscore, provisional=fscore_prov)
@@ -689,6 +710,29 @@ def build_decision_dashboard_html(
 
     cr_icon = "✅" if cr_ready else "⚠️"
     cr_color = _GREEN if cr_ready else _ORANGE
+
+    fair_tag = (
+        '<div class="tag">⚠ Tham khảo · không giải ngân</div>' if blocked else ""
+    )
+    mos_hint = mos_comment or "Đang cập nhật"
+    if blocked and mos_raw_disp:
+        mos_hint = f"Đã siết (MOS thô {mos_raw_disp}) — không dùng để giải ngân"
+    elif blocked:
+        mos_hint = "Graham tham khảo — nghi EPS/P/E lệch · không dùng để giải ngân"
+
+    integrity_banner = ""
+    if blocked:
+        note = str(valuation_integrity_note or "").strip() or (
+            "Định giá công bố đã chọn mô hình thận trọng hơn; Graham thô vẫn lưu tham chiếu — "
+            "chưa đủ tin cậy giải ngân do nghi EPS/P/E lệch đơn vị."
+        )
+        integrity_banner = (
+            f'<div class="ii-dd-integrity"><b>⚠ Cảnh báo định giá:</b> {_esc(note)}</div>'
+        )
+    fair_method = str(fair_method_label or "").strip()
+    fair_method_html = (
+        f'<div class="hint">{_esc(fair_method)}</div>' if fair_method else ""
+    )
 
     news_html = []
     for i, line in enumerate(catalyst_lines[:4]):
@@ -746,16 +790,19 @@ def build_decision_dashboard_html(
         <div class="ii-dd-price">{_esc(price_txt)}<small>đ</small></div>
       </div>
       <div class="ii-dd-mos-card">
-        <div class="ii-dd-chip">
+        <div class="ii-dd-chip {fair_cls}">
           <div class="lbl">Định giá hợp lý</div>
-          <div class="val">{_esc(fair_txt)} đ</div>
+          <div class="val">{_esc(fair_txt)}{" đ" if fair_txt not in ("Chưa xác định", "Đang cập nhật", "—", "") else ""}</div>
+          {fair_method_html}
+          {fair_tag}
         </div>
         <div class="ii-dd-chip {mos_cls}">
           <div class="lbl">Biên an toàn (MOS)</div>
           <div class="val">{mos_arrow} {_esc(mos_disp)}</div>
-          <div class="hint">{_esc(mos_comment or 'Đang cập nhật')}</div>
+          <div class="hint">{_esc(mos_hint)}</div>
         </div>
       </div>
+      {integrity_banner}
       <div class="ii-dd-legend">Kết luận Legend: <b>{_esc(legend)}</b></div>
     </div>
     <div class="ii-dd-hero-right">

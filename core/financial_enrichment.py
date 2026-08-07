@@ -40,17 +40,90 @@ def _eps_scale() -> float:
         return 1000.0
 
 
+def _eps_scale_candidates() -> list[float]:
+    """Thử các hệ số đơn vị phổ biến (nghìn/trăm/chục) + II_EPS_SCALE."""
+    primary = _eps_scale()
+    out: list[float] = []
+    for f in (primary, 1000.0, 100.0, 10.0):
+        try:
+            fv = float(f)
+        except (TypeError, ValueError):
+            continue
+        if fv >= 2.0 and fv not in out:
+            out.append(fv)
+    return out
+
+
+def _eps_unit_score(
+    eps: float,
+    price: float,
+    *,
+    bvps: float | None = None,
+    sector_pe: float | None = None,
+    pe_src: float | None = None,
+    reported_roe_pct: float | None = None,
+) -> float:
+    """Điểm càng cao càng hợp lý cho VND/cp (EY, P/E, ROE từ EPS/BV)."""
+    if eps <= 0 or price <= 0:
+        return -1e9
+    ey = eps / price
+    pe = price / eps
+    score = 0.0
+    # Earnings yield mục tiêu ~2–12%
+    if 0.02 <= ey <= 0.12:
+        score += 3.0
+    elif ey <= 0.15:
+        score += 1.5
+    elif ey <= 0.20:
+        score += 0.2
+    else:
+        score -= min(8.0, (ey - 0.20) * 20.0)
+    # P/E phổ biến VN 5–35
+    if 5.0 <= pe <= 35.0:
+        score += 3.0
+    elif 3.0 <= pe < 5.0 or 35.0 < pe <= 50.0:
+        score += 1.0
+    elif pe < 3.0:
+        score -= 4.0
+    elif pe > 80.0:
+        score -= 3.0
+    if sector_pe and sector_pe > 0:
+        gap = abs(pe - sector_pe) / sector_pe
+        score += max(-2.5, 2.0 - gap * 3.0)
+    if pe_src and pe_src > 0 and 5.0 <= pe_src <= 40.0:
+        # Chỉ thưởng khớp P/E nguồn khi P/E nguồn nằm vùng hợp lý.
+        gap_src = abs(pe - pe_src) / max(pe_src, pe, 1e-6)
+        score += max(-1.5, 1.5 - gap_src * 2.0)
+    if bvps and bvps > 0:
+        roe_from_eps = (eps / bvps) * 100.0
+        if 5.0 <= roe_from_eps <= 35.0:
+            score += 2.5
+        elif roe_from_eps <= 50.0:
+            score += 0.8
+        elif roe_from_eps > 80.0:
+            score -= min(6.0, (roe_from_eps - 80.0) / 20.0)
+        if reported_roe_pct and reported_roe_pct > 0:
+            # ROE báo cáo đã % — EPS không nên hàm ý ROE gấp đôi báo cáo.
+            if roe_from_eps > reported_roe_pct * 2.0 and roe_from_eps > 40.0:
+                score -= 2.5
+    return score
+
+
 def normalize_eps_to_vnd_per_share(
     eps: Any,
     price: Any,
     *,
     pe_ratio: Any = None,
+    bvps: Any = None,
+    sector_pe: Any = None,
+    reported_roe: Any = None,
 ) -> tuple[float | None, list[str]]:
     """
-    Chuẩn hóa EPS về VND/cp khi yield bất thường (vd. EPS nghìn VND vs giá VND).
+    Chuẩn hóa EPS về VND/cp khi lệch đơn vị / yield bất thường.
 
-    Heuristic: nếu EPS/price > 15% → thử chia II_EPS_SCALE (mặc định 1000).
-    Cross-check thêm với P/E nguồn nếu có.
+    - Thử ÷ {II_EPS_SCALE, 1000, 100, 10} khi EY cao hoặc P/E nguồn lệch.
+    - P/E nguồn khớp EPS thô vẫn có thể scale nếu ROE(EPS/BV) hoặc EY quá cao
+      (trường hợp “P/E rẻ giả” cùng nguồn EPS sai đơn vị).
     """
     v = _as_float(eps)
     px = _as_float(price)
@@ -58,56 +131,158 @@ def normalize_eps_to_vnd_per_share(
     if v is None or v <= 0 or px is None or px <= 0:
         return v, notes
 
-    scale = _eps_scale()
-    earnings_yield = v / px
     pe_src = _as_float(pe_ratio)
     pe_calc = px / v
+    ey = v / px
+    bv = _as_float(bvps)
+    sec_pe = _as_float(sector_pe)
+    roe_pct = normalize_roe_to_pct(reported_roe)
 
-    # P/E nguồn khớp EPS thô → coi là P/E thấp thật, không chia scale (tránh MOS âm giả).
+    pe_matches = False
     if pe_src and pe_src > 0 and pe_calc > 0:
         gap_pe = abs(pe_src - pe_calc) / max(pe_src, pe_calc, 1e-6)
-        if gap_pe <= 0.20:
-            return v, notes
+        pe_matches = gap_pe <= 0.20
 
-    if earnings_yield > 0.15:
-        scaled = v / scale
-        if scaled > 0 and scaled / px <= 0.15:
-            notes.append(
-                f"EPS chuẩn hóa {v:,.0f}→{scaled:,.2f} VND/cp (÷{scale:g}, earnings yield {scaled/px:.1%})."
-            )
-            return round(scaled, 4), notes
+    roe_from_eps = (v / bv) * 100.0 if bv and bv > 0 else None
+    absurd_roe = roe_from_eps is not None and roe_from_eps > 80.0
+    absurd_ey = ey > 0.20
+    cheap_pe = pe_calc < 5.0
+    # Khớp P/E + EY vừa phải + ROE ổn → giữ (P/E thấp thật).
+    if pe_matches and not absurd_ey and not absurd_roe and ey <= 0.15:
+        return v, notes
+    if pe_matches and not absurd_ey and not absurd_roe and not cheap_pe:
+        return v, notes
 
-    if pe_src and pe_src > 0 and pe_calc > 0:
-        gap = abs(pe_src - pe_calc) / max(pe_src, pe_calc, 1e-6)
-        if gap > 0.25:
-            scaled = v / scale
-            pe_calc2 = px / scaled if scaled > 0 else 0.0
-            gap2 = abs(pe_src - pe_calc2) / max(pe_src, pe_calc2, 1e-6) if pe_calc2 > 0 else 1.0
-            if gap2 < gap and scaled > 0:
-                notes.append(
-                    f"EPS chuẩn hóa theo P/E nguồn ({pe_src:.2f} vs tính {pe_calc:.2f}→{pe_calc2:.2f})."
-                )
-                return round(scaled, 4), notes
+    need_fix = (
+        (not pe_matches and pe_src is not None and pe_src > 0 and pe_calc > 0)
+        or ey > 0.15
+        or absurd_roe
+        or (pe_matches and cheap_pe and absurd_ey)
+    )
+    if not need_fix:
+        return v, notes
 
-    return v, notes
+    # implied từ P/E nguồn khi P/E nguồn hợp lý và lệch rõ với EPS thô
+    candidates: list[tuple[float, str]] = [(v, "raw")]
+    if pe_src and pe_src >= 5.0 and pe_src <= 50.0:
+        implied = px / pe_src
+        if implied > 0:
+            ratio = v / implied
+            for fac in _eps_scale_candidates():
+                if abs(ratio / fac - 1.0) <= 0.35:
+                    candidates.append((v / fac, f"÷{fac:g}≈P/E"))
+                    break
+            if not pe_matches:
+                candidates.append((implied, "implied_pe"))
+
+    for fac in _eps_scale_candidates():
+        scaled = v / fac
+        if scaled > 0:
+            candidates.append((scaled, f"÷{fac:g}"))
+
+    # Chỉ neo P/E ngành khi tín hiệu đơn vị mạnh (tránh đè EPS thật bằng sector mid).
+    if sec_pe and sec_pe >= 5.0 and (absurd_roe or absurd_ey or cheap_pe):
+        implied_sec = px / sec_pe
+        if implied_sec > 0:
+            candidates.append((implied_sec, "implied_sector_pe"))
+
+    best_eps = v
+    best_score = _eps_unit_score(
+        v, px, bvps=bv, sector_pe=sec_pe, pe_src=pe_src, reported_roe_pct=roe_pct
+    )
+    best_tag = "raw"
+    for cand, tag in candidates:
+        if cand <= 0:
+            continue
+        sc = _eps_unit_score(
+            cand, px, bvps=bv, sector_pe=sec_pe, pe_src=pe_src, reported_roe_pct=roe_pct
+        )
+        # Ưu tiên điểm cao; với điểm gần bằng, giữ gần raw hơn (ít can thiệp).
+        if sc > best_score + 0.15 or (abs(sc - best_score) <= 0.15 and abs(cand - v) < abs(best_eps - v)):
+            best_score = sc
+            best_eps = cand
+            best_tag = tag
+
+    # Chỉ chấp nhận khi cải thiện rõ (tránh chia scale lung tung).
+    raw_score = _eps_unit_score(
+        v, px, bvps=bv, sector_pe=sec_pe, pe_src=pe_src, reported_roe_pct=roe_pct
+    )
+    if abs(best_eps - v) <= 1e-6 or best_score < raw_score + 1.0:
+        return v, notes
+
+    pe_new = px / best_eps if best_eps > 0 else 0.0
+    notes.append(
+        f"EPS chuẩn hóa {v:,.2f}→{best_eps:,.2f} VND/cp ({best_tag}; "
+        f"EY {v/px:.1%}→{best_eps/px:.1%}; P/E tính {pe_calc:.2f}→{pe_new:.2f})."
+    )
+    return round(float(best_eps), 4), notes
 
 
 def normalize_eps_in_snapshot(snapshot: dict[str, Any]) -> list[str]:
-    """In-place EPS normalize; giữ eps_raw khi đổi scale."""
+    """In-place EPS normalize; giữ eps_raw khi đổi scale; đồng bộ eps_ttm."""
     if not isinstance(snapshot, dict):
         return []
+    sector_pe = (
+        snapshot.get("sector_pe_5y_avg")
+        or snapshot.get("sector_pe")
+        or snapshot.get("industry_pe")
+    )
     eps_new, notes = normalize_eps_to_vnd_per_share(
         snapshot.get("eps"),
         snapshot.get("price"),
         pe_ratio=snapshot.get("pe_ratio"),
+        bvps=snapshot.get("book_value_per_share") or snapshot.get("bvps"),
+        sector_pe=sector_pe,
+        reported_roe=snapshot.get("roe") or snapshot.get("roe_5y_avg"),
     )
     old = _as_float(snapshot.get("eps"))
     if eps_new is not None and old is not None and abs(eps_new - old) > 1e-6:
+        factor = old / eps_new if eps_new > 0 else 1.0
         snapshot["eps_raw"] = old
         snapshot["eps"] = eps_new
-        snapshot["eps_normalized"] = True
-        if snapshot.get("price") and eps_new > 0:
-            snapshot["pe_ratio_recalc"] = round(float(snapshot["price"]) / eps_new, 4)
+        snapshot["eps_normalized"] = True  # bool: unit-scale applied
+        snapshot["eps_unit_scale_factor"] = round(float(factor), 6)
+        px = _as_float(snapshot.get("price"))
+        if px and eps_new > 0:
+            snapshot["pe_ratio_recalc"] = round(float(px) / eps_new, 4)
+            # P/E nguồn cùng scale sai → cập nhật theo EPS đã chuẩn.
+            pe_old = _as_float(snapshot.get("pe_ratio"))
+            if pe_old is not None and pe_old > 0:
+                pe_from_old = px / old if old > 0 else 0.0
+                if pe_from_old > 0 and abs(pe_old - pe_from_old) / max(pe_old, pe_from_old) <= 0.25:
+                    snapshot["pe_ratio_raw"] = pe_old
+                    snapshot["pe_ratio"] = round(float(px) / eps_new, 4)
+        # Đồng bộ TTM / normalized copy cùng đơn vị.
+        ttm = _as_float(snapshot.get("eps_ttm"))
+        if ttm is not None and ttm > 0 and factor >= 2.0:
+            ratio_ttm = ttm / old if old > 0 else 0.0
+            if abs(ratio_ttm - 1.0) <= 0.35 or ttm / (px or 1.0) > 0.15:
+                snapshot.setdefault("eps_ttm_raw", ttm)
+                snapshot["eps_ttm"] = round(ttm / factor, 4)
+                notes.append(f"EPS TTM đồng bộ đơn vị ÷{factor:g}.")
+        norm = _as_float(snapshot.get("normalized_eps"))
+        if norm is not None and norm > 0 and factor >= 2.0:
+            if abs(norm - old) / max(abs(old), 1e-6) <= 0.35:
+                snapshot["normalized_eps"] = round(norm / factor, 6)
+    # Nếu thiếu eps nhưng có eps_ttm lệch đơn vị — chuẩn hóa TTM.
+    elif _as_float(snapshot.get("eps")) in (None, 0) or (
+        _as_float(snapshot.get("eps")) is not None and _as_float(snapshot.get("eps")) <= 0
+    ):
+        ttm = _as_float(snapshot.get("eps_ttm"))
+        if ttm and ttm > 0:
+            ttm_new, ttm_notes = normalize_eps_to_vnd_per_share(
+                ttm,
+                snapshot.get("price"),
+                pe_ratio=snapshot.get("pe_ratio"),
+                bvps=snapshot.get("book_value_per_share") or snapshot.get("bvps"),
+                sector_pe=sector_pe,
+                reported_roe=snapshot.get("roe") or snapshot.get("roe_5y_avg"),
+            )
+            if ttm_new is not None and abs(ttm_new - ttm) > 1e-6:
+                snapshot["eps_ttm_raw"] = ttm
+                snapshot["eps_ttm"] = ttm_new
+                snapshot["eps_normalized"] = True
+                notes.extend(ttm_notes)
     return notes
 
 
@@ -240,6 +415,27 @@ def merge_indicator_fundamentals_into_snapshot(
                 pio.setdefault("current_assets", ca)
                 pio.setdefault("current_liabilities", cl)
 
+        # EPS / BVPS suy từ P/E–P/B khi scrape chỉ trả giá (tránh fair=giá, MOS=0).
+        pe = _as_float(fin.get("pe_ratio"))
+        pb = _as_float(fin.get("pb_ratio"))
+        if pe is not None and pe > 0 and _missing_positive(snapshot, "pe_ratio"):
+            snapshot["pe_ratio"] = pe
+        if pb is not None and pb > 0 and _missing_positive(snapshot, "pb_ratio"):
+            snapshot["pb_ratio"] = pb
+        px = _as_float(snapshot.get("price")) or 0.0
+        pe_use = _as_float(snapshot.get("pe_ratio")) or pe
+        pb_use = _as_float(snapshot.get("pb_ratio")) or pb
+        if px > 0 and pe_use is not None and pe_use > 0.5 and _missing_positive(snapshot, "eps"):
+            snapshot["eps"] = round(px / pe_use, 4)
+            snapshot["eps_source"] = "price_div_pe_indicator"
+            notes.append(f"EPS suy từ giá/P/E ({src})")
+        if px > 0 and pb_use is not None and pb_use > 0.05 and _missing_positive(
+            snapshot, "book_value_per_share"
+        ) and _missing_positive(snapshot, "bvps"):
+            snapshot["book_value_per_share"] = round(px / pb_use, 4)
+            snapshot["bvps_source"] = "price_div_pb_indicator"
+            notes.append(f"BVPS suy từ giá/P/B ({src})")
+
     # ROE ước từ EPS/BVPS khi vẫn thiếu (không mạng, ổn định cho Legend).
     if _missing_positive(snapshot, "roe") and _missing_positive(snapshot, "roe_5y_avg"):
         eps = _as_float(snapshot.get("eps")) or 0.0
@@ -271,6 +467,14 @@ def merge_indicator_fundamentals_into_snapshot(
     elif snapshot.get("net_income") is not None and pio.get("net_income") is None:
         pio["net_income"] = float(snapshot["net_income"])
         snapshot["net_income_source"] = str(snapshot.get("net_income_source") or "indicators")
+
+    # Neo P/E–P/B ngành từ peer/ICB/prior trước định giá.
+    try:
+        from core.sector_multiples import inject_sector_multiples_into_snapshot
+
+        notes.extend(inject_sector_multiples_into_snapshot(snapshot))
+    except Exception:
+        pass
 
     if notes:
         snapshot["fundamentals_merge_notes"] = list(dict.fromkeys(notes))

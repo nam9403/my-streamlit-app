@@ -23,7 +23,7 @@ def render_daily_action_panel(
     build_daily_action_list: Callable[..., pd.DataFrame],
 ) -> pd.DataFrame | None:
     st.markdown("### 📌 Daily Action List (hôm nay nên làm gì)")
-    if st.button("Tải Daily Action List", key="load_daily_action_list_btn", width="content"):
+    if st.button("Tải Daily Action List", key="load_daily_action_list_btn", use_container_width=True):
         held_syms = tuple(str(x.get("symbol") or "").upper() for x in list_holdings(user_id))
         daily_universe = tuple(list_universe_symbols(limit=min(60, int(plan["scan_limit"]))))
         with st.spinner("Đang dựng Daily Action List (chạy nền dữ liệu)..."):
@@ -42,7 +42,7 @@ def render_daily_action_panel(
         if daily_actions.empty:
             st.caption("Chưa đủ dữ liệu để dựng Daily Action List.")
         else:
-            st.dataframe(daily_actions.head(12), width="stretch", hide_index=True)
+            st.dataframe(daily_actions.head(12), use_container_width=True, hide_index=True)
             st.caption("Ưu tiên thực thi từ trên xuống: BUY -> HOLD -> WATCH -> SELL.")
     else:
         st.caption("Mặc định không tải khối này khi mở app để tối ưu tốc độ. Bấm 'Tải Daily Action List' khi cần.")

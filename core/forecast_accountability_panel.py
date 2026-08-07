@@ -22,26 +22,26 @@ def render_forecast_accountability_actions(
 ) -> None:
     c_rep1, c_rep2 = st.columns(2)
     with c_rep1:
-        if st.button("Xuất report forecast health", width="stretch"):
+        if st.button("Xuất report forecast health", use_container_width=True):
             out_path = export_forecast_health_report(user_id)
             st.success(f"Đã xuất report: {out_path}")
             log_event(user_id, "forecast_health_exported", {"path": out_path, "ticker": ticker})
     with c_rep2:
-        if st.button("Đánh giá drift kéo dài", width="stretch"):
+        if st.button("Đánh giá drift kéo dài", use_container_width=True):
             ds = get_forecast_drift_streak(user_id, ticker, checks=3)
             st.info(f"Drift streak hiện tại: {int(ds.get('drift_down_streak') or 0)}/{int(ds.get('checks') or 0)}")
-    if st.button("Xuất model accountability report", width="stretch"):
+    if st.button("Xuất model accountability report", use_container_width=True):
         out_path = export_model_accountability_report(user_id)
         st.success(f"Đã xuất accountability report: {out_path}")
         log_event(user_id, "model_accountability_exported", {"path": out_path, "ticker": ticker})
     c_rep3, c_rep4 = st.columns(2)
     with c_rep3:
-        if st.button("Xuất monthly accountability (Markdown)", width="stretch"):
+        if st.button("Xuất monthly accountability (Markdown)", use_container_width=True):
             out_md = export_monthly_accountability_markdown(user_id)
             st.success(f"Đã xuất monthly report: {out_md}")
             log_event(user_id, "monthly_accountability_exported", {"path": out_md, "ticker": ticker})
     with c_rep4:
-        if st.button("Gửi monthly report qua email", width="stretch"):
+        if st.button("Gửi monthly report qua email", use_container_width=True):
             if not channels.smtp_ready():
                 st.warning("Thiếu cấu hình SMTP/Email. Vào phần Notification để cấu hình trước khi gửi.")
                 return

@@ -38,7 +38,7 @@ def render_notification_settings(
     smtp_user = st.text_input("SMTP user", value=load_secret(user_id, "smtp_user", os.environ.get("SMTP_USER", "")))
     smtp_password = st.text_input("SMTP password", value=load_secret(user_id, "smtp_password", os.environ.get("SMTP_PASSWORD", "")), type="password")
     smtp_from = st.text_input("SMTP from", value=load_secret(user_id, "smtp_from", os.environ.get("SMTP_FROM", "")))
-    if st.button("💾 Lưu cấu hình kênh gửi an toàn", width="stretch"):
+    if st.button("💾 Lưu cấu hình kênh gửi an toàn", use_container_width=True):
         save_secret(user_id, "telegram_bot_token", tg_bot)
         save_secret(user_id, "telegram_chat_id", tg_chat)
         save_secret(user_id, "alert_webhook_url", webhook_url)
@@ -53,7 +53,7 @@ def render_notification_settings(
         "Tin nhắn test notification",
         value=f"[TEST] Investment Intelligence ping @ {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%SZ')}",
     )
-    if st.button("📨 Gửi test notification", width="stretch"):
+    if st.button("📨 Gửi test notification", use_container_width=True):
         cfg = NotificationChannels(
             tg_bot=tg_bot,
             tg_chat=tg_chat,

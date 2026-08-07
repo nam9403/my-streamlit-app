@@ -92,6 +92,7 @@ def test_mos_integrity_clamps_absurd_and_pe_sanity() -> None:
 
 
 def test_valuation_blocks_mos_on_absurd_earnings_yield() -> None:
+    """EPS lệch đơn vị có BVPS → chuẩn hóa; Graham/MOS dùng EPS đúng đơn vị."""
     snap = {
         "symbol": "PNJ",
         "price": 35500.0,
@@ -107,11 +108,56 @@ def test_valuation_blocks_mos_on_absurd_earnings_yield() -> None:
         "industry_subtype": "consumer_retail",
     }
     out = value_investing_summary(snap, include_extensions=False)
-    assert out.get("pe_sanity_notes")
-    assert out.get("mos_integrity_blocked") is True
-    mos = float(out.get("margin_of_safety_composite_pct") or 0)
-    assert abs(mos) <= 95.0
-    assert out.get("instant_conclusion") != "Mua mạnh"
+    assert out.get("eps_unit_corrected") is True
+    assert float(out.get("eps_for_graham") or 0) < 2500.0
+    assert out.get("mos_integrity_blocked") is False
+    assert out.get("fair_value_unreliable") is False
+    assert out.get("fair_value_suppressed") is False
+    assert float(out.get("composite_target_price") or 0) > 0
+    assert float(out.get("intrinsic_value_graham") or 0) < 80_000.0
+    reasons = out.get("mos_integrity_reasons") or []
+    assert "absurd_earnings_yield" not in reasons
+    assert "pe_sanity_notes" not in reasons
+
+
+def test_apply_mos_still_blocks_on_residual_absurd_yield() -> None:
+    """Gate trực tiếp vẫn block khi EY/P/E absurb (chưa sửa được)."""
+    from core.data_integrity import apply_mos_integrity_clamp
+
+    out = apply_mos_integrity_clamp(
+        50.0,
+        pe=3.0,
+        earnings_yield=0.33,
+    )
+    assert out["mos_integrity_blocked"] is True
+    assert "absurd_earnings_yield" in out["reasons"]
+
+
+def test_review_fair_value_suppresses_on_pe_sanity() -> None:
+    from core.data_integrity import review_fair_value_after_integrity
+
+    kept = review_fair_value_after_integrity(
+        fair_value=12000.0,
+        mos_integrity_blocked=False,
+        reasons=[],
+    )
+    assert kept["fair_value_suppressed"] is False
+    assert kept["fair_value_unreliable"] is False
+    assert kept["composite_target_price"] == 12000.0
+
+    flagged = review_fair_value_after_integrity(
+        fair_value=28000.0,
+        mos_integrity_blocked=True,
+        reasons=["pe_sanity_notes", "absurd_earnings_yield"],
+        note_vi="P/E thấp nghi EPS lệch",
+    )
+    # Still publish Graham number; mark unreliable for disbursement.
+    assert flagged["fair_value_suppressed"] is False
+    assert flagged["fair_value_unreliable"] is True
+    assert flagged["composite_target_price"] == 28000.0
+    assert flagged["composite_target_price_raw"] == 28000.0
+    assert flagged["publish_mos"] is True
+
 
 
 def test_trade_plan_hidden_on_integrity_block() -> None:
@@ -125,9 +171,34 @@ def test_trade_plan_hidden_on_integrity_block() -> None:
         "risk_plan": {"entry_price": 100.0, "stop_loss_price": 90.0, "take_profit_price": 120.0},
     }
     out = apply_trade_plan_visibility(rep)
-    assert out["show_trade_plan"] is False
-    assert out["risk_plan"]["trade_plan_active"] is False
+    # Integrity khóa Entry; vẫn có thể hiện SL/risk tham chiếu khi action BUY/HOLD.
+    assert out["entry_allowed"] is False
+    assert out["risk_management_visible"] is True
+    assert out["show_trade_plan"] is True
     assert out.get("trade_plan_integrity_block") is True
+    assert out["risk_plan"]["entry_allowed"] is False
+    assert out["risk_plan"]["risk_management_visible"] is True
+
+
+def test_hold_locks_entry_but_shows_risk_management() -> None:
+    from core.decision_action_gate import resolve_display_action
+
+    rep = {
+        "final_action": "HOLD",
+        "gate_passed": True,
+        "output_gate_passed": True,
+        "decision_alignment": {"unified_action": "HOLD", "note_vi": ""},
+        "risk_plan": {"entry_price": 100.0, "stop_loss_price": 90.0, "take_profit_price": 120.0},
+    }
+    gate = resolve_display_action(rep)
+    assert gate["entry_allowed"] is False
+    assert gate["risk_management_visible"] is True
+    assert gate["show_trade_plan"] is True
+    out = apply_trade_plan_visibility(rep)
+    assert out["entry_allowed"] is False
+    assert out["risk_management_visible"] is True
+    assert "Không mở mua mới" in str(out["risk_plan"].get("entry_hint_vi") or "")
+    assert out["risk_plan"]["trade_plan_active"] is True
 
 
 def test_paper_action_allowlist() -> None:

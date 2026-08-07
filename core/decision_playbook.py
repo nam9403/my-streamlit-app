@@ -122,6 +122,11 @@ def evaluate_thesis(
         elif fscore >= 5:
             score += 6.0
             reasons.append(f"F-Score ổn {fscore}/9.")
+        elif fscore == 4 and bool(val.get("is_quality_compensated")):
+            score += 6.0
+            reasons.append(
+                str(val.get("quality_offset_note_vi") or "F-Score 4 được bù trừ nhờ ROE cao & CFO khỏe.")
+            )
         elif fscore >= 3:
             score += 1.0
         else:
@@ -485,6 +490,8 @@ def resolve_playbook_action(
         "size_mult": round(float(size_mult), 3),
         "notes_vi": notes[:6],
         "summary_vi": summary,
+        "entry_allowed": action in ("BUY", "CONDITIONAL_BUY"),
+        "risk_management_visible": action in ("BUY", "CONDITIONAL_BUY", "HOLD"),
     }
 
 
@@ -588,6 +595,10 @@ def build_decision_playbook(
         "notes_vi": notes,
         "summary_vi": str(resolved.get("summary_vi") or ""),
         "user_instruction_vi": _user_instruction(action, thesis, setup, trigger),
+        "entry_allowed": bool(resolved.get("entry_allowed", action in ("BUY", "CONDITIONAL_BUY"))),
+        "risk_management_visible": bool(
+            resolved.get("risk_management_visible", action in ("BUY", "CONDITIONAL_BUY", "HOLD"))
+        ),
     }
 
 
@@ -610,7 +621,10 @@ def _user_instruction(
             f"(Thesis {thesis.get('grade')}, Setup {setup.get('status')})."
         ).strip()
     if act == "HOLD":
-        return "GIỮ vị thế hiện có; chưa mở mua mới đến khi trigger READY."
+        return (
+            "GIỮ vị thế hiện có — Không mở mua mới. "
+            "Theo dõi SL / trailing stop và vùng quản trị rủi ro để bảo vệ vị thế."
+        )
     if act == "AVOID":
         return "TRÁNH — thesis yếu hoặc rủi ro cấu trúc; không giải ngân."
     return (

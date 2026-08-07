@@ -8,23 +8,36 @@ import os
 from dataclasses import dataclass
 from functools import lru_cache
 
+# Graham Growth: V = EPS × (8.5 + 2g) × (GRAHAM_CLASSIC_AAA / Y)
+# Numerator 4.4 giữ nguyên theo sách Graham (AAA Mỹ thời đó).
+GRAHAM_CLASSIC_AAA_YIELD_PCT = 4.4
+# Y động = lợi suất TPCP VN 10 năm (điều chỉnh theo chu kỳ NHNN).
+VN_10Y_BOND_YIELD_DEFAULT_PCT = 6.5
+# Trần tăng trưởng EPS dùng trong Graham Growth (tránh g đỉnh chu kỳ).
+GRAHAM_GROWTH_G_CAP_PCT = 15.0
+
 
 @dataclass(frozen=True)
 class AppSettings:
     """Cài đặt đọc một lần từ môi trường."""
 
-    default_bond_yield_pct: float
+    default_bond_yield_pct: float  # alias: VN_10Y_BOND_YIELD (%/năm)
     merge_live_fundamentals: bool
     skip_mock_snapshot: bool
 
+    @property
+    def vn_10y_bond_yield_pct(self) -> float:
+        """Lợi suất TPCP VN ~10Y dùng làm Y trong Graham Growth."""
+        return float(self.default_bond_yield_pct)
 
-def _parse_yield(raw: str | None) -> float:
+
+def _parse_yield(raw: str | None, *, default: float = VN_10Y_BOND_YIELD_DEFAULT_PCT) -> float:
     if not raw or not str(raw).strip():
-        return 4.4
+        return float(default)
     try:
         y = float(str(raw).strip().replace(",", "."))
     except ValueError:
-        return 4.4
+        return float(default)
     return max(0.5, min(y, 25.0))
 
 
@@ -35,11 +48,29 @@ def _env_flag(name: str, default: bool = False) -> bool:
     return v in ("1", "true", "yes", "on")
 
 
+def resolve_vn_10y_bond_yield_pct(explicit: float | None = None) -> float:
+    """
+    Y cho Graham Growth: snapshot override → env → mặc định VN 10Y (~6.5%).
+
+    Env (ưu tiên trái → phải):
+      VN_10Y_BOND_YIELD | II_VN_10Y_BOND_YIELD | II_DEFAULT_BOND_YIELD_PCT | BOND_YIELD_PCT
+    """
+    if explicit is not None:
+        try:
+            y = float(explicit)
+            if y > 0:
+                return max(0.5, min(y, 25.0))
+        except (TypeError, ValueError):
+            pass
+    return float(get_settings().default_bond_yield_pct)
+
+
 @lru_cache
 def get_settings() -> AppSettings:
     """
-    II_DEFAULT_BOND_YIELD_PCT hoặc BOND_YIELD_PCT: lợi suất trái phiếu chuẩn (%/năm) cho công thức Graham.
-    Mặc định 4.4 (tương thích Graham classic factor 4.4/Y).
+    VN_10Y_BOND_YIELD / II_VN_10Y_BOND_YIELD / II_DEFAULT_BOND_YIELD_PCT / BOND_YIELD_PCT:
+    lợi suất trái phiếu tham chiếu Y (%/năm) cho Graham Growth V = EPS×(8.5+2g)×(4.4/Y).
+    Mặc định 6.5 (TPCP VN ~10 năm) — điều chỉnh theo chu kỳ lãi suất NHNN.
 
     II_MERGE_LIVE_FUNDAMENTALS: 1 (mặc định) — với mã có trong mock_financials.json, vẫn thử gộp EPS/BVPS…
     từ scrape live để định giá sát thực tế hơn.
@@ -69,7 +100,12 @@ def get_settings() -> AppSettings:
     Luân phiên universe: II_UNIVERSE_AUTO_ROTATE=1 (mặc định) — dịch cửa sổ quét trên full listing theo ngày
     (Auto Pilot, scan cơ hội, prefetch nền) thay vì luôn lấy N mã đầu danh sách.
     """
-    raw = os.environ.get("II_DEFAULT_BOND_YIELD_PCT") or os.environ.get("BOND_YIELD_PCT")
+    raw = (
+        os.environ.get("VN_10Y_BOND_YIELD")
+        or os.environ.get("II_VN_10Y_BOND_YIELD")
+        or os.environ.get("II_DEFAULT_BOND_YIELD_PCT")
+        or os.environ.get("BOND_YIELD_PCT")
+    )
     return AppSettings(
         default_bond_yield_pct=_parse_yield(raw),
         merge_live_fundamentals=_env_flag("II_MERGE_LIVE_FUNDAMENTALS", True),

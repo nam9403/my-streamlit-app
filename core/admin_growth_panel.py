@@ -42,15 +42,15 @@ def render_admin_growth_panel(
     plans_df = pd.DataFrame(admin.get("plans") or [])
     if not plans_df.empty:
         st.caption("Phân bổ gói dịch vụ")
-        st.dataframe(plans_df, width="stretch", hide_index=True)
+        st.dataframe(plans_df, use_container_width=True, hide_index=True)
     ev_df = pd.DataFrame(admin.get("events_by_type") or [])
     if not ev_df.empty:
         st.caption("Sự kiện theo loại (30 ngày)")
-        st.dataframe(ev_df, width="stretch", hide_index=True)
+        st.dataframe(ev_df, use_container_width=True, hide_index=True)
     q_df = pd.DataFrame(admin.get("notification_queue") or [])
     if not q_df.empty:
         st.caption("Trạng thái hàng đợi notification")
-        st.dataframe(q_df, width="stretch", hide_index=True)
+        st.dataframe(q_df, use_container_width=True, hide_index=True)
     obs = admin.get("notification_observability") or {}
     obs_reasons_df = pd.DataFrame(obs.get("fail_reasons") or [])
     obs_tiers_df = pd.DataFrame(obs.get("retry_tiers") or [])
@@ -72,27 +72,27 @@ def render_admin_growth_panel(
         with c_obs1:
             if not obs_reasons_df.empty:
                 st.caption("Fail reasons (from admin KPI)")
-                st.dataframe(obs_reasons_df, width="stretch", hide_index=True)
+                st.dataframe(obs_reasons_df, use_container_width=True, hide_index=True)
         with c_obs2:
             if not obs_tiers_df.empty:
                 st.caption("Retry tier distribution")
-                st.dataframe(obs_tiers_df, width="stretch", hide_index=True)
+                st.dataframe(obs_tiers_df, use_container_width=True, hide_index=True)
         if high_retry_count > 0:
             st.warning("Có job retry cao (t3+). Ưu tiên xử lý root cause để tránh queue burn.")
     cqd1, cqd2 = st.columns([2, 1])
     with cqd2:
-        if st.button("Retry failed queue", width="stretch"):
+        if st.button("Retry failed queue", use_container_width=True):
             retried_n = retry_failed_notifications(max_rows=50)
             st.caption(f"Đã chuyển {retried_n} job failed về pending.")
     diag_df = pd.DataFrame(get_notification_queue_diagnostics(limit=30))
     if not diag_df.empty:
         with cqd1:
             st.caption("Queue diagnostics (failed/pending ưu tiên)")
-        st.dataframe(diag_df, width="stretch", hide_index=True)
+        st.dataframe(diag_df, use_container_width=True, hide_index=True)
     fail_reason_df = pd.DataFrame(get_notification_fail_reason_summary(days=14, limit=10))
     if not fail_reason_df.empty:
         st.caption("Top nguyên nhân queue fail (14 ngày)")
-        st.dataframe(fail_reason_df, width="stretch", hide_index=True)
+        st.dataframe(fail_reason_df, use_container_width=True, hide_index=True)
         reason_priority_weight = {
             "invalid_payload": 10,
             "smtp_alert": 9,
@@ -131,7 +131,7 @@ def render_admin_growth_panel(
         if priority_rows:
             pr_df = pd.DataFrame(priority_rows).sort_values(by=["impact_score", "count"], ascending=[False, False])
             st.caption("Auto-priority fix list")
-            st.dataframe(pr_df, width="stretch", hide_index=True)
+            st.dataframe(pr_df, use_container_width=True, hide_index=True)
             top_fix = dict(pr_df.iloc[0])
             st.caption(
                 f"Ưu tiên hiện tại: {top_fix.get('priority')} | reason={top_fix.get('reason')} | "
@@ -142,7 +142,7 @@ def render_admin_growth_panel(
         st.caption(f"Gợi ý xử lý nhanh theo nguyên nhân chính: `{top_reason or 'unknown'}`")
         if top_reason.startswith("smtp"):
             st.warning("Ưu tiên kiểm tra SMTP host/user/password/from và quyền gửi của tài khoản mail.")
-            if st.button("🧪 Test SMTP nhanh", width="stretch"):
+            if st.button("🧪 Test SMTP nhanh", use_container_width=True):
                 smtp_test = dispatch_text_notifications(
                     f"[SMTP TEST] {datetime.now(timezone.utc).strftime('%H:%M:%SZ')}",
                     email_to=email_to,
@@ -155,7 +155,7 @@ def render_admin_growth_panel(
                 st.caption(f"SMTP test sent={int(smtp_test.get('sent') or 0)} | failed={int(smtp_test.get('failed') or 0)}")
         elif top_reason.startswith("webhook"):
             st.warning("Ưu tiên kiểm tra webhook URL, timeout và endpoint nhận payload.")
-            if st.button("🧪 Test Webhook nhanh", width="stretch"):
+            if st.button("🧪 Test Webhook nhanh", use_container_width=True):
                 webhook_test = dispatch_text_notifications(
                     f"[WEBHOOK TEST] {datetime.now(timezone.utc).strftime('%H:%M:%SZ')}",
                     webhook_url=webhook_url,
@@ -165,7 +165,7 @@ def render_admin_growth_panel(
                 )
         elif top_reason.startswith("telegram"):
             st.warning("Ưu tiên kiểm tra Telegram bot token/chat id và quyền bot trong nhóm.")
-            if st.button("🧪 Test Telegram nhanh", width="stretch"):
+            if st.button("🧪 Test Telegram nhanh", use_container_width=True):
                 telegram_test = dispatch_text_notifications(
                     f"[TELEGRAM TEST] {datetime.now(timezone.utc).strftime('%H:%M:%SZ')}",
                     telegram_bot_token=tg_bot,
@@ -176,7 +176,7 @@ def render_admin_growth_panel(
                 )
         elif top_reason.startswith("invalid_payload"):
             st.warning("Queue có payload lỗi định dạng. Nên retry failed sau khi xác nhận payload upstream.")
-            if st.button("♻️ Retry failed ngay (guided)", width="stretch"):
+            if st.button("♻️ Retry failed ngay (guided)", use_container_width=True):
                 moved = retry_failed_notifications(max_rows=50)
                 st.caption(f"Đã đưa {moved} job failed về pending để xử lý lại.")
         else:
@@ -190,15 +190,15 @@ def render_admin_growth_panel(
     cx_band_df = pd.DataFrame(cx_admin.get("bands") or [])
     if not cx_band_df.empty:
         st.caption("Phân bổ CX band (14 ngày)")
-        st.dataframe(cx_band_df, width="stretch", hide_index=True)
+        st.dataframe(cx_band_df, use_container_width=True, hide_index=True)
     cx_trend_df = pd.DataFrame(cx_admin.get("trend") or [])
     if not cx_trend_df.empty:
         st.caption("Xu hướng CX theo ngày")
-        st.dataframe(cx_trend_df, width="stretch", hide_index=True)
+        st.dataframe(cx_trend_df, use_container_width=True, hide_index=True)
     st.caption("Funnel nâng cấp theo variant (30 ngày)")
     uf = get_upgrade_funnel(days=30)
     if uf:
-        st.dataframe(pd.DataFrame(uf), width="stretch", hide_index=True)
+        st.dataframe(pd.DataFrame(uf), use_container_width=True, hide_index=True)
         pick = select_upgrade_variant_auto(days=30)
         st.caption(
             f"Auto-selected variant hiện tại: `{pick.get('variant')}` "

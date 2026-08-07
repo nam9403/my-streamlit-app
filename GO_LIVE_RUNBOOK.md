@@ -159,13 +159,32 @@ Artifacts theo dõi:
 - `artifacts/operations/runtime_guardian_health.json`
 - `data/reports/logs/runtime_incidents.jsonl`
 
-## 12) Daily operations checklist (VPS 24/7)
+## 12) Overnight Autopilot scan (17:00–07:00, VPS 24/7)
+
+Quét định kỳ universe thanh khoản sau giờ đóng cửa đến sáng hôm sau:
+
+```powershell
+# Một lệnh sau khi đưa code lên VPS (overnight scan mặc định BẬT)
+powershell -ExecutionPolicy Bypass -File "scripts/bootstrap_vps.ps1" -Env preprod
+
+# Chỉ overnight scan
+powershell -ExecutionPolicy Bypass -File "scripts/setup_overnight_scan_scheduler.ps1" -EveryMinutes 30 -BatchSize 40 -Workers 3
+```
+
+- Task: `DuAn1_OvernightScan` (mỗi 30 phút; Python tự bỏ qua ngoài 17:00–07:00 giờ VN) — **bật sẵn** khi bootstrap VPS.
+- State: `data/runtime/overnight_scan_state.json`
+- Summary: `artifacts/operations/overnight_scan_tick_latest.json`
+- Chạy tay một tick: `python scripts/run_overnight_scan_tick.py --force`
+- Tắt nếu cần: `bootstrap_vps.ps1 -SkipOvernightScan`
+
+## 13) Daily operations checklist (VPS 24/7)
 
 Mỗi ngày (5-10 phút), kiểm tra nhanh:
 
 1. Task Scheduler có trạng thái `Ready/Running` cho:
    - `DuAn1_BackgroundJobs`
    - `DuAn1_NightlyRuntimeCheck`
+   - `DuAn1_OvernightScan` (mặc định sau bootstrap VPS)
 2. Mở `artifacts/operations/runtime_guardian_health.json`:
    - `failures` không tăng bất thường
    - `suppressed_cooldown` không chiếm đa số kéo dài nhiều chu kỳ
@@ -178,7 +197,7 @@ python scripts/run_background_jobs.py --watchlist FPT,HPG,VNM --universe-limit 3
 python scripts/guardian_health_check.py --in artifacts/operations/runtime_guardian_health.json --require-ok
 ```
 
-## 13) Cấu hình khuyến nghị VPS 4GB
+## 14) Cấu hình khuyến nghị VPS 4GB
 
 - Dùng preset: `.env.vps4gb.example` -> copy thành `.env`.
 - Mục tiêu preset:

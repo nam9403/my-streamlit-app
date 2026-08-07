@@ -108,6 +108,20 @@ def main() -> int:
             fin_args.extend(["--vn30", "--watchlist", "--top10"])
         code = _run_py("refresh_financial_indicators.py", *fin_args)
         rc = max(rc, code)
+        # Rebuild P/E–P/B ngành đa năm sau khi BCTC/indicators cập nhật.
+        # --liquid mở rộng coverage; refresh statements để có BVPS.
+        code = _run_py(
+            "build_sector_multiples_5y.py",
+            "--years",
+            "5",
+            "--liquid",
+            "--liquid-limit",
+            "120",
+            "--refresh-statements",
+            "--sleep",
+            "0.3",
+        )
+        rc = max(rc, code)
 
     if args.paper_resolve:
         code = _run_py("resolve_paper_trades.py")

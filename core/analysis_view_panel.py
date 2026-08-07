@@ -38,7 +38,7 @@ def render_5s_panel(report: dict[str, Any], sla_rows: list[dict[str, Any]]) -> N
         {"5S": "Shitsuke (Duy trì)", "Điểm": score_sustain, "Ý nghĩa": "KPI + cohort duy trì cải tiến liên tục."},
     ]
     st.subheader("🧭 5S Product Health")
-    st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
+    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
 
 
 def render_health_cards(
@@ -176,7 +176,7 @@ def render_evidence(report: dict[str, Any]) -> None:
         {"Chỉ tiêu": "Tăng trưởng lợi nhuận YoY", "Giá trị": fin.get("profit_growth_yoy")},
         {"Chỉ tiêu": "Tăng trưởng lợi nhuận QoQ", "Giá trị": fin.get("profit_growth_qoq")},
     ]
-    st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
+    st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
     st.subheader("Tin tức mới nhất")
     for item in report.get("news", []):
         st.markdown(f"- [{item.get('title')}]({item.get('url')}) ({item.get('source')})")
@@ -193,7 +193,7 @@ def render_evidence(report: dict[str, Any]) -> None:
             {"Mục": "Tăng trưởng LNST YoY %", "Giá trị": eq.get("net_income_growth_yoy_pct")},
             {"Mục": "Tăng trưởng CFO YoY %", "Giá trị": eq.get("operating_cash_flow_growth_yoy_pct")},
         ]
-        st.dataframe(pd.DataFrame(eq_rows), width="stretch", hide_index=True)
+        st.dataframe(pd.DataFrame(eq_rows), use_container_width=True, hide_index=True)
         notes = eq.get("notes") or []
         if notes:
             st.caption("Earnings quality notes: " + " | ".join(str(x) for x in notes))
@@ -206,7 +206,7 @@ def render_evidence(report: dict[str, Any]) -> None:
             {"Mục": "High-confidence events", "Giá trị": sm.get("high_conf_event_count")},
             {"Mục": "Avg event confidence", "Giá trị": sm.get("avg_event_confidence")},
         ]
-        st.dataframe(pd.DataFrame(sm_rows), width="stretch", hide_index=True)
+        st.dataframe(pd.DataFrame(sm_rows), use_container_width=True, hide_index=True)
         sig = sm.get("signals") or []
         if sig:
             st.caption("Smart money signals: " + " | ".join(str(x) for x in sig))
@@ -233,14 +233,14 @@ def render_report_downloads(
     json_doc = json.dumps(report, ensure_ascii=False, indent=2, default=str)
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.download_button("Tải báo cáo Markdown", data=md.encode("utf-8"), file_name=f"{ticker}_bao_cao.md", mime="text/markdown", width="stretch")
+        st.download_button("Tải báo cáo Markdown", data=md.encode("utf-8"), file_name=f"{ticker}_bao_cao.md", mime="text/markdown", use_container_width=True)
     with c2:
         st.download_button(
             "Tải báo cáo HTML (in ra PDF)",
             data=html_doc.encode("utf-8"),
             file_name=f"{ticker}_bao_cao.html",
             mime="text/html",
-            width="stretch",
+            use_container_width=True,
         )
     with c3:
         st.download_button(
@@ -248,7 +248,7 @@ def render_report_downloads(
             data=json_doc.encode("utf-8"),
             file_name=f"{ticker}_strategic_report.json",
             mime="application/json",
-            width="stretch",
+            use_container_width=True,
         )
 
 
@@ -259,42 +259,62 @@ def render_risk_plan(report: dict[str, Any]) -> None:
         st.info("Chưa có risk plan.")
         return
     try:
-        from core.decision_action_gate import trade_plan_is_active
+        from core.decision_action_gate import (
+            trade_plan_entry_allowed,
+            trade_plan_is_active,
+            trade_plan_risk_visible,
+        )
 
         active = trade_plan_is_active(report)
+        entry_ok = trade_plan_entry_allowed(report)
+        risk_ok = trade_plan_risk_visible(report)
     except Exception:
-        active = str(report.get("final_action") or "").upper() in ("BUY", "HOLD")
+        active = str(report.get("final_action") or "").upper() in ("BUY", "HOLD", "CONDITIONAL_BUY")
+        entry_ok = str(report.get("final_action") or "").upper() in ("BUY", "CONDITIONAL_BUY")
+        risk_ok = active
     if not active:
         note = str(plan.get("display_note_vi") or "").strip()
         st.info(
             note
-            or "Khuyến nghị hiện tại không phải MUA/GIỮ — hệ thống không đề xuất vào lệnh "
+            or "Khuyến nghị QUAN SÁT/TRÁNH — hệ thống khóa toàn bộ kế hoạch giao dịch "
             "(Entry/SL/TP ẩn để tránh hiểu nhầm)."
         )
         st.caption(f"Hành động: **{report.get('final_action') or 'WATCH'}** · Verdict: **{report.get('analysis_verdict') or '—'}**")
         return
+    if risk_ok and not entry_ok:
+        st.info(str(plan.get("display_note_vi") or "GIỮ: Không mở mua mới — hiện SL để bảo vệ vị thế."))
     table = pd.DataFrame(
         [
             {
-                "Mua giá nào?": plan.get("entry_price"),
-                "Bán giá nào?": plan.get("take_profit_price") or report.get("take_profit"),
-                "Cắt lỗ giá nào?": plan.get("stop_loss_price"),
+                "Mua giá nào?": (
+                    plan.get("entry_price")
+                    if entry_ok
+                    else (plan.get("entry_locked_reason_vi") or "Không mở mua mới")
+                ),
+                "Bán giá nào?": plan.get("take_profit_price") or report.get("take_profit") if risk_ok else "—",
+                "Cắt lỗ giá nào?": plan.get("stop_loss_price") if risk_ok else "—",
             }
         ]
     )
-    st.dataframe(table, width="stretch", hide_index=True)
+    st.dataframe(table, use_container_width=True, hide_index=True)
 
-    alloc = float(plan.get("allocated_capital_vnd") or 0)
+    alloc = float(plan.get("allocated_capital_vnd") or 0) if entry_ok else 0.0
     total = float(report.get("total_capital_vnd") or 0)
     cash = max(total - alloc, 0.0)
     fig = go.Figure(data=[go.Pie(labels=["Mã đang phân tích", "Phần vốn còn lại"], values=[alloc, cash], hole=0.45)])
     fig.update_layout(height=320, margin={"l": 10, "r": 10, "t": 30, "b": 10})
-    st.plotly_chart(fig, width="stretch")
-    st.caption(
-        f"Giải ngân tối đa: {plan.get('max_position_pct')}% ~ {alloc:,.0f} VND | "
-        f"SL xấu nhất: {plan.get('worst_case_loss_vnd', 0):,.0f} VND "
-        f"({plan.get('worst_case_loss_pct_total_capital', 0)}% tổng vốn)."
-    )
+    st.plotly_chart(fig, use_container_width=True)
+    if entry_ok:
+        st.caption(
+            f"Giải ngân tối đa: {plan.get('max_position_pct')}% ~ {alloc:,.0f} VND | "
+            f"SL xấu nhất: {plan.get('worst_case_loss_vnd', 0):,.0f} VND "
+            f"({plan.get('worst_case_loss_pct_total_capital', 0)}% tổng vốn)."
+        )
+    else:
+        st.caption(
+            f"Không giải ngân mới. SL bảo vệ: {plan.get('stop_loss_price') or '—'} | "
+            f"TP tham chiếu: {plan.get('take_profit_price') or report.get('take_profit') or '—'}."
+        )
 
     protector = report.get("portfolio_protector") or {}
     if protector:
@@ -307,7 +327,7 @@ def render_risk_plan(report: dict[str, Any]) -> None:
                 {"Rổ tài sản": "Cash", "Tỷ trọng %": round(float(w.get("cash") or 0.0) * 100.0, 2)},
             ]
         )
-        st.dataframe(w_df, width="stretch", hide_index=True)
+        st.dataframe(w_df, use_container_width=True, hide_index=True)
         c1, c2, c3 = st.columns(3)
         with c1:
             sr = protector.get("sharpe_ratio")
@@ -320,7 +340,7 @@ def render_risk_plan(report: dict[str, Any]) -> None:
             st.metric("Biến động năm", f"{float(vol):.2f}%" if isinstance(vol, (float, int)) else "N/A")
         stress = protector.get("stress_test") or []
         if stress:
-            st.dataframe(pd.DataFrame(stress), width="stretch", hide_index=True)
+            st.dataframe(pd.DataFrame(stress), use_container_width=True, hide_index=True)
         note = str(protector.get("optimizer_note") or "")
         if note:
             st.caption(note)

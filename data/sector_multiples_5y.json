@@ -1,0 +1,5448 @@
+{
+  "generated_at": "2026-08-06T14:45:03.221045+00:00",
+  "method": "hybrid_annual_reconstruct",
+  "honesty": "Không phải P/E–P/B TB 5 năm từ vendor. Rolling multi-year: EPS TTM (FireAnt) × giá cuối năm (OHLCV); PB từ BVPS nếu có, không thì PE×ROE. coverage=5y khi ≥4 năm; multi_year khi 2–3 năm.",
+  "years_window": 5,
+  "symbols_input": 121,
+  "symbols_with_points": 87,
+  "by_industry_subtype": {
+    "other": {
+      "industry_subtype": "other",
+      "pe_avg": 17.88,
+      "pb_avg": 0.95,
+      "n_names": 54,
+      "n_pe_names": 54,
+      "n_pb_names": 54,
+      "years_used_median": 4,
+      "span_years_median": 5,
+      "coverage": "5y",
+      "source": "fireant_eps_x_ohlcv_hybrid"
+    },
+    "bank": {
+      "industry_subtype": "bank",
+      "pe_avg": 6.06,
+      "pb_avg": 1.12,
+      "n_names": 14,
+      "n_pe_names": 14,
+      "n_pb_names": 14,
+      "years_used_median": 5,
+      "span_years_median": 5,
+      "coverage": "5y",
+      "source": "fireant_eps_x_ohlcv_hybrid"
+    },
+    "real_estate_residential": {
+      "industry_subtype": "real_estate_residential",
+      "pe_avg": 20.64,
+      "pb_avg": 2.4,
+      "n_names": 4,
+      "n_pe_names": 4,
+      "n_pb_names": 4,
+      "years_used_median": 5,
+      "span_years_median": 5,
+      "coverage": "5y",
+      "source": "fireant_eps_x_ohlcv_hybrid"
+    },
+    "oil_gas": {
+      "industry_subtype": "oil_gas",
+      "pe_avg": 15.31,
+      "pb_avg": 1.97,
+      "n_names": 2,
+      "n_pe_names": 2,
+      "n_pb_names": 2,
+      "years_used_median": 5,
+      "span_years_median": 5,
+      "coverage": "multi_year",
+      "source": "fireant_eps_x_ohlcv_hybrid"
+    },
+    "steel_materials": {
+      "industry_subtype": "steel_materials",
+      "pe_avg": 18.18,
+      "pb_avg": 1.5,
+      "n_names": 2,
+      "n_pe_names": 2,
+      "n_pb_names": 2,
+      "years_used_median": 5,
+      "span_years_median": 5,
+      "coverage": "multi_year",
+      "source": "fireant_eps_x_ohlcv_hybrid"
+    },
+    "consumer_staples": {
+      "industry_subtype": "consumer_staples",
+      "pe_avg": 23.91,
+      "pb_avg": 2.98,
+      "n_names": 4,
+      "n_pe_names": 4,
+      "n_pb_names": 4,
+      "years_used_median": 5,
+      "span_years_median": 5,
+      "coverage": "5y",
+      "source": "fireant_eps_x_ohlcv_hybrid"
+    },
+    "consumer_retail": {
+      "industry_subtype": "consumer_retail",
+      "pe_avg": 15.57,
+      "pb_avg": 2.48,
+      "n_names": 2,
+      "n_pe_names": 2,
+      "n_pb_names": 2,
+      "years_used_median": 5,
+      "span_years_median": 5,
+      "coverage": "multi_year",
+      "source": "fireant_eps_x_ohlcv_hybrid"
+    },
+    "securities": {
+      "industry_subtype": "securities",
+      "pe_avg": 12.28,
+      "pb_avg": 1.49,
+      "n_names": 2,
+      "n_pe_names": 2,
+      "n_pb_names": 2,
+      "years_used_median": 5,
+      "span_years_median": 5,
+      "coverage": "multi_year",
+      "source": "fireant_eps_x_ohlcv_hybrid"
+    }
+  },
+  "by_icb_sector": {
+    "1300": {
+      "icb_sector": "1300",
+      "pe_avg": 19.82,
+      "pb_avg": 0.59,
+      "n_names": 2,
+      "n_pe_names": 2,
+      "n_pb_names": 2,
+      "years_used_median": 4,
+      "span_years_median": 4,
+      "coverage": "multi_year",
+      "source": "fireant_eps_x_ohlcv_hybrid"
+    },
+    "8700": {
+      "icb_sector": "8700",
+      "pe_avg": 13.42,
+      "pb_avg": 1.17,
+      "n_names": 2,
+      "n_pe_names": 2,
+      "n_pb_names": 2,
+      "years_used_median": 4,
+      "span_years_median": 4,
+      "coverage": "multi_year",
+      "source": "fireant_eps_x_ohlcv_hybrid"
+    },
+    "8300": {
+      "icb_sector": "8300",
+      "pe_avg": 8.69,
+      "pb_avg": 1.09,
+      "n_names": 3,
+      "n_pe_names": 3,
+      "n_pb_names": 3,
+      "years_used_median": 5,
+      "span_years_median": 5,
+      "coverage": "5y",
+      "source": "fireant_eps_x_ohlcv_hybrid"
+    },
+    "2300": {
+      "icb_sector": "2300",
+      "pe_avg": 23.52,
+      "pb_avg": 0.82,
+      "n_names": 3,
+      "n_pe_names": 3,
+      "n_pb_names": 3,
+      "years_used_median": 4,
+      "span_years_median": 5,
+      "coverage": "5y",
+      "source": "fireant_eps_x_ohlcv_hybrid"
+    },
+    "3500": {
+      "icb_sector": "3500",
+      "pe_avg": 22.46,
+      "pb_avg": 1.39,
+      "n_names": 3,
+      "n_pe_names": 3,
+      "n_pb_names": 3,
+      "years_used_median": 5,
+      "span_years_median": 5,
+      "coverage": "5y",
+      "source": "fireant_eps_x_ohlcv_hybrid"
+    }
+  },
+  "per_symbol": {
+    "AAA": {
+      "symbol": "AAA",
+      "pe_avg": 10.728,
+      "pb_avg": 0.556,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": "1300",
+      "years": [
+        {
+          "year": 2021,
+          "pe": 18.953,
+          "pb": 1.16,
+          "eps": 1023.442,
+          "bvps": 16721.2179,
+          "close": 19397.35,
+          "close_date": "2021-12-31",
+          "roe": 6.805,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 14.886,
+          "pb": 0.407,
+          "eps": 440.5869,
+          "bvps": 16133.9652,
+          "close": 6558.61,
+          "close_date": "2022-12-30",
+          "roe": 1.954,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 12.004,
+          "pb": 0.586,
+          "eps": 755.9837,
+          "bvps": 15487.003,
+          "close": 9074.5,
+          "close_date": "2023-12-29",
+          "roe": 5.119,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 8.847,
+          "pb": 0.513,
+          "eps": 946.5284,
+          "bvps": 16310.6937,
+          "close": 8373.51,
+          "close_date": "2024-12-31",
+          "roe": 5.103,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 8.16,
+          "pb": 0.51,
+          "eps": 965.6414,
+          "bvps": 15439.6003,
+          "close": 7880.0,
+          "close_date": "2025-12-31",
+          "roe": 6.885,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "AAH": {
+      "symbol": "AAH",
+      "pe_avg": 23.787,
+      "pb_avg": 0.4,
+      "n_years": 1,
+      "span_years": 1,
+      "coverage": "single_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": "1700",
+      "years": [
+        {
+          "year": 2024,
+          "pe": 23.787,
+          "pb": 0.4,
+          "eps": 151.3414,
+          "bvps": 10153.111,
+          "close": 3600.0,
+          "close_date": "2024-12-31",
+          "roe": 1.501,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "ABS": {
+      "symbol": "ABS",
+      "pe_avg": 28.918,
+      "pb_avg": 0.616,
+      "n_years": 4,
+      "span_years": 4,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": "1300",
+      "years": [
+        {
+          "year": 2021,
+          "pe": 31.241,
+          "pb": 2.248,
+          "eps": 833.6858,
+          "bvps": 11583.4349,
+          "close": 26044.97,
+          "close_date": "2021-12-31",
+          "roe": 9.619,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 15.316,
+          "pb": 0.4,
+          "eps": 340.8229,
+          "bvps": 13454.6693,
+          "close": 5220.0,
+          "close_date": "2022-12-30",
+          "roe": 2.722,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 22.435,
+          "pb": 0.5,
+          "eps": 258.0774,
+          "bvps": 11577.7674,
+          "close": 5790.0,
+          "close_date": "2023-12-29",
+          "roe": 2.062,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 40.0,
+          "pb": 0.402,
+          "eps": 31.9925,
+          "bvps": 11456.5328,
+          "close": 4600.0,
+          "close_date": "2024-12-31",
+          "roe": 0.278,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "ABW": {
+      "symbol": "ABW",
+      "pe_avg": 8.194,
+      "pb_avg": 0.701,
+      "n_years": 3,
+      "span_years": 3,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": "8700",
+      "years": [
+        {
+          "year": 2023,
+          "pe": 13.258,
+          "pb": 0.769,
+          "eps": 769.3705,
+          "bvps": 13258.9365,
+          "close": 10200.0,
+          "close_date": "2023-12-29",
+          "roe": 5.973,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 7.705,
+          "pb": 0.589,
+          "eps": 1090.1318,
+          "bvps": 14264.8992,
+          "close": 8400.0,
+          "close_date": "2024-12-31",
+          "roe": 7.921,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 6.832,
+          "pb": 0.753,
+          "eps": 1741.6929,
+          "bvps": 15810.7902,
+          "close": 11900.0,
+          "close_date": "2025-12-31",
+          "roe": 11.582,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "ACB": {
+      "symbol": "ACB",
+      "pe_avg": 5.553,
+      "pb_avg": 1.09,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "bank",
+      "industry_cluster": "financial",
+      "icb_sector": "8300",
+      "years": [
+        {
+          "year": 2021,
+          "pe": 4.153,
+          "pb": 0.974,
+          "eps": 3896.5634,
+          "bvps": 16617.9763,
+          "close": 16180.92,
+          "close_date": "2021-12-31",
+          "roe": 23.903,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 0.742,
+          "eps": 4422.16,
+          "bvps": 17302.6754,
+          "close": 12839.21,
+          "close_date": "2022-12-30",
+          "roe": 26.492,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 4.0,
+          "pb": 0.918,
+          "eps": 4367.2346,
+          "bvps": 18268.5482,
+          "close": 16773.89,
+          "close_date": "2023-12-29",
+          "roe": 24.8,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 5.425,
+          "pb": 1.154,
+          "eps": 3973.3134,
+          "bvps": 18685.4869,
+          "close": 21556.71,
+          "close_date": "2024-12-31",
+          "roe": 21.746,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 7.489,
+          "pb": 1.304,
+          "eps": 3204.8801,
+          "bvps": 18401.0196,
+          "close": 24000.0,
+          "close_date": "2025-12-31",
+          "roe": 17.558,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "ACC": {
+      "symbol": "ACC",
+      "pe_avg": 23.521,
+      "pb_avg": 1.05,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": "2300",
+      "years": [
+        {
+          "year": 2021,
+          "pe": 12.557,
+          "pb": 0.965,
+          "eps": 1212.6765,
+          "bvps": 15785.8915,
+          "close": 15227.78,
+          "close_date": "2021-12-31",
+          "roe": 7.606,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 14.146,
+          "pb": 0.967,
+          "eps": 791.7467,
+          "bvps": 11583.9325,
+          "close": 11200.0,
+          "close_date": "2022-12-30",
+          "roe": 9.665,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 18.053,
+          "pb": 1.01,
+          "eps": 684.114,
+          "bvps": 12228.9492,
+          "close": 12350.0,
+          "close_date": "2023-12-29",
+          "roe": 5.798,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 29.539,
+          "pb": 1.147,
+          "eps": 494.2611,
+          "bvps": 12733.5072,
+          "close": 14600.0,
+          "close_date": "2024-12-31",
+          "roe": 3.985,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 27.93,
+          "pb": 1.047,
+          "eps": 495.8905,
+          "bvps": 13224.3192,
+          "close": 13850.0,
+          "close_date": "2025-12-31",
+          "roe": 3.876,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "ANV": {
+      "symbol": "ANV",
+      "pe_avg": 22.464,
+      "pb_avg": 1.387,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": "3500",
+      "years": [
+        {
+          "year": 2021,
+          "pe": 14.736,
+          "pb": 0.807,
+          "eps": 1005.9215,
+          "bvps": 18365.1862,
+          "close": 14823.2,
+          "close_date": "2021-12-31",
+          "roe": 5.479,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 0.458,
+          "eps": 5457.0662,
+          "bvps": 22671.6838,
+          "close": 10386.47,
+          "close_date": "2022-12-30",
+          "roe": 26.596,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 40.0,
+          "pb": 0.693,
+          "eps": 316.6934,
+          "bvps": 21411.9141,
+          "close": 14829.85,
+          "close_date": "2023-12-29",
+          "roe": 1.46,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 40.0,
+          "pb": 1.824,
+          "eps": 316.746,
+          "bvps": 10505.9436,
+          "close": 19167.41,
+          "close_date": "2024-12-31",
+          "roe": 1.714,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 6.846,
+          "pb": 1.94,
+          "eps": 3753.8264,
+          "bvps": 13246.1692,
+          "close": 25700.0,
+          "close_date": "2025-12-31",
+          "roe": 31.608,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "ASM": {
+      "symbol": "ASM",
+      "pe_avg": 20.989,
+      "pb_avg": 0.403,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": "3500",
+      "years": [
+        {
+          "year": 2021,
+          "pe": 5.382,
+          "pb": 0.444,
+          "eps": 2413.9405,
+          "bvps": 29247.8567,
+          "close": 12991.91,
+          "close_date": "2021-12-31",
+          "roe": 10.076,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 0.4,
+          "eps": 1891.2014,
+          "bvps": 23298.2579,
+          "close": 6363.64,
+          "close_date": "2022-12-30",
+          "roe": 12.501,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 13.746,
+          "pb": 0.4,
+          "eps": 625.2621,
+          "bvps": 23322.5733,
+          "close": 8595.04,
+          "close_date": "2023-12-29",
+          "roe": 3.494,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 15.052,
+          "pb": 0.4,
+          "eps": 519.4154,
+          "bvps": 21854.3728,
+          "close": 7818.18,
+          "close_date": "2024-12-31",
+          "roe": 3.178,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 40.0,
+          "pb": 0.4,
+          "eps": 122.5971,
+          "bvps": 20188.1726,
+          "close": 6440.0,
+          "close_date": "2025-12-31",
+          "roe": 1.789,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "BAF": {
+      "symbol": "BAF",
+      "pe_avg": 28.863,
+      "pb_avg": 1.829,
+      "n_years": 4,
+      "span_years": 4,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": "3500",
+      "years": [
+        {
+          "year": 2022,
+          "pe": 4.452,
+          "pb": 0.886,
+          "eps": 2423.6153,
+          "bvps": 12178.9945,
+          "close": 10790.0,
+          "close_date": "2022-12-30",
+          "roe": 18.288,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 40.0,
+          "pb": 1.145,
+          "eps": 139.0402,
+          "bvps": 13284.5387,
+          "close": 15210.0,
+          "close_date": "2023-12-29",
+          "roe": 1.28,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 14.725,
+          "pb": 1.904,
+          "eps": 1590.5282,
+          "bvps": 12301.6153,
+          "close": 23420.0,
+          "close_date": "2024-12-31",
+          "roe": 13.364,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 40.0,
+          "pb": 2.35,
+          "eps": 339.7385,
+          "bvps": 13279.1246,
+          "close": 31210.0,
+          "close_date": "2025-12-31",
+          "roe": 2.879,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "BCE": {
+      "symbol": "BCE",
+      "pe_avg": 13.58,
+      "pb_avg": 0.821,
+      "n_years": 4,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": "2300",
+      "years": [
+        {
+          "year": 2021,
+          "pe": 23.056,
+          "pb": 1.577,
+          "eps": 776.2855,
+          "bvps": 11352.0543,
+          "close": 17898.18,
+          "close_date": "2021-12-31",
+          "roe": 7.059,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 40.0,
+          "pb": 0.593,
+          "eps": 30.1317,
+          "bvps": 9557.3638,
+          "close": 5671.0,
+          "close_date": "2023-12-29",
+          "roe": 0.307,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 5.58,
+          "pb": 0.748,
+          "eps": 1481.6273,
+          "bvps": 11056.8982,
+          "close": 8268.18,
+          "close_date": "2024-12-31",
+          "roe": 14.375,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 4.0,
+          "pb": 0.8,
+          "eps": 2873.6511,
+          "bvps": 13621.0865,
+          "close": 10900.0,
+          "close_date": "2025-12-31",
+          "roe": 23.289,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "BCM": {
+      "symbol": "BCM",
+      "pe_avg": 28.307,
+      "pb_avg": 3.343,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "real_estate_residential",
+      "industry_cluster": "real_estate",
+      "icb_sector": "8600",
+      "years": [
+        {
+          "year": 2021,
+          "pe": 40.0,
+          "pb": 3.744,
+          "eps": 1229.7068,
+          "bvps": 16200.6744,
+          "close": 60650.25,
+          "close_date": "2021-12-31",
+          "roe": 8.175,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 40.0,
+          "pb": 4.467,
+          "eps": 1577.8723,
+          "bvps": 17234.1667,
+          "close": 76986.92,
+          "close_date": "2022-12-30",
+          "roe": 9.664,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 25.82,
+          "pb": 3.302,
+          "eps": 2358.7333,
+          "bvps": 18443.4751,
+          "close": 60901.98,
+          "close_date": "2023-12-29",
+          "roe": 12.534,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 34.256,
+          "pb": 3.522,
+          "eps": 2034.4491,
+          "bvps": 19787.3444,
+          "close": 69692.72,
+          "close_date": "2024-12-31",
+          "roe": 11.674,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 18.023,
+          "pb": 2.696,
+          "eps": 3370.4973,
+          "bvps": 22528.8529,
+          "close": 60747.68,
+          "close_date": "2025-12-31",
+          "roe": 16.056,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "BID": {
+      "symbol": "BID",
+      "pe_avg": 8.689,
+      "pb_avg": 1.672,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "bank",
+      "industry_cluster": "financial",
+      "icb_sector": "8300",
+      "years": [
+        {
+          "year": 2021,
+          "pe": 10.295,
+          "pb": 1.636,
+          "eps": 2613.868,
+          "bvps": 16444.0414,
+          "close": 26909.05,
+          "close_date": "2021-12-31",
+          "roe": 13.62,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 7.784,
+          "pb": 1.424,
+          "eps": 3596.5749,
+          "bvps": 19667.0494,
+          "close": 27997.02,
+          "close_date": "2022-12-30",
+          "roe": 20.204,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 8.422,
+          "pb": 1.714,
+          "eps": 4212.0309,
+          "bvps": 20691.5034,
+          "close": 35473.14,
+          "close_date": "2023-12-29",
+          "roe": 20.261,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 8.435,
+          "pb": 1.833,
+          "eps": 4402.5646,
+          "bvps": 20260.7868,
+          "close": 37136.86,
+          "close_date": "2024-12-31",
+          "roe": 19.928,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 9.092,
+          "pb": 1.625,
+          "eps": 4278.5709,
+          "bvps": 23933.4433,
+          "close": 38900.0,
+          "close_date": "2025-12-31",
+          "roe": 19.807,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "BSI": {
+      "symbol": "BSI",
+      "pe_avg": 18.647,
+      "pb_avg": 1.637,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": "8700",
+      "years": [
+        {
+          "year": 2021,
+          "pe": 10.582,
+          "pb": 2.197,
+          "eps": 2935.6564,
+          "bvps": 14142.0359,
+          "close": 31064.02,
+          "close_date": "2021-12-31",
+          "roe": 22.233,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 16.19,
+          "pb": 0.563,
+          "eps": 810.0221,
+          "bvps": 23312.2374,
+          "close": 13114.44,
+          "close_date": "2022-12-30",
+          "roe": 3.693,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 18.716,
+          "pb": 1.699,
+          "eps": 2097.4995,
+          "bvps": 23101.0971,
+          "close": 39256.2,
+          "close_date": "2023-12-29",
+          "roe": 9.024,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 22.729,
+          "pb": 1.947,
+          "eps": 1943.8176,
+          "bvps": 22692.8433,
+          "close": 44181.82,
+          "close_date": "2024-12-31",
+          "roe": 8.476,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 17.937,
+          "pb": 1.669,
+          "eps": 2096.245,
+          "bvps": 22528.6273,
+          "close": 37600.0,
+          "close_date": "2025-12-31",
+          "roe": 9.324,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "BSR": {
+      "symbol": "BSR",
+      "pe_avg": 15.973,
+      "pb_avg": 0.911,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": "0500",
+      "years": [
+        {
+          "year": 2021,
+          "pe": 6.11,
+          "pb": 1.091,
+          "eps": 2162.407,
+          "bvps": 12112.0257,
+          "close": 13213.34,
+          "close_date": "2021-12-31",
+          "roe": 19.447,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 0.469,
+          "eps": 4660.6744,
+          "bvps": 16421.5251,
+          "close": 7702.78,
+          "close_date": "2022-12-30",
+          "roe": 32.54,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 4.076,
+          "pb": 0.607,
+          "eps": 2744.6459,
+          "bvps": 18426.3839,
+          "close": 11186.62,
+          "close_date": "2023-12-29",
+          "roe": 15.647,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 40.0,
+          "pb": 0.788,
+          "eps": 201.7022,
+          "bvps": 17910.7443,
+          "close": 14117.65,
+          "close_date": "2024-12-31",
+          "roe": 1.039,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 10.65,
+          "pb": 1.333,
+          "eps": 1511.7061,
+          "bvps": 12079.4475,
+          "close": 16100.0,
+          "close_date": "2025-12-31",
+          "roe": 8.946,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "BVB": {
+      "symbol": "BVB",
+      "pe_avg": 22.347,
+      "pb_avg": 0.985,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": "8300",
+      "years": [
+        {
+          "year": 2021,
+          "pe": 26.636,
+          "pb": 1.444,
+          "eps": 685.0897,
+          "bvps": 12637.6965,
+          "close": 18247.93,
+          "close_date": "2021-12-31",
+          "roe": 5.837,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 7.706,
+          "pb": 0.561,
+          "eps": 991.7132,
+          "bvps": 13627.6826,
+          "close": 7642.29,
+          "close_date": "2022-12-30",
+          "roe": 7.551,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 40.0,
+          "pb": 0.815,
+          "eps": 120.4827,
+          "bvps": 11648.6705,
+          "close": 9493.8,
+          "close_date": "2023-12-29",
+          "roe": 1.043,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 19.086,
+          "pb": 1.023,
+          "eps": 597.8178,
+          "bvps": 11153.3029,
+          "close": 11409.84,
+          "close_date": "2024-12-31",
+          "roe": 5.188,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 19.362,
+          "pb": 1.134,
+          "eps": 681.7633,
+          "bvps": 11642.0898,
+          "close": 13200.0,
+          "close_date": "2025-12-31",
+          "roe": 6.121,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "BVH": {
+      "symbol": "BVH",
+      "pe_avg": 16.858,
+      "pb_avg": 1.685,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "insurance",
+      "industry_cluster": "financial",
+      "icb_sector": "8500",
+      "years": [
+        {
+          "year": 2021,
+          "pe": 19.647,
+          "pb": 1.855,
+          "eps": 2502.0008,
+          "bvps": null,
+          "close": 49156.52,
+          "close_date": "2021-12-31",
+          "roe": 9.439,
+          "pb_source": "pe_x_roe"
+        },
+        {
+          "year": 2022,
+          "pe": 21.182,
+          "pb": 1.617,
+          "eps": 2059.0792,
+          "bvps": null,
+          "close": 43615.4,
+          "close_date": "2022-12-30",
+          "roe": 7.632,
+          "pb_source": "pe_x_roe"
+        },
+        {
+          "year": 2023,
+          "pe": 16.317,
+          "pb": 1.394,
+          "eps": 2320.7647,
+          "bvps": null,
+          "close": 37867.67,
+          "close_date": "2023-12-29",
+          "roe": 8.542,
+          "pb_source": "pe_x_roe"
+        },
+        {
+          "year": 2024,
+          "pe": 17.709,
+          "pb": 1.726,
+          "eps": 2809.0539,
+          "bvps": null,
+          "close": 49744.76,
+          "close_date": "2024-12-31",
+          "roe": 9.746,
+          "pb_source": "pe_x_roe"
+        },
+        {
+          "year": 2025,
+          "pe": 14.214,
+          "pb": 1.82,
+          "eps": 3995.9828,
+          "bvps": null,
+          "close": 56800.0,
+          "close_date": "2025-12-31",
+          "roe": 12.802,
+          "pb_source": "pe_x_roe"
+        }
+      ]
+    },
+    "CII": {
+      "symbol": "CII",
+      "pe_avg": 24.532,
+      "pb_avg": 0.705,
+      "n_years": 4,
+      "span_years": 4,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": "2300",
+      "years": [
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 0.4,
+          "eps": 3077.287,
+          "bvps": 33030.3773,
+          "close": 10009.83,
+          "close_date": "2022-12-30",
+          "roe": 10.677,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 20.009,
+          "pb": 0.511,
+          "eps": 683.655,
+          "bvps": 26751.5964,
+          "close": 13679.42,
+          "close_date": "2023-12-29",
+          "roe": 4.527,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 13.768,
+          "pb": 0.419,
+          "eps": 869.955,
+          "bvps": 28606.9474,
+          "close": 11977.59,
+          "close_date": "2024-12-31",
+          "roe": 7.233,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 40.0,
+          "pb": 1.092,
+          "eps": 237.8664,
+          "bvps": 19132.5589,
+          "close": 20900.0,
+          "close_date": "2025-12-31",
+          "roe": 3.571,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "CSM": {
+      "symbol": "CSM",
+      "pe_avg": 23.919,
+      "pb_avg": 1.059,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 40.0,
+          "pb": 1.37,
+          "eps": 406.9122,
+          "bvps": 12633.2078,
+          "close": 17309.4,
+          "close_date": "2021-12-31",
+          "roe": 3.268,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 17.61,
+          "pb": 1.071,
+          "eps": 763.7218,
+          "bvps": 12558.5703,
+          "close": 13449.26,
+          "close_date": "2022-12-30",
+          "roe": 6.063,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 19.492,
+          "pb": 0.911,
+          "eps": 598.065,
+          "bvps": 12794.1821,
+          "close": 11657.47,
+          "close_date": "2023-12-29",
+          "roe": 4.718,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 20.532,
+          "pb": 1.148,
+          "eps": 736.4338,
+          "bvps": 13166.9588,
+          "close": 15120.11,
+          "close_date": "2024-12-31",
+          "roe": 5.673,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 28.592,
+          "pb": 1.01,
+          "eps": 466.9086,
+          "bvps": 13220.6911,
+          "close": 13350.0,
+          "close_date": "2025-12-31",
+          "roe": 3.539,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "CTD": {
+      "symbol": "CTD",
+      "pe_avg": 20.738,
+      "pb_avg": 0.702,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 40.0,
+          "pb": 0.649,
+          "eps": 325.7701,
+          "bvps": 111668.0636,
+          "close": 72527.92,
+          "close_date": "2021-12-31",
+          "roe": 0.29,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 40.0,
+          "pb": 0.4,
+          "eps": 280.4271,
+          "bvps": 111210.6805,
+          "close": 21791.5,
+          "close_date": "2022-12-30",
+          "roe": 0.253,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 26.047,
+          "pb": 0.717,
+          "eps": 2332.6829,
+          "bvps": 84738.0614,
+          "close": 60760.08,
+          "close_date": "2023-12-29",
+          "roe": 2.261,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 16.562,
+          "pb": 0.708,
+          "eps": 3718.4634,
+          "bvps": 86948.5549,
+          "close": 61584.12,
+          "close_date": "2024-12-31",
+          "roe": 4.345,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 9.337,
+          "pb": 0.821,
+          "eps": 7752.2748,
+          "bvps": 88124.8967,
+          "close": 72380.95,
+          "close_date": "2025-12-31",
+          "roe": 8.646,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "CTG": {
+      "symbol": "CTG",
+      "pe_avg": 5.301,
+      "pb_avg": 1.097,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "bank",
+      "industry_cluster": "financial",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 6.275,
+          "pb": 1.076,
+          "eps": 3316.0652,
+          "bvps": 19343.0608,
+          "close": 20806.69,
+          "close_date": "2021-12-31",
+          "roe": 15.998,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.754,
+          "pb": 0.747,
+          "eps": 3518.2972,
+          "bvps": 22381.768,
+          "close": 16725.14,
+          "close_date": "2022-12-30",
+          "roe": 16.928,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 4.512,
+          "pb": 0.788,
+          "eps": 4118.8792,
+          "bvps": 23595.8026,
+          "close": 18586.05,
+          "close_date": "2023-12-29",
+          "roe": 17.188,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 5.494,
+          "pb": 0.934,
+          "eps": 4719.0974,
+          "bvps": 27741.9916,
+          "close": 25924.46,
+          "close_date": "2024-12-31",
+          "roe": 18.481,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 5.645,
+          "pb": 1.556,
+          "eps": 6332.7541,
+          "bvps": 22973.6088,
+          "close": 35750.0,
+          "close_date": "2025-12-31",
+          "roe": 21.293,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "DBC": {
+      "symbol": "DBC",
+      "pe_avg": 14.712,
+      "pb_avg": 1.075,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 4.0,
+          "pb": 0.638,
+          "eps": 7498.1641,
+          "bvps": 40753.7462,
+          "close": 26004.75,
+          "close_date": "2021-12-31",
+          "roe": 18.635,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 14.534,
+          "pb": 0.533,
+          "eps": 725.7672,
+          "bvps": 19777.2415,
+          "close": 10547.95,
+          "close_date": "2022-12-30",
+          "roe": 3.166,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 40.0,
+          "pb": 1.063,
+          "eps": 103.3347,
+          "bvps": 19281.8141,
+          "close": 20497.44,
+          "close_date": "2023-12-29",
+          "roe": 0.529,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 8.939,
+          "pb": 1.194,
+          "eps": 2699.3647,
+          "bvps": 20217.1813,
+          "close": 24130.43,
+          "close_date": "2024-12-31",
+          "roe": 13.454,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 6.37,
+          "pb": 1.29,
+          "eps": 4246.7698,
+          "bvps": 20965.8648,
+          "close": 27050.0,
+          "close_date": "2025-12-31",
+          "roe": 20.314,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "DCL": {
+      "symbol": "DCL",
+      "pe_avg": 32.802,
+      "pb_avg": 1.611,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 26.606,
+          "pb": 2.292,
+          "eps": 1495.8865,
+          "bvps": 17365.6484,
+          "close": 39800.0,
+          "close_date": "2021-12-31",
+          "roe": 8.808,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 15.395,
+          "pb": 1.286,
+          "eps": 1591.4019,
+          "bvps": 19053.0906,
+          "close": 24500.0,
+          "close_date": "2022-12-30",
+          "roe": 9.357,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 29.583,
+          "pb": 1.259,
+          "eps": 845.0841,
+          "bvps": 19862.8159,
+          "close": 25000.0,
+          "close_date": "2023-12-29",
+          "roe": 4.372,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 36.472,
+          "pb": 1.3,
+          "eps": 733.4385,
+          "bvps": 20580.1178,
+          "close": 26750.0,
+          "close_date": "2024-12-31",
+          "roe": 3.666,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 40.0,
+          "pb": 2.065,
+          "eps": 267.1991,
+          "bvps": 20827.8032,
+          "close": 43000.0,
+          "close_date": "2025-12-31",
+          "roe": 1.329,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "DDG": {
+      "symbol": "DDG",
+      "pe_avg": 25.144,
+      "pb_avg": 1.644,
+      "n_years": 3,
+      "span_years": 4,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 25.314,
+          "pb": 2.502,
+          "eps": 1192.9964,
+          "bvps": 12068.0945,
+          "close": 30200.0,
+          "close_date": "2021-12-31",
+          "roe": 7.869,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 40.0,
+          "pb": 3.082,
+          "eps": 788.0978,
+          "bvps": 13044.1497,
+          "close": 40200.0,
+          "close_date": "2022-12-30",
+          "roe": 6.241,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 15.184,
+          "pb": 0.4,
+          "eps": 197.5783,
+          "bvps": 9805.3451,
+          "close": 3000.0,
+          "close_date": "2024-12-31",
+          "roe": 2.259,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "DGC": {
+      "symbol": "DGC",
+      "pe_avg": 9.631,
+      "pb_avg": 2.303,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 4.268,
+          "pb": 1.686,
+          "eps": 14618.5459,
+          "bvps": 37015.3088,
+          "close": 62396.24,
+          "close_date": "2021-12-31",
+          "roe": 48.34,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 1.829,
+          "eps": 19233.6456,
+          "bvps": 28528.6449,
+          "close": 52173.64,
+          "close_date": "2022-12-30",
+          "roe": 70.371,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 10.808,
+          "pb": 2.787,
+          "eps": 8146.3265,
+          "bvps": 31594.8524,
+          "close": 88043.51,
+          "close_date": "2023-12-29",
+          "roe": 28.34,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 14.195,
+          "pb": 3.097,
+          "eps": 7869.9183,
+          "bvps": 36075.8839,
+          "close": 111714.53,
+          "close_date": "2024-12-31",
+          "roe": 24.199,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 8.6,
+          "pb": 1.689,
+          "eps": 7965.1064,
+          "bvps": 40565.8408,
+          "close": 68500.0,
+          "close_date": "2025-12-31",
+          "roe": 21.912,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "DGW": {
+      "symbol": "DGW",
+      "pe_avg": 14.241,
+      "pb_avg": 2.513,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 4.556,
+          "pb": 2.498,
+          "eps": 11069.0429,
+          "bvps": 20184.2804,
+          "close": 50429.24,
+          "close_date": "2021-12-31",
+          "roe": 44.928,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 5.16,
+          "pb": 1.877,
+          "eps": 5406.4788,
+          "bvps": 14859.8785,
+          "close": 27897.21,
+          "close_date": "2022-12-30",
+          "roe": 32.494,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 18.507,
+          "pb": 2.499,
+          "eps": 2123.3881,
+          "bvps": 15724.2814,
+          "close": 39297.04,
+          "close_date": "2023-12-29",
+          "roe": 14.359,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 16.259,
+          "pb": 2.881,
+          "eps": 2435.1697,
+          "bvps": 13742.7361,
+          "close": 39593.67,
+          "close_date": "2024-12-31",
+          "roe": 15.9,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 15.636,
+          "pb": 2.484,
+          "eps": 2494.239,
+          "bvps": 15700.5477,
+          "close": 39000.0,
+          "close_date": "2025-12-31",
+          "roe": 17.118,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "DIG": {
+      "symbol": "DIG",
+      "pe_avg": 31.416,
+      "pb_avg": 1.555,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 27.516,
+          "pb": 4.46,
+          "eps": 2490.7188,
+          "bvps": 15366.605,
+          "close": 68535.61,
+          "close_date": "2021-12-31",
+          "roe": 15.244,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 40.0,
+          "pb": 0.973,
+          "eps": 277.8575,
+          "bvps": 12704.3186,
+          "close": 12364.76,
+          "close_date": "2022-12-30",
+          "roe": 1.96,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 40.0,
+          "pb": 1.774,
+          "eps": 283.1526,
+          "bvps": 13041.7238,
+          "close": 23129.88,
+          "close_date": "2023-12-29",
+          "roe": 2.11,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 40.0,
+          "pb": 1.235,
+          "eps": 171.4335,
+          "bvps": 13227.5962,
+          "close": 16342.24,
+          "close_date": "2024-12-31",
+          "roe": 1.278,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 16.745,
+          "pb": 1.33,
+          "eps": 1000.279,
+          "bvps": 12591.8329,
+          "close": 16750.0,
+          "close_date": "2025-12-31",
+          "roe": 7.132,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "DLG": {
+      "symbol": "DLG",
+      "pe_avg": 10.0,
+      "pb_avg": 0.875,
+      "n_years": 3,
+      "span_years": 5,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 40.0,
+          "pb": 1.207,
+          "eps": 53.2809,
+          "bvps": 7754.9225,
+          "close": 9360.0,
+          "close_date": "2021-12-31",
+          "roe": 0.6,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 4.0,
+          "pb": 0.821,
+          "eps": 705.2154,
+          "bvps": 2532.9595,
+          "close": 2080.0,
+          "close_date": "2024-12-31",
+          "roe": 28.451,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 4.0,
+          "pb": 0.8,
+          "eps": 1218.9006,
+          "bvps": 3326.1796,
+          "close": 2660.0,
+          "close_date": "2025-12-31",
+          "roe": 47.568,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "DPM": {
+      "symbol": "DPM",
+      "pe_avg": 10.272,
+      "pb_avg": 0.854,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 4.0,
+          "pb": 0.722,
+          "eps": 7964.2974,
+          "bvps": 27373.5939,
+          "close": 19771.68,
+          "close_date": "2021-12-31",
+          "roe": 33.446,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 0.527,
+          "eps": 14274.6582,
+          "bvps": 35873.9973,
+          "close": 18901.87,
+          "close_date": "2022-12-30",
+          "roe": 45.301,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 12.83,
+          "pb": 0.591,
+          "eps": 1361.1736,
+          "bvps": 29535.8936,
+          "close": 17463.74,
+          "close_date": "2023-12-29",
+          "roe": 4.243,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 12.763,
+          "pb": 0.675,
+          "eps": 1517.6102,
+          "bvps": 28711.929,
+          "close": 19369.39,
+          "close_date": "2024-12-31",
+          "roe": 5.356,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 10.508,
+          "pb": 1.312,
+          "eps": 2117.5031,
+          "bvps": 16962.1167,
+          "close": 22250.0,
+          "close_date": "2025-12-31",
+          "roe": 9.624,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "DSE": {
+      "symbol": "DSE",
+      "pe_avg": 32.581,
+      "pb_avg": 1.891,
+      "n_years": 2,
+      "span_years": 2,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2024,
+          "pe": 40.0,
+          "pb": 1.946,
+          "eps": 559.8842,
+          "bvps": 12211.5157,
+          "close": 23760.44,
+          "close_date": "2024-12-31",
+          "roe": 4.956,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 28.872,
+          "pb": 1.864,
+          "eps": 810.5498,
+          "bvps": 12557.8804,
+          "close": 23401.79,
+          "close_date": "2025-12-31",
+          "roe": 6.542,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "DXG": {
+      "symbol": "DXG",
+      "pe_avg": 38.834,
+      "pb_avg": 0.792,
+      "n_years": 3,
+      "span_years": 3,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2023,
+          "pe": 40.0,
+          "pb": 0.806,
+          "eps": 286.8031,
+          "bvps": 19690.0092,
+          "close": 15866.46,
+          "close_date": "2023-12-29",
+          "roe": 1.096,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 36.502,
+          "pb": 0.606,
+          "eps": 350.4386,
+          "bvps": 21094.7767,
+          "close": 12791.57,
+          "close_date": "2024-12-31",
+          "roe": 3.091,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 40.0,
+          "pb": 0.912,
+          "eps": 329.9649,
+          "bvps": 18754.4211,
+          "close": 17100.0,
+          "close_date": "2025-12-31",
+          "roe": 3.186,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "DXS": {
+      "symbol": "DXS",
+      "pe_avg": 20.203,
+      "pb_avg": 0.563,
+      "n_years": 2,
+      "span_years": 2,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2024,
+          "pe": 29.396,
+          "pb": 0.497,
+          "eps": 244.9323,
+          "bvps": 14493.6986,
+          "close": 7200.0,
+          "close_date": "2024-12-31",
+          "roe": 3.075,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 15.607,
+          "pb": 0.596,
+          "eps": 581.1579,
+          "bvps": 15208.6831,
+          "close": 9070.0,
+          "close_date": "2025-12-31",
+          "roe": 5.82,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "EIB": {
+      "symbol": "EIB",
+      "pe_avg": 19.61,
+      "pb_avg": 1.399,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 27.867,
+          "pb": 1.513,
+          "eps": 785.2702,
+          "bvps": 14465.9444,
+          "close": 21882.75,
+          "close_date": "2021-12-31",
+          "roe": 5.58,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 7.575,
+          "pb": 1.09,
+          "eps": 2396.025,
+          "bvps": 16658.0054,
+          "close": 18149.04,
+          "close_date": "2022-12-30",
+          "roe": 15.397,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 11.818,
+          "pb": 1.309,
+          "eps": 1427.6758,
+          "bvps": 12893.0068,
+          "close": 16872.18,
+          "close_date": "2023-12-29",
+          "roe": 10.088,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 10.299,
+          "pb": 1.432,
+          "eps": 1873.9892,
+          "bvps": 13474.5951,
+          "close": 19300.0,
+          "close_date": "2024-12-31",
+          "roe": 13.995,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 34.897,
+          "pb": 1.526,
+          "eps": 610.3648,
+          "bvps": 13961.4835,
+          "close": 21300.0,
+          "close_date": "2025-12-31",
+          "roe": 4.449,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "EVF": {
+      "symbol": "EVF",
+      "pe_avg": 11.655,
+      "pb_avg": 0.889,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 7.265,
+          "pb": 1.113,
+          "eps": 2003.5578,
+          "bvps": 13073.7324,
+          "close": 14556.76,
+          "close_date": "2021-12-29",
+          "roe": 14.842,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 6.699,
+          "pb": 0.6,
+          "eps": 1105.972,
+          "bvps": 12348.4026,
+          "close": 7408.6,
+          "close_date": "2022-12-30",
+          "roe": 8.794,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 20.24,
+          "pb": 1.234,
+          "eps": 731.9637,
+          "bvps": 12007.4385,
+          "close": 14814.81,
+          "close_date": "2023-12-29",
+          "roe": 5.134,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 11.615,
+          "pb": 0.768,
+          "eps": 783.4661,
+          "bvps": 11842.7465,
+          "close": 9100.0,
+          "close_date": "2024-12-31",
+          "roe": 6.423,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 9.397,
+          "pb": 0.851,
+          "eps": 1175.8864,
+          "bvps": 12985.4497,
+          "close": 11050.0,
+          "close_date": "2025-12-31",
+          "roe": 9.472,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "EVG": {
+      "symbol": "EVG",
+      "pe_avg": 28.78,
+      "pb_avg": 0.523,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 40.0,
+          "pb": 1.049,
+          "eps": 229.6929,
+          "bvps": 14891.7104,
+          "close": 15628.44,
+          "close_date": "2021-12-31",
+          "roe": 2.074,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 26.649,
+          "pb": 0.4,
+          "eps": 117.9345,
+          "bvps": 12071.3024,
+          "close": 3142.86,
+          "close_date": "2022-12-30",
+          "roe": 1.301,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 34.773,
+          "pb": 0.441,
+          "eps": 154.7456,
+          "bvps": 12215.3253,
+          "close": 5380.95,
+          "close_date": "2023-12-29",
+          "roe": 1.311,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 31.345,
+          "pb": 0.447,
+          "eps": 189.2892,
+          "bvps": 13260.3969,
+          "close": 5933.33,
+          "close_date": "2024-12-31",
+          "roe": 1.572,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 21.74,
+          "pb": 0.578,
+          "eps": 359.6636,
+          "bvps": 13517.1505,
+          "close": 7819.05,
+          "close_date": "2025-12-31",
+          "roe": 3.417,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "FPT": {
+      "symbol": "FPT",
+      "pe_avg": 16.001,
+      "pb_avg": 3.702,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "technology_services",
+      "industry_cluster": "tech_telecom",
+      "icb_sector": "9500",
+      "years": [
+        {
+          "year": 2021,
+          "pe": 10.08,
+          "pb": 2.159,
+          "eps": 5055.4798,
+          "bvps": 23604.2996,
+          "close": 50957.51,
+          "close_date": "2021-12-31",
+          "roe": 26.709,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 9.671,
+          "pb": 2.189,
+          "eps": 5228.1133,
+          "bvps": 23101.5195,
+          "close": 50563.0,
+          "close_date": "2022-12-30",
+          "roe": 27.697,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 12.861,
+          "pb": 2.982,
+          "eps": 5468.4952,
+          "bvps": 23581.9598,
+          "close": 70329.54,
+          "close_date": "2023-12-29",
+          "roe": 28.187,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 22.843,
+          "pb": 5.348,
+          "eps": 5696.7885,
+          "bvps": 24333.7477,
+          "close": 130129.83,
+          "close_date": "2024-12-31",
+          "roe": 28.656,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 16.127,
+          "pb": 3.73,
+          "eps": 5940.2082,
+          "bvps": 25683.1719,
+          "close": 95800.0,
+          "close_date": "2025-12-31",
+          "roe": 28.223,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "FRT": {
+      "symbol": "FRT",
+      "pe_avg": 32.387,
+      "pb_avg": 5.969,
+      "n_years": 2,
+      "span_years": 2,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2024,
+          "pe": 40.0,
+          "pb": 8.0,
+          "eps": 2330.5248,
+          "bvps": 15559.1349,
+          "close": 148480.0,
+          "close_date": "2024-12-31",
+          "roe": 21.277,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 28.581,
+          "pb": 4.954,
+          "eps": 5230.6785,
+          "bvps": 30176.2585,
+          "close": 149500.0,
+          "close_date": "2025-12-31",
+          "roe": 27.118,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "FTS": {
+      "symbol": "FTS",
+      "pe_avg": 21.98,
+      "pb_avg": 2.508,
+      "n_years": 3,
+      "span_years": 3,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2023,
+          "pe": 13.244,
+          "pb": 1.671,
+          "eps": 2143.1597,
+          "bvps": 16982.9002,
+          "close": 28384.09,
+          "close_date": "2023-12-29",
+          "roe": 12.726,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 18.145,
+          "pb": 2.814,
+          "eps": 2087.3968,
+          "bvps": 13460.9625,
+          "close": 37875.55,
+          "close_date": "2024-12-31",
+          "roe": 14.618,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 27.449,
+          "pb": 2.583,
+          "eps": 1200.3989,
+          "bvps": 12756.1093,
+          "close": 32950.0,
+          "close_date": "2025-12-31",
+          "roe": 9.294,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "GAS": {
+      "symbol": "GAS",
+      "pe_avg": 13.208,
+      "pb_avg": 2.415,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "oil_gas",
+      "industry_cluster": "energy_manufacturing",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 14.237,
+          "pb": 2.366,
+          "eps": 4531.4481,
+          "bvps": 27269.6417,
+          "close": 64515.34,
+          "close_date": "2021-12-31",
+          "roe": 17.425,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 9.046,
+          "pb": 2.183,
+          "eps": 7729.7974,
+          "bvps": 32037.0399,
+          "close": 69926.17,
+          "close_date": "2022-12-30",
+          "roe": 26.539,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 11.251,
+          "pb": 2.275,
+          "eps": 5748.0865,
+          "bvps": 28431.0042,
+          "close": 64672.89,
+          "close_date": "2023-12-29",
+          "roe": 18.628,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 14.243,
+          "pb": 2.439,
+          "eps": 4500.5688,
+          "bvps": 26282.3695,
+          "close": 64101.34,
+          "close_date": "2024-12-31",
+          "roe": 16.695,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 15.012,
+          "pb": 2.582,
+          "eps": 4822.6758,
+          "bvps": 28037.6286,
+          "close": 72400.0,
+          "close_date": "2025-12-31",
+          "roe": 17.909,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "GEE": {
+      "symbol": "GEE",
+      "pe_avg": 9.571,
+      "pb_avg": 3.347,
+      "n_years": 3,
+      "span_years": 3,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2023,
+          "pe": 5.207,
+          "pb": 0.655,
+          "eps": 2500.0107,
+          "bvps": 19860.5297,
+          "close": 13018.17,
+          "close_date": "2023-12-29",
+          "roe": 13.36,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 4.0,
+          "pb": 0.662,
+          "eps": 5318.563,
+          "bvps": 23178.7941,
+          "close": 15338.04,
+          "close_date": "2024-12-31",
+          "roe": 26.676,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 14.74,
+          "pb": 6.034,
+          "eps": 9374.2158,
+          "bvps": 22899.9695,
+          "close": 138171.7,
+          "close_date": "2025-12-31",
+          "roe": 44.362,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "GEX": {
+      "symbol": "GEX",
+      "pe_avg": 17.264,
+      "pb_avg": 0.699,
+      "n_years": 3,
+      "span_years": 3,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2023,
+          "pe": 38.524,
+          "pb": 0.601,
+          "eps": 388.7528,
+          "bvps": 24926.2891,
+          "close": 14976.24,
+          "close_date": "2023-12-29",
+          "roe": 4.09,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 6.375,
+          "pb": 0.448,
+          "eps": 1901.314,
+          "bvps": 27059.253,
+          "close": 12120.6,
+          "close_date": "2024-12-31",
+          "roe": 11.991,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 17.436,
+          "pb": 0.899,
+          "eps": 1724.537,
+          "bvps": 33438.0082,
+          "close": 30068.97,
+          "close_date": "2025-12-31",
+          "roe": 11.269,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "GMD": {
+      "symbol": "GMD",
+      "pe_avg": 13.682,
+      "pb_avg": 1.806,
+      "n_years": 3,
+      "span_years": 3,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2023,
+          "pe": 7.716,
+          "pb": 1.783,
+          "eps": 7333.5382,
+          "bvps": 31731.2429,
+          "close": 56587.96,
+          "close_date": "2023-12-29",
+          "roe": 28.351,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 14.232,
+          "pb": 1.899,
+          "eps": 4433.7559,
+          "bvps": 33222.0789,
+          "close": 63100.16,
+          "close_date": "2024-12-31",
+          "roe": 16.241,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 15.304,
+          "pb": 1.751,
+          "eps": 3985.8357,
+          "bvps": 34842.2263,
+          "close": 61000.0,
+          "close_date": "2025-12-31",
+          "roe": 15.546,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "GVR": {
+      "symbol": "GVR",
+      "pe_avg": 24.314,
+      "pb_avg": 1.715,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "steel_materials",
+      "industry_cluster": "energy_manufacturing",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 32.464,
+          "pb": 2.661,
+          "eps": 1063.9625,
+          "bvps": 12979.1865,
+          "close": 34540.0,
+          "close_date": "2021-12-31",
+          "roe": 10.869,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 13.868,
+          "pb": 0.995,
+          "eps": 954.7337,
+          "bvps": 13300.8143,
+          "close": 13240.0,
+          "close_date": "2022-12-30",
+          "roe": 9.128,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 32.044,
+          "pb": 1.51,
+          "eps": 646.3073,
+          "bvps": 13713.3942,
+          "close": 20710.0,
+          "close_date": "2023-12-29",
+          "roe": 6.237,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 28.405,
+          "pb": 2.042,
+          "eps": 1053.3301,
+          "bvps": 14651.574,
+          "close": 29920.0,
+          "close_date": "2024-12-31",
+          "roe": 8.996,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 18.952,
+          "pb": 1.674,
+          "eps": 1382.4376,
+          "bvps": 15650.3566,
+          "close": 26200.0,
+          "close_date": "2025-12-31",
+          "roe": 10.326,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "HAG": {
+      "symbol": "HAG",
+      "pe_avg": 9.84,
+      "pb_avg": 1.549,
+      "n_years": 3,
+      "span_years": 3,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2023,
+          "pe": 7.163,
+          "pb": 1.82,
+          "eps": 1842.9301,
+          "bvps": 7252.3945,
+          "close": 13200.0,
+          "close_date": "2023-12-29",
+          "roe": 30.375,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 12.149,
+          "pb": 1.386,
+          "eps": 991.8483,
+          "bvps": 8695.7177,
+          "close": 12050.0,
+          "close_date": "2024-12-31",
+          "roe": 13.273,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 9.193,
+          "pb": 1.568,
+          "eps": 1909.0986,
+          "bvps": 11191.9249,
+          "close": 17550.0,
+          "close_date": "2025-12-31",
+          "roe": 19.187,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "HAH": {
+      "symbol": "HAH",
+      "pe_avg": 6.596,
+      "pb_avg": 1.438,
+      "n_years": 3,
+      "span_years": 3,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2023,
+          "pe": 5.446,
+          "pb": 0.822,
+          "eps": 4557.615,
+          "bvps": 30195.3038,
+          "close": 24819.57,
+          "close_date": "2023-12-29",
+          "roe": 12.123,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 6.579,
+          "pb": 1.148,
+          "eps": 5711.8833,
+          "bvps": 32731.1007,
+          "close": 37575.91,
+          "close_date": "2024-12-31",
+          "roe": 22.36,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 6.991,
+          "pb": 1.837,
+          "eps": 8396.5467,
+          "bvps": 31948.1453,
+          "close": 58700.0,
+          "close_date": "2025-12-31",
+          "roe": 29.913,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "HCM": {
+      "symbol": "HCM",
+      "pe_avg": 13.178,
+      "pb_avg": 1.313,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 6.527,
+          "pb": 1.379,
+          "eps": 3384.6246,
+          "bvps": 16021.5693,
+          "close": 22091.04,
+          "close_date": "2021-12-31",
+          "roe": 19.499,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 5.208,
+          "pb": 0.563,
+          "eps": 1864.5354,
+          "bvps": 17260.7745,
+          "close": 9710.35,
+          "close_date": "2022-12-30",
+          "roe": 11.204,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 11.716,
+          "pb": 0.951,
+          "eps": 1474.9371,
+          "bvps": 18179.9387,
+          "close": 17280.07,
+          "close_date": "2023-12-29",
+          "roe": 8.323,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 15.183,
+          "pb": 1.539,
+          "eps": 1470.746,
+          "bvps": 14506.0565,
+          "close": 22330.31,
+          "close_date": "2024-12-31",
+          "roe": 11.086,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 16.968,
+          "pb": 1.636,
+          "eps": 1298.2145,
+          "bvps": 13466.4143,
+          "close": 22028.22,
+          "close_date": "2025-12-31",
+          "roe": 9.434,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "HDB": {
+      "symbol": "HDB",
+      "pe_avg": 4.976,
+      "pb_avg": 1.283,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "bank",
+      "industry_cluster": "financial",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 4.0,
+          "pb": 0.813,
+          "eps": 3493.5218,
+          "bvps": 15455.261,
+          "close": 12565.58,
+          "close_date": "2021-12-31",
+          "roe": 23.996,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 0.553,
+          "eps": 3615.8567,
+          "bvps": 14691.7287,
+          "close": 8120.78,
+          "close_date": "2022-12-30",
+          "roe": 24.237,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 4.0,
+          "pb": 0.815,
+          "eps": 3749.0053,
+          "bvps": 15373.5803,
+          "close": 12528.36,
+          "close_date": "2023-12-29",
+          "roe": 25.389,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 4.529,
+          "pb": 1.261,
+          "eps": 4341.0151,
+          "bvps": 15590.9574,
+          "close": 19662.27,
+          "close_date": "2024-12-31",
+          "roe": 26.774,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 6.505,
+          "pb": 1.968,
+          "eps": 4565.9827,
+          "bvps": 15093.9143,
+          "close": 29700.0,
+          "close_date": "2025-12-31",
+          "roe": 26.227,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "HDC": {
+      "symbol": "HDC",
+      "pe_avg": 18.497,
+      "pb_avg": 1.619,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 10.837,
+          "pb": 2.568,
+          "eps": 4067.7806,
+          "bvps": 17163.1823,
+          "close": 44083.11,
+          "close_date": "2021-12-31",
+          "roe": 23.713,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 0.972,
+          "eps": 4283.8005,
+          "bvps": 17244.7066,
+          "close": 16763.18,
+          "close_date": "2022-12-30",
+          "roe": 25.134,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 22.145,
+          "pb": 1.677,
+          "eps": 1069.0142,
+          "bvps": 14119.5956,
+          "close": 23672.92,
+          "close_date": "2023-12-29",
+          "roe": 6.978,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 40.0,
+          "pb": 1.757,
+          "eps": 417.2741,
+          "bvps": 12732.6825,
+          "close": 22366.07,
+          "close_date": "2024-12-31",
+          "roe": 3.146,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 6.438,
+          "pb": 1.544,
+          "eps": 3525.7859,
+          "bvps": 14702.5023,
+          "close": 22700.0,
+          "close_date": "2025-12-31",
+          "roe": 24.631,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "HDG": {
+      "symbol": "HDG",
+      "pe_avg": 10.861,
+      "pb_avg": 1.058,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 5.121,
+          "pb": 1.275,
+          "eps": 6822.1832,
+          "bvps": 27403.9848,
+          "close": 34936.12,
+          "close_date": "2021-12-31",
+          "roe": 27.934,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 0.729,
+          "eps": 5028.3925,
+          "bvps": 27549.5518,
+          "close": 20076.17,
+          "close_date": "2022-12-30",
+          "roe": 22.736,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 8.521,
+          "pb": 0.922,
+          "eps": 2588.7393,
+          "bvps": 23923.2399,
+          "close": 22058.21,
+          "close_date": "2023-12-29",
+          "roe": 12.891,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 14.201,
+          "pb": 1.114,
+          "eps": 1791.6737,
+          "bvps": 22844.9467,
+          "close": 25443.1,
+          "close_date": "2024-12-31",
+          "roe": 10.042,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 13.485,
+          "pb": 1.184,
+          "eps": 1988.0576,
+          "bvps": 22644.301,
+          "close": 26808.99,
+          "close_date": "2025-12-31",
+          "roe": 11.758,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "HHP": {
+      "symbol": "HHP",
+      "pe_avg": 24.623,
+      "pb_avg": 0.785,
+      "n_years": 3,
+      "span_years": 3,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2023,
+          "pe": 27.803,
+          "pb": 0.792,
+          "eps": 351.231,
+          "bvps": 12334.7446,
+          "close": 9765.26,
+          "close_date": "2023-12-29",
+          "roe": 3.938,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 31.965,
+          "pb": 0.692,
+          "eps": 258.0975,
+          "bvps": 11925.0478,
+          "close": 8250.0,
+          "close_date": "2024-12-31",
+          "roe": 2.859,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 18.668,
+          "pb": 0.845,
+          "eps": 594.6082,
+          "bvps": 13129.3995,
+          "close": 11100.0,
+          "close_date": "2025-12-31",
+          "roe": 5.18,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "HHS": {
+      "symbol": "HHS",
+      "pe_avg": 5.427,
+      "pb_avg": 0.465,
+      "n_years": 3,
+      "span_years": 3,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2023,
+          "pe": 6.526,
+          "pb": 0.524,
+          "eps": 1040.8793,
+          "bvps": 12965.8994,
+          "close": 6792.45,
+          "close_date": "2023-12-29",
+          "roe": 8.118,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 7.017,
+          "pb": 0.532,
+          "eps": 1057.4406,
+          "bvps": 13959.8523,
+          "close": 7420.0,
+          "close_date": "2024-12-31",
+          "roe": 7.885,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 4.0,
+          "pb": 0.4,
+          "eps": 9089.8278,
+          "bvps": 38220.1107,
+          "close": 12500.0,
+          "close_date": "2025-12-31",
+          "roe": 33.6,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "HHV": {
+      "symbol": "HHV",
+      "pe_avg": 11.361,
+      "pb_avg": 0.546,
+      "n_years": 3,
+      "span_years": 3,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2023,
+          "pe": 14.009,
+          "pb": 0.645,
+          "eps": 976.7599,
+          "bvps": 21206.3544,
+          "close": 13683.32,
+          "close_date": "2023-12-29",
+          "roe": 4.226,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 11.262,
+          "pb": 0.429,
+          "eps": 961.9456,
+          "bvps": 25234.5261,
+          "close": 10833.73,
+          "close_date": "2024-12-31",
+          "roe": 4.82,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 10.545,
+          "pb": 0.591,
+          "eps": 1247.0504,
+          "bvps": 22256.1405,
+          "close": 13150.0,
+          "close_date": "2025-12-31",
+          "roe": 5.878,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "HPG": {
+      "symbol": "HPG",
+      "pe_avg": 12.042,
+      "pb_avg": 1.282,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "steel_materials",
+      "industry_cluster": "energy_manufacturing",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 4.0,
+          "pb": 1.311,
+          "eps": 8630.2177,
+          "bvps": 20295.4942,
+          "close": 26603.5,
+          "close_date": "2021-12-31",
+          "roe": 46.028,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 8.357,
+          "pb": 0.825,
+          "eps": 1631.7108,
+          "bvps": 16529.0596,
+          "close": 13636.36,
+          "close_date": "2022-12-30",
+          "roe": 9.037,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 18.014,
+          "pb": 1.197,
+          "eps": 1175.4628,
+          "bvps": 17685.3326,
+          "close": 21174.24,
+          "close_date": "2023-12-29",
+          "roe": 6.836,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 11.397,
+          "pb": 1.239,
+          "eps": 1948.5628,
+          "bvps": 17924.1668,
+          "close": 22208.33,
+          "close_date": "2024-12-31",
+          "roe": 11.054,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 12.058,
+          "pb": 1.544,
+          "eps": 2189.345,
+          "bvps": 17096.0321,
+          "close": 26400.0,
+          "close_date": "2025-12-31",
+          "roe": 12.621,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "IJC": {
+      "symbol": "IJC",
+      "pe_avg": 7.936,
+      "pb_avg": 0.723,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 5.67,
+          "pb": 1.058,
+          "eps": 2872.8406,
+          "bvps": 15400.13,
+          "close": 16290.0,
+          "close_date": "2021-12-31",
+          "roe": 22.93,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 0.4,
+          "eps": 2375.8469,
+          "bvps": 17600.1595,
+          "close": 6300.0,
+          "close_date": "2022-12-30",
+          "roe": 14.399,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 5.817,
+          "pb": 0.609,
+          "eps": 1588.5196,
+          "bvps": 15184.0778,
+          "close": 9240.0,
+          "close_date": "2023-12-29",
+          "roe": 10.335,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 10.88,
+          "pb": 0.789,
+          "eps": 991.7061,
+          "bvps": 13667.223,
+          "close": 10790.0,
+          "close_date": "2024-12-31",
+          "roe": 7.911,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 8.881,
+          "pb": 0.801,
+          "eps": 1147.412,
+          "bvps": 12716.2828,
+          "close": 10190.0,
+          "close_date": "2025-12-31",
+          "roe": 7.861,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "KBC": {
+      "symbol": "KBC",
+      "pe_avg": 21.147,
+      "pb_avg": 1.171,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "real_estate_kcn",
+      "industry_cluster": "real_estate",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 28.724,
+          "pb": 1.606,
+          "eps": 1587.5435,
+          "bvps": 28385.0476,
+          "close": 45600.0,
+          "close_date": "2021-12-31",
+          "roe": 7.127,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 10.577,
+          "pb": 1.04,
+          "eps": 2288.085,
+          "bvps": 23273.454,
+          "close": 24200.0,
+          "close_date": "2022-12-30",
+          "roe": 9.376,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 12.213,
+          "pb": 1.207,
+          "eps": 2599.7183,
+          "bvps": 26308.0656,
+          "close": 31750.0,
+          "close_date": "2023-12-29",
+          "roe": 11.657,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 40.0,
+          "pb": 1.01,
+          "eps": 555.1774,
+          "bvps": 26943.2302,
+          "close": 27200.0,
+          "close_date": "2024-12-31",
+          "roe": 2.25,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 14.137,
+          "pb": 1.245,
+          "eps": 2500.5617,
+          "bvps": 28398.6007,
+          "close": 35350.0,
+          "close_date": "2025-12-31",
+          "roe": 9.391,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "KDH": {
+      "symbol": "KDH",
+      "pe_avg": 32.045,
+      "pb_avg": 1.626,
+      "n_years": 3,
+      "span_years": 3,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2023,
+          "pe": 26.671,
+          "pb": 1.336,
+          "eps": 972.9971,
+          "bvps": 19426.9594,
+          "close": 25950.41,
+          "close_date": "2023-12-29",
+          "roe": 5.348,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 35.136,
+          "pb": 1.706,
+          "eps": 934.0322,
+          "bvps": 19236.1273,
+          "close": 32818.18,
+          "close_date": "2024-12-31",
+          "roe": 4.592,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 31.776,
+          "pb": 1.67,
+          "eps": 991.3009,
+          "bvps": 18865.2023,
+          "close": 31500.0,
+          "close_date": "2025-12-31",
+          "roe": 8.044,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "KHG": {
+      "symbol": "KHG",
+      "pe_avg": 37.125,
+      "pb_avg": 0.541,
+      "n_years": 3,
+      "span_years": 3,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2023,
+          "pe": 22.75,
+          "pb": 0.535,
+          "eps": 275.6103,
+          "bvps": 11711.8558,
+          "close": 6270.0,
+          "close_date": "2023-12-29",
+          "roe": 2.381,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 40.0,
+          "pb": 0.478,
+          "eps": 126.1816,
+          "bvps": 11618.846,
+          "close": 5550.0,
+          "close_date": "2024-12-31",
+          "roe": 1.082,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 40.0,
+          "pb": 0.586,
+          "eps": 147.7561,
+          "bvps": 11762.0006,
+          "close": 6890.0,
+          "close_date": "2025-12-31",
+          "roe": 1.264,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "KLB": {
+      "symbol": "KLB",
+      "pe_avg": 4.082,
+      "pb_avg": 0.785,
+      "n_years": 3,
+      "span_years": 3,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2023,
+          "pe": 4.49,
+          "pb": 0.448,
+          "eps": 1587.8638,
+          "bvps": 15927.6532,
+          "close": 7130.18,
+          "close_date": "2023-12-29",
+          "roe": 10.492,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 4.0,
+          "pb": 0.4,
+          "eps": 2455.1549,
+          "bvps": 18271.8759,
+          "close": 7130.18,
+          "close_date": "2024-12-31",
+          "roe": 14.358,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 4.0,
+          "pb": 1.154,
+          "eps": 4420.7874,
+          "bvps": 14552.0953,
+          "close": 16800.0,
+          "close_date": "2025-12-31",
+          "roe": 24.714,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "KSB": {
+      "symbol": "KSB",
+      "pe_avg": 22.652,
+      "pb_avg": 0.763,
+      "n_years": 3,
+      "span_years": 3,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2023,
+          "pe": 21.23,
+          "pb": 0.863,
+          "eps": 1066.285,
+          "bvps": 26220.9987,
+          "close": 22636.92,
+          "close_date": "2023-12-29",
+          "roe": 4.128,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 38.358,
+          "pb": 0.801,
+          "eps": 483.6026,
+          "bvps": 23160.5367,
+          "close": 18550.0,
+          "close_date": "2024-12-31",
+          "roe": 2.268,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 12.655,
+          "pb": 0.704,
+          "eps": 1351.1956,
+          "bvps": 24279.8367,
+          "close": 17100.0,
+          "close_date": "2025-12-31",
+          "roe": 5.685,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "LCG": {
+      "symbol": "LCG",
+      "pe_avg": 14.096,
+      "pb_avg": 0.756,
+      "n_years": 3,
+      "span_years": 3,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2023,
+          "pe": 16.853,
+          "pb": 0.794,
+          "eps": 634.925,
+          "bvps": 13472.961,
+          "close": 10700.51,
+          "close_date": "2023-12-29",
+          "roe": 4.611,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 14.04,
+          "pb": 0.717,
+          "eps": 688.9647,
+          "bvps": 13486.8733,
+          "close": 9672.9,
+          "close_date": "2024-12-31",
+          "roe": 5.085,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 13.215,
+          "pb": 0.77,
+          "eps": 771.8443,
+          "bvps": 13238.8382,
+          "close": 10200.0,
+          "close_date": "2025-12-31",
+          "roe": 5.635,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "LDG": {
+      "symbol": "LDG",
+      "pe_avg": 23.094,
+      "pb_avg": 0.79,
+      "n_years": 3,
+      "span_years": 5,
+      "coverage": "multi_year",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 34.218,
+          "pb": 1.484,
+          "eps": 587.4055,
+          "bvps": 13547.5514,
+          "close": 20100.0,
+          "close_date": "2021-12-31",
+          "roe": 4.431,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 40.0,
+          "pb": 0.4,
+          "eps": 16.6602,
+          "bvps": 12770.5632,
+          "close": 4000.0,
+          "close_date": "2022-12-30",
+          "roe": 0.123,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 8.115,
+          "pb": 0.819,
+          "eps": 532.3474,
+          "bvps": 5273.3038,
+          "close": 4320.0,
+          "close_date": "2025-12-31",
+          "roe": 9.41,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "LPB": {
+      "symbol": "LPB",
+      "pe_avg": 7.044,
+      "pb_avg": 1.639,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "bank",
+      "industry_cluster": "financial",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 4.045,
+          "pb": 0.735,
+          "eps": 2537.9374,
+          "bvps": 13959.7956,
+          "close": 10265.16,
+          "close_date": "2021-12-31",
+          "roe": 18.521,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 0.551,
+          "eps": 3087.9752,
+          "bvps": 13911.9075,
+          "close": 7669.19,
+          "close_date": "2022-12-30",
+          "roe": 22.078,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 4.318,
+          "pb": 0.89,
+          "eps": 2748.634,
+          "bvps": 13339.5296,
+          "close": 11869.56,
+          "close_date": "2023-12-29",
+          "roe": 19.158,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 7.251,
+          "pb": 1.896,
+          "eps": 3793.7809,
+          "bvps": 14507.6021,
+          "close": 27507.23,
+          "close_date": "2024-12-31",
+          "roe": 25.101,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 10.33,
+          "pb": 2.5,
+          "eps": 3823.6693,
+          "bvps": 15797.7963,
+          "close": 39499.08,
+          "close_date": "2025-12-31",
+          "roe": 25.234,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "MBB": {
+      "symbol": "MBB",
+      "pe_avg": 4.738,
+      "pb_avg": 0.931,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "bank",
+      "industry_cluster": "financial",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 4.0,
+          "pb": 0.795,
+          "eps": 3893.284,
+          "bvps": 15767.5387,
+          "close": 12540.0,
+          "close_date": "2021-12-31",
+          "roe": 24.602,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 0.532,
+          "eps": 4316.4285,
+          "bvps": 16751.0645,
+          "close": 8910.0,
+          "close_date": "2022-12-30",
+          "roe": 26.793,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 4.0,
+          "pb": 0.644,
+          "eps": 4261.8367,
+          "bvps": 17786.0671,
+          "close": 11450.0,
+          "close_date": "2023-12-29",
+          "roe": 24.962,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 4.0,
+          "pb": 0.745,
+          "eps": 4284.1124,
+          "bvps": 21134.9137,
+          "close": 15750.0,
+          "close_date": "2024-12-31",
+          "roe": 22.404,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 6.215,
+          "pb": 1.44,
+          "eps": 3914.9342,
+          "bvps": 16900.8109,
+          "close": 24330.0,
+          "close_date": "2025-12-31",
+          "roe": 22.058,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "MCH": {
+      "symbol": "MCH",
+      "pe_avg": 14.62,
+      "pb_avg": 5.325,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 6.953,
+          "pb": 2.242,
+          "eps": 7658.0452,
+          "bvps": 23755.0026,
+          "close": 53250.0,
+          "close_date": "2021-12-31",
+          "roe": 35.284,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.492,
+          "pb": 1.091,
+          "eps": 7611.894,
+          "bvps": 31324.7577,
+          "close": 34190.0,
+          "close_date": "2022-12-30",
+          "roe": 28.049,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 4.272,
+          "pb": 1.148,
+          "eps": 9887.9334,
+          "bvps": 36809.2783,
+          "close": 42240.0,
+          "close_date": "2023-12-29",
+          "roe": 29.471,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 13.197,
+          "pb": 8.0,
+          "eps": 10841.8904,
+          "bvps": 15632.3986,
+          "close": 143080.0,
+          "close_date": "2024-12-31",
+          "roe": 42.015,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 27.552,
+          "pb": 8.0,
+          "eps": 6556.4095,
+          "bvps": 17660.6858,
+          "close": 180640.0,
+          "close_date": "2025-12-31",
+          "roe": 45.109,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "MSN": {
+      "symbol": "MSN",
+      "pe_avg": 34.051,
+      "pb_avg": 2.805,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "consumer_staples",
+      "industry_cluster": "consumer_retail_transport",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 18.024,
+          "pb": 3.944,
+          "eps": 7848.0187,
+          "bvps": 35862.2684,
+          "close": 141450.0,
+          "close_date": "2021-12-31",
+          "roe": 29.989,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 35.332,
+          "pb": 3.614,
+          "eps": 2632.2032,
+          "bvps": 25733.0205,
+          "close": 93000.0,
+          "close_date": "2022-12-30",
+          "roe": 12.04,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 40.0,
+          "pb": 2.507,
+          "eps": 293.3991,
+          "bvps": 26723.568,
+          "close": 67000.0,
+          "close_date": "2023-12-29",
+          "roe": 4.995,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 40.0,
+          "pb": 2.599,
+          "eps": 1344.7664,
+          "bvps": 26936.0985,
+          "close": 70000.0,
+          "close_date": "2024-12-31",
+          "roe": 10.818,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 28.416,
+          "pb": 2.597,
+          "eps": 2709.7353,
+          "bvps": 29647.4077,
+          "close": 77000.0,
+          "close_date": "2025-12-31",
+          "roe": 15.76,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "MWG": {
+      "symbol": "MWG",
+      "pe_avg": 22.482,
+      "pb_avg": 3.153,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "consumer_retail",
+      "industry_cluster": "consumer_retail_transport",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 7.381,
+          "pb": 2.288,
+          "eps": 8860.1467,
+          "bvps": 28587.8246,
+          "close": 65400.65,
+          "close_date": "2021-12-31",
+          "roe": 27.336,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 11.41,
+          "pb": 2.541,
+          "eps": 3642.4753,
+          "bvps": 16354.3545,
+          "close": 41559.12,
+          "close_date": "2022-12-30",
+          "roe": 18.513,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 40.0,
+          "pb": 2.621,
+          "eps": 114.611,
+          "bvps": 15973.4571,
+          "close": 41860.16,
+          "close_date": "2023-12-29",
+          "roe": 0.71,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 23.624,
+          "pb": 3.125,
+          "eps": 2545.5117,
+          "bvps": 19241.7931,
+          "close": 60134.75,
+          "close_date": "2024-12-31",
+          "roe": 14.504,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 18.506,
+          "pb": 3.912,
+          "eps": 4776.9284,
+          "bvps": 22594.4788,
+          "close": 88400.0,
+          "close_date": "2025-12-31",
+          "roe": 23.085,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "PHR": {
+      "symbol": "PHR",
+      "pe_avg": 12.832,
+      "pb_avg": 1.778,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 14.528,
+          "pb": 2.531,
+          "eps": 3999.091,
+          "bvps": 22951.9509,
+          "close": 58100.0,
+          "close_date": "2021-12-31",
+          "roe": 18.005,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 5.364,
+          "pb": 1.385,
+          "eps": 6546.9747,
+          "bvps": 25359.9173,
+          "close": 35120.0,
+          "close_date": "2022-12-30",
+          "roe": 28.333,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 10.027,
+          "pb": 1.635,
+          "eps": 4591.5673,
+          "bvps": 28162.8548,
+          "close": 46040.0,
+          "close_date": "2023-12-29",
+          "roe": 18.304,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 14.989,
+          "pb": 1.79,
+          "eps": 3464.5231,
+          "bvps": 29015.0434,
+          "close": 51930.0,
+          "close_date": "2024-12-31",
+          "roe": 12.777,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 15.438,
+          "pb": 1.862,
+          "eps": 3789.2724,
+          "bvps": 31419.9125,
+          "close": 58500.0,
+          "close_date": "2025-12-31",
+          "roe": 12.997,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "PLX": {
+      "symbol": "PLX",
+      "pe_avg": 17.417,
+      "pb_avg": 1.525,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "oil_gas",
+      "industry_cluster": "energy_manufacturing",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 20.935,
+          "pb": 2.129,
+          "eps": 2259.8741,
+          "bvps": 22222.0344,
+          "close": 47309.61,
+          "close_date": "2021-12-31",
+          "roe": 11.883,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 24.897,
+          "pb": 1.325,
+          "eps": 1165.0339,
+          "bvps": 21885.4218,
+          "close": 29005.93,
+          "close_date": "2022-12-30",
+          "roe": 6.825,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 14.515,
+          "pb": 1.399,
+          "eps": 2213.1251,
+          "bvps": 22969.8304,
+          "close": 32124.58,
+          "close_date": "2023-12-29",
+          "roe": 10.711,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 15.952,
+          "pb": 1.573,
+          "eps": 2274.5316,
+          "bvps": 23061.8903,
+          "close": 36283.78,
+          "close_date": "2024-12-31",
+          "roe": 10.817,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 16.635,
+          "pb": 1.522,
+          "eps": 2121.9807,
+          "bvps": 23198.943,
+          "close": 35300.0,
+          "close_date": "2025-12-31",
+          "roe": 10.337,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "PNJ": {
+      "symbol": "PNJ",
+      "pe_avg": 8.664,
+      "pb_avg": 1.811,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "consumer_retail",
+      "industry_cluster": "consumer_retail_transport",
+      "icb_sector": "3700",
+      "years": [
+        {
+          "year": 2021,
+          "pe": 9.612,
+          "pb": 1.65,
+          "eps": 4542.8482,
+          "bvps": 26461.7196,
+          "close": 43665.49,
+          "close_date": "2021-12-31",
+          "roe": 18.349,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 7.376,
+          "pb": 2.117,
+          "eps": 7514.879,
+          "bvps": 26182.3477,
+          "close": 55429.51,
+          "close_date": "2022-12-30",
+          "roe": 24.743,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 9.051,
+          "pb": 1.82,
+          "eps": 6010.6292,
+          "bvps": 29898.0998,
+          "close": 54403.53,
+          "close_date": "2023-12-29",
+          "roe": 21.436,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 10.024,
+          "pb": 1.897,
+          "eps": 6305.2124,
+          "bvps": 33313.9417,
+          "close": 63201.15,
+          "close_date": "2024-12-31",
+          "roe": 20.078,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 7.669,
+          "pb": 1.646,
+          "eps": 8351.3676,
+          "bvps": 38914.8163,
+          "close": 64044.87,
+          "close_date": "2025-12-31",
+          "roe": 23.066,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "POW": {
+      "symbol": "POW",
+      "pe_avg": 16.031,
+      "pb_avg": 0.81,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "defensive",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 19.037,
+          "pb": 1.054,
+          "eps": 759.5817,
+          "bvps": 13720.9707,
+          "close": 14460.0,
+          "close_date": "2021-12-31",
+          "roe": 6.428,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 10.882,
+          "pb": 0.622,
+          "eps": 808.6381,
+          "bvps": 14136.6442,
+          "close": 8800.0,
+          "close_date": "2022-12-30",
+          "roe": 7.122,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 20.259,
+          "pb": 0.637,
+          "eps": 459.055,
+          "bvps": 14589.1166,
+          "close": 9300.0,
+          "close_date": "2023-12-29",
+          "roe": 3.952,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 18.557,
+          "pb": 0.671,
+          "eps": 534.5695,
+          "bvps": 14777.3513,
+          "close": 9920.0,
+          "close_date": "2024-12-31",
+          "roe": 3.914,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 12.932,
+          "pb": 1.051,
+          "eps": 982.073,
+          "bvps": 12087.7744,
+          "close": 12700.0,
+          "close_date": "2025-12-31",
+          "roe": 8.005,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "PVD": {
+      "symbol": "PVD",
+      "pe_avg": 14.161,
+      "pb_avg": 0.527,
+      "n_years": 4,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 40.0,
+          "pb": 0.401,
+          "eps": 44.9079,
+          "bvps": 32843.2287,
+          "close": 13161.34,
+          "close_date": "2021-12-31",
+          "roe": 0.26,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 16.027,
+          "pb": 0.619,
+          "eps": 1034.6089,
+          "bvps": 26793.9978,
+          "close": 16581.95,
+          "close_date": "2023-12-29",
+          "roe": 3.705,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 10.98,
+          "pb": 0.475,
+          "eps": 1248.7332,
+          "bvps": 28871.9263,
+          "close": 13710.87,
+          "close_date": "2024-12-31",
+          "roe": 4.478,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 9.154,
+          "pb": 0.552,
+          "eps": 1855.6925,
+          "bvps": 30755.6914,
+          "close": 16986.22,
+          "close_date": "2025-12-31",
+          "roe": 6.303,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "REE": {
+      "symbol": "REE",
+      "pe_avg": 10.073,
+      "pb_avg": 1.074,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "other",
+      "industry_cluster": "other",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 6.127,
+          "pb": 0.695,
+          "eps": 6001.751,
+          "bvps": 52923.3218,
+          "close": 36772.25,
+          "close_date": "2021-12-31",
+          "roe": 14.954,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 5.563,
+          "pb": 0.819,
+          "eps": 7956.0923,
+          "bvps": 54055.0445,
+          "close": 44256.36,
+          "close_date": "2022-12-30",
+          "roe": 19.753,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 7.286,
+          "pb": 0.807,
+          "eps": 5631.5077,
+          "bvps": 50819.6807,
+          "close": 41030.1,
+          "close_date": "2023-12-29",
+          "roe": 13.941,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 12.845,
+          "pb": 1.202,
+          "eps": 4462.0336,
+          "bvps": 47674.2542,
+          "close": 57316.79,
+          "close_date": "2024-12-31",
+          "roe": 11.087,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 12.121,
+          "pb": 1.311,
+          "eps": 4952.8608,
+          "bvps": 45778.4183,
+          "close": 60031.75,
+          "close_date": "2025-12-31",
+          "roe": 13.329,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "SAB": {
+      "symbol": "SAB",
+      "pe_avg": 12.383,
+      "pb_avg": 2.443,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "consumer_staples",
+      "industry_cluster": "consumer_retail_transport",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 10.291,
+          "pb": 1.675,
+          "eps": 5734.2277,
+          "bvps": 35233.8197,
+          "close": 59011.99,
+          "close_date": "2021-12-31",
+          "roe": 17.938,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 8.302,
+          "pb": 1.764,
+          "eps": 8145.9608,
+          "bvps": 38346.4328,
+          "close": 67631.01,
+          "close_date": "2022-12-30",
+          "roe": 23.311,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 10.463,
+          "pb": 2.607,
+          "eps": 4951.7143,
+          "bvps": 19870.5018,
+          "close": 51810.51,
+          "close_date": "2023-12-29",
+          "roe": 16.994,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 14.832,
+          "pb": 2.628,
+          "eps": 3376.1423,
+          "bvps": 19053.3371,
+          "close": 50076.31,
+          "close_date": "2024-12-31",
+          "roe": 18.007,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 13.627,
+          "pb": 2.621,
+          "eps": 3448.9861,
+          "bvps": 17932.7069,
+          "close": 46997.96,
+          "close_date": "2025-12-31",
+          "roe": 19.281,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "SHB": {
+      "symbol": "SHB",
+      "pe_avg": 4.591,
+      "pb_avg": 0.725,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "bank",
+      "industry_cluster": "financial",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 4.707,
+          "pb": 0.891,
+          "eps": 2532.2535,
+          "bvps": 13377.5106,
+          "close": 11920.0,
+          "close_date": "2021-12-31",
+          "roe": 16.586,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 0.438,
+          "eps": 2844.8462,
+          "bvps": 13941.21,
+          "close": 6110.0,
+          "close_date": "2022-12-30",
+          "roe": 19.649,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 4.0,
+          "pb": 0.568,
+          "eps": 2257.2413,
+          "bvps": 13783.1494,
+          "close": 7830.0,
+          "close_date": "2023-12-29",
+          "roe": 16.128,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 4.0,
+          "pb": 0.491,
+          "eps": 2519.4209,
+          "bvps": 15795.4688,
+          "close": 7760.0,
+          "close_date": "2024-12-31",
+          "roe": 17.11,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 5.631,
+          "pb": 1.088,
+          "eps": 2860.9898,
+          "bvps": 14801.9357,
+          "close": 16110.0,
+          "close_date": "2025-12-31",
+          "roe": 19.087,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "SSB": {
+      "symbol": "SSB",
+      "pe_avg": 8.573,
+      "pb_avg": 1.249,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "bank",
+      "industry_cluster": "financial",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 10.73,
+          "pb": 1.71,
+          "eps": 2011.1075,
+          "bvps": 12623.2065,
+          "close": 21580.0,
+          "close_date": "2021-12-31",
+          "roe": 16.123,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 9.056,
+          "pb": 1.554,
+          "eps": 2206.3504,
+          "bvps": 12857.0515,
+          "close": 19980.0,
+          "close_date": "2022-12-30",
+          "roe": 18.055,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 10.726,
+          "pb": 1.438,
+          "eps": 1627.822,
+          "bvps": 12139.5516,
+          "close": 17460.0,
+          "close_date": "2023-12-29",
+          "roe": 13.008,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 7.552,
+          "pb": 1.126,
+          "eps": 1840.604,
+          "bvps": 12346.6861,
+          "close": 13900.0,
+          "close_date": "2024-12-31",
+          "roe": 14.751,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 7.473,
+          "pb": 1.02,
+          "eps": 1937.5981,
+          "bvps": 14190.7185,
+          "close": 14480.0,
+          "close_date": "2025-12-31",
+          "roe": 14.619,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "SSI": {
+      "symbol": "SSI",
+      "pe_avg": 13.25,
+      "pb_avg": 1.777,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "securities",
+      "industry_cluster": "financial",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 8.615,
+          "pb": 2.157,
+          "eps": 3624.2999,
+          "bvps": 14475.6037,
+          "close": 31222.13,
+          "close_date": "2021-12-31",
+          "roe": 22.379,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 8.699,
+          "pb": 0.786,
+          "eps": 1357.4021,
+          "bvps": 15031.4289,
+          "close": 11808.55,
+          "close_date": "2022-12-30",
+          "roe": 9.285,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 14.866,
+          "pb": 1.467,
+          "eps": 1529.925,
+          "bvps": 15502.8301,
+          "close": 22744.04,
+          "close_date": "2023-12-29",
+          "roe": 10.051,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 13.343,
+          "pb": 1.692,
+          "eps": 1734.1214,
+          "bvps": 13674.0034,
+          "close": 23138.2,
+          "close_date": "2024-12-31",
+          "roe": 11.325,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 14.953,
+          "pb": 2.35,
+          "eps": 2023.0216,
+          "bvps": 12872.3646,
+          "close": 30250.0,
+          "close_date": "2025-12-31",
+          "roe": 13.944,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "STB": {
+      "symbol": "STB",
+      "pe_avg": 11.595,
+      "pb_avg": 1.438,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "bank",
+      "industry_cluster": "financial",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 16.979,
+          "pb": 1.733,
+          "eps": 1855.2508,
+          "bvps": 18173.6958,
+          "close": 31500.0,
+          "close_date": "2021-12-31",
+          "roe": 10.793,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 8.415,
+          "pb": 1.098,
+          "eps": 2673.8028,
+          "bvps": 20489.4303,
+          "close": 22500.0,
+          "close_date": "2022-12-30",
+          "roe": 13.831,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 6.827,
+          "pb": 1.152,
+          "eps": 4094.2885,
+          "bvps": 24259.2206,
+          "close": 27950.0,
+          "close_date": "2023-12-29",
+          "roe": 18.299,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 6.896,
+          "pb": 1.265,
+          "eps": 5350.8439,
+          "bvps": 29159.5649,
+          "close": 36900.0,
+          "close_date": "2024-12-31",
+          "roe": 20.034,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 18.411,
+          "pb": 1.826,
+          "eps": 3150.3615,
+          "bvps": 31755.9118,
+          "close": 58000.0,
+          "close_date": "2025-12-31",
+          "roe": 10.343,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "TCB": {
+      "symbol": "TCB",
+      "pe_avg": 6.499,
+      "pb_avg": 0.99,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "bank",
+      "industry_cluster": "financial",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 4.592,
+          "pb": 0.899,
+          "eps": 5143.818,
+          "bvps": 26264.0976,
+          "close": 23619.78,
+          "close_date": "2021-12-31",
+          "roe": 22.122,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 0.4,
+          "eps": 5735.8329,
+          "bvps": 31927.3346,
+          "close": 12211.43,
+          "close_date": "2022-12-30",
+          "roe": 19.986,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 4.0,
+          "pb": 0.406,
+          "eps": 5117.8681,
+          "bvps": 36993.8487,
+          "close": 15022.18,
+          "close_date": "2023-12-29",
+          "roe": 14.996,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 6.021,
+          "pb": 1.167,
+          "eps": 3988.3615,
+          "bvps": 20583.4688,
+          "close": 24013.87,
+          "close_date": "2024-12-31",
+          "roe": 15.784,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 9.761,
+          "pb": 1.454,
+          "eps": 3575.2948,
+          "bvps": 23996.4345,
+          "close": 34900.0,
+          "close_date": "2025-12-31",
+          "roe": 16.455,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "TPB": {
+      "symbol": "TPB",
+      "pe_avg": 5.472,
+      "pb_avg": 0.961,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "bank",
+      "industry_cluster": "financial",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 4.351,
+          "pb": 1.164,
+          "eps": 4396.2916,
+          "bvps": 16429.8345,
+          "close": 19130.0,
+          "close_date": "2021-12-31",
+          "roe": 22.606,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 0.481,
+          "eps": 3958.1434,
+          "bvps": 20381.8176,
+          "close": 9810.0,
+          "close_date": "2022-12-30",
+          "roe": 21.505,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 5.421,
+          "pb": 0.843,
+          "eps": 2311.4633,
+          "bvps": 14871.9982,
+          "close": 12530.0,
+          "close_date": "2023-12-29",
+          "roe": 13.736,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 5.648,
+          "pb": 1.039,
+          "eps": 2616.7191,
+          "bvps": 14230.4827,
+          "close": 14780.0,
+          "close_date": "2024-12-31",
+          "roe": 17.269,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 6.174,
+          "pb": 1.122,
+          "eps": 2769.6841,
+          "bvps": 15242.6073,
+          "close": 17100.0,
+          "close_date": "2025-12-31",
+          "roe": 18.477,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "VCB": {
+      "symbol": "VCB",
+      "pe_avg": 10.032,
+      "pb_avg": 1.843,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "bank",
+      "industry_cluster": "financial",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 7.552,
+          "pb": 1.888,
+          "eps": 5866.8864,
+          "bvps": 23472.4042,
+          "close": 44307.43,
+          "close_date": "2021-12-31",
+          "roe": 20.898,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 7.122,
+          "pb": 1.544,
+          "eps": 6316.3614,
+          "bvps": 29138.8442,
+          "close": 44982.17,
+          "close_date": "2022-12-30",
+          "roe": 24.027,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 8.243,
+          "pb": 1.769,
+          "eps": 6468.6264,
+          "bvps": 30138.9486,
+          "close": 53323.15,
+          "close_date": "2023-12-29",
+          "roe": 21.58,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 10.005,
+          "pb": 1.702,
+          "eps": 6053.1121,
+          "bvps": 35579.9968,
+          "close": 60561.29,
+          "close_date": "2024-12-31",
+          "roe": 18.433,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 12.788,
+          "pb": 2.112,
+          "eps": 4496.3925,
+          "bvps": 27222.7381,
+          "close": 57500.0,
+          "close_date": "2025-12-31",
+          "roe": 16.512,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "VHM": {
+      "symbol": "VHM",
+      "pe_avg": 8.211,
+      "pb_avg": 1.453,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "real_estate_residential",
+      "industry_cluster": "real_estate",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 7.368,
+          "pb": 2.634,
+          "eps": 10813.027,
+          "bvps": 30245.3023,
+          "close": 79673.76,
+          "close_date": "2021-12-31",
+          "roe": 35.442,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 7.301,
+          "pb": 1.408,
+          "eps": 6574.5914,
+          "bvps": 34081.6292,
+          "close": 48000.0,
+          "close_date": "2022-12-30",
+          "roe": 20.707,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 5.679,
+          "pb": 1.031,
+          "eps": 7607.4123,
+          "bvps": 41881.9699,
+          "close": 43200.0,
+          "close_date": "2023-12-29",
+          "roe": 20.127,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 5.552,
+          "pb": 0.745,
+          "eps": 7205.0898,
+          "bvps": 53669.571,
+          "close": 40000.0,
+          "close_date": "2024-12-31",
+          "roe": 17.231,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 12.39,
+          "pb": 2.054,
+          "eps": 10008.0408,
+          "bvps": 60355.6687,
+          "close": 124000.0,
+          "close_date": "2025-12-31",
+          "roe": 17.983,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "VIB": {
+      "symbol": "VIB",
+      "pe_avg": 5.617,
+      "pb_avg": 1.033,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "bank",
+      "industry_cluster": "financial",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 4.0,
+          "pb": 1.127,
+          "eps": 4715.4623,
+          "bvps": 15639.7319,
+          "close": 17620.0,
+          "close_date": "2021-12-31",
+          "roe": 30.333,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.0,
+          "pb": 0.617,
+          "eps": 4443.0549,
+          "bvps": 15491.514,
+          "close": 9560.0,
+          "close_date": "2022-12-30",
+          "roe": 29.745,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 4.0,
+          "pb": 0.846,
+          "eps": 3668.5466,
+          "bvps": 14955.3935,
+          "close": 12650.0,
+          "close_date": "2023-12-29",
+          "roe": 24.26,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 5.897,
+          "pb": 1.122,
+          "eps": 2672.7486,
+          "bvps": 14051.6986,
+          "close": 15760.0,
+          "close_date": "2024-12-31",
+          "roe": 18.056,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 7.332,
+          "pb": 1.221,
+          "eps": 2295.3201,
+          "bvps": 13779.2774,
+          "close": 16830.0,
+          "close_date": "2025-12-31",
+          "roe": 16.415,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "VIC": {
+      "symbol": "VIC",
+      "pe_avg": 27.21,
+      "pb_avg": 3.542,
+      "n_years": 4,
+      "span_years": 4,
+      "coverage": "5y",
+      "industry_subtype": "real_estate_residential",
+      "industry_cluster": "real_estate",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2022,
+          "pe": 12.282,
+          "pb": 0.757,
+          "eps": 2190.1831,
+          "bvps": 35557.2596,
+          "close": 26900.0,
+          "close_date": "2022-12-30",
+          "roe": 1.345,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 40.0,
+          "pb": 0.576,
+          "eps": 540.761,
+          "bvps": 38711.9973,
+          "close": 22300.0,
+          "close_date": "2023-12-29",
+          "roe": 1.446,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 6.606,
+          "pb": 0.505,
+          "eps": 3069.1247,
+          "bvps": 40149.3562,
+          "close": 20275.0,
+          "close_date": "2024-12-31",
+          "roe": 3.483,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 40.0,
+          "pb": 8.0,
+          "eps": 3272.0243,
+          "bvps": 19654.1155,
+          "close": 169600.0,
+          "close_date": "2025-12-31",
+          "roe": 7.31,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "VJC": {
+      "symbol": "VJC",
+      "pe_avg": 36.766,
+      "pb_avg": 3.161,
+      "n_years": 4,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "consumer_staples",
+      "industry_cluster": "consumer_retail_transport",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 40.0,
+          "pb": 3.168,
+          "eps": 177.5016,
+          "bvps": 31156.6602,
+          "close": 98690.0,
+          "close_date": "2021-12-31",
+          "roe": 0.629,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 40.0,
+          "pb": 2.878,
+          "eps": 731.886,
+          "bvps": 28863.1145,
+          "close": 83070.0,
+          "close_date": "2023-12-29",
+          "roe": 2.302,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 29.22,
+          "pb": 2.461,
+          "eps": 2632.4727,
+          "bvps": 31258.8602,
+          "close": 76920.0,
+          "close_date": "2024-12-31",
+          "roe": 8.762,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 40.0,
+          "pb": 3.827,
+          "eps": 3727.9388,
+          "bvps": 42004.6364,
+          "close": 160760.0,
+          "close_date": "2025-12-31",
+          "roe": 10.165,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "VND": {
+      "symbol": "VND",
+      "pe_avg": 11.304,
+      "pb_avg": 1.198,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "securities",
+      "industry_cluster": "financial",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 4.0,
+          "pb": 1.189,
+          "eps": 7133.605,
+          "bvps": 22583.3251,
+          "close": 26847.43,
+          "close_date": "2021-12-31",
+          "roe": 34.924,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 9.763,
+          "pb": 0.933,
+          "eps": 1138.7691,
+          "bvps": 11918.5537,
+          "close": 11118.0,
+          "close_date": "2022-12-30",
+          "roe": 10.028,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 11.025,
+          "pb": 1.352,
+          "eps": 1662.1038,
+          "bvps": 13551.0739,
+          "close": 18324.12,
+          "close_date": "2023-12-29",
+          "roe": 13.052,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 9.937,
+          "pb": 0.943,
+          "eps": 1229.1891,
+          "bvps": 12950.844,
+          "close": 12214.68,
+          "close_date": "2024-12-31",
+          "roe": 9.489,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 14.643,
+          "pb": 1.416,
+          "eps": 1328.3092,
+          "bvps": 13731.137,
+          "close": 19450.0,
+          "close_date": "2025-12-31",
+          "roe": 9.957,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "VNM": {
+      "symbol": "VNM",
+      "pe_avg": 13.767,
+      "pb_avg": 3.647,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "consumer_staples",
+      "industry_cluster": "consumer_retail_transport",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 13.433,
+          "pb": 3.947,
+          "eps": 5039.6297,
+          "bvps": 17153.5304,
+          "close": 67697.04,
+          "close_date": "2021-12-31",
+          "roe": 30.598,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 15.669,
+          "pb": 4.066,
+          "eps": 4074.7394,
+          "bvps": 15702.0182,
+          "close": 63846.62,
+          "close_date": "2022-12-30",
+          "roe": 24.983,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 13.904,
+          "pb": 3.523,
+          "eps": 4245.9338,
+          "bvps": 16759.0863,
+          "close": 59036.01,
+          "close_date": "2023-12-29",
+          "roe": 26.589,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 13.015,
+          "pb": 3.379,
+          "eps": 4494.0242,
+          "bvps": 17308.6957,
+          "close": 58488.57,
+          "close_date": "2024-12-31",
+          "roe": 26.553,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 13.592,
+          "pb": 3.709,
+          "eps": 4502.5848,
+          "bvps": 16499.4021,
+          "close": 61200.0,
+          "close_date": "2025-12-31",
+          "roe": 26.646,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "VPB": {
+      "symbol": "VPB",
+      "pe_avg": 8.892,
+      "pb_avg": 1.144,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "bank",
+      "industry_cluster": "financial",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 5.112,
+          "pb": 1.171,
+          "eps": 4041.1343,
+          "bvps": 17649.041,
+          "close": 20660.0,
+          "close_date": "2021-12-31",
+          "roe": 17.753,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 4.294,
+          "pb": 1.074,
+          "eps": 3610.0364,
+          "bvps": 14426.0362,
+          "close": 15500.0,
+          "close_date": "2022-12-30",
+          "roe": 19.308,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 12.068,
+          "pb": 1.027,
+          "eps": 1445.1326,
+          "bvps": 16979.5051,
+          "close": 17440.0,
+          "close_date": "2023-12-29",
+          "roe": 7.463,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 9.232,
+          "pb": 1.027,
+          "eps": 1988.7758,
+          "bvps": 17885.851,
+          "close": 18360.0,
+          "close_date": "2024-12-31",
+          "roe": 11.559,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 9.31,
+          "pb": 1.33,
+          "eps": 3023.7158,
+          "bvps": 21162.7124,
+          "close": 28150.0,
+          "close_date": "2025-12-31",
+          "roe": 15.722,
+          "pb_source": "bvps"
+        }
+      ]
+    },
+    "VRE": {
+      "symbol": "VRE",
+      "pe_avg": 14.069,
+      "pb_avg": 1.393,
+      "n_years": 5,
+      "span_years": 5,
+      "coverage": "5y",
+      "industry_subtype": "real_estate_residential",
+      "industry_cluster": "real_estate",
+      "icb_sector": null,
+      "years": [
+        {
+          "year": 2021,
+          "pe": 40.0,
+          "pb": 2.155,
+          "eps": 578.4902,
+          "bvps": 13488.7914,
+          "close": 29070.0,
+          "close_date": "2021-12-31",
+          "roe": 4.384,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2022,
+          "pe": 21.105,
+          "pb": 1.729,
+          "eps": 1203.5254,
+          "bvps": 14691.3354,
+          "close": 25400.0,
+          "close_date": "2022-12-30",
+          "roe": 8.545,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2023,
+          "pe": 11.597,
+          "pb": 1.352,
+          "eps": 1940.1335,
+          "bvps": 16646.8101,
+          "close": 22500.0,
+          "close_date": "2023-12-29",
+          "roe": 12.383,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2024,
+          "pe": 9.187,
+          "pb": 0.898,
+          "eps": 1802.4657,
+          "bvps": 18449.2811,
+          "close": 16560.0,
+          "close_date": "2024-12-31",
+          "roe": 10.272,
+          "pb_source": "bvps"
+        },
+        {
+          "year": 2025,
+          "pe": 11.457,
+          "pb": 1.527,
+          "eps": 2836.7164,
+          "bvps": 21285.8386,
+          "close": 32500.0,
+          "close_date": "2025-12-31",
+          "roe": 14.278,
+          "pb_source": "bvps"
+        }
+      ]
+    }
+  }
+}

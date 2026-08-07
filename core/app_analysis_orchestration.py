@@ -34,6 +34,102 @@ def _fresh_request_snapshot(ticker: str, snapshot: dict[str, Any] | None) -> dic
         return dict(snapshot)
 
 
+def _refresh_valuation_live_price(report: dict[str, Any], ticker: str) -> dict[str, Any]:
+    """
+    Day-cache / session-cache có thể giữ giá mock hoặc định giá neo giá (thiếu EPS/BV).
+    Ép cập nhật giá live; nếu valuation đang price-anchor / thiếu BCTC thì định giá lại từ snapshot giàu hơn.
+    """
+    if not isinstance(report, dict):
+        return report
+    val = report.get("valuation")
+    if not isinstance(val, dict):
+        return report
+    sym = str(ticker or report.get("ticker") or report.get("symbol") or "").strip().upper()
+    if not sym:
+        return report
+    try:
+        old_px = float(val.get("price") or 0)
+    except (TypeError, ValueError):
+        old_px = 0.0
+
+    method = str(val.get("best_fair_method") or "")
+    try:
+        fair0 = float(val.get("best_fair_value") or val.get("composite_target_price") or 0)
+    except (TypeError, ValueError):
+        fair0 = 0.0
+    eps0 = float(val.get("eps_for_graham") or val.get("eps") or 0)
+    needs_revalue = (
+        method in ("price_anchor", "")
+        or eps0 <= 0
+        or (
+            old_px > 0
+            and fair0 > 0
+            and abs(fair0 - old_px) / max(fair0, old_px) < 0.005
+            and "graham" in method
+        )
+    )
+
+    if needs_revalue:
+        try:
+            from core.valuation import value_investing_summary
+            from scrapers.financial_data import fetch_financial_snapshot
+
+            snap = fetch_financial_snapshot(sym) or {}
+            if isinstance(snap, dict) and snap:
+                try:
+                    from scrapers.financial_data import ensure_request_time_live_price as _erp
+
+                    snap = _erp(dict(snap), sym)
+                except Exception:
+                    pass
+                new_val = value_investing_summary(dict(snap), include_extensions=False)
+                out = dict(report)
+                out["valuation"] = new_val
+                return out
+        except Exception:
+            pass
+
+    try:
+        from scrapers.financial_data import ensure_request_time_live_price
+
+        seed = {
+            "symbol": sym,
+            "price": old_px,
+            "source": val.get("data_source") or val.get("source"),
+        }
+        fresh = ensure_request_time_live_price(seed, sym)
+        new_px = float((fresh or {}).get("price") or 0)
+    except Exception:
+        return report
+    if new_px <= 0:
+        return report
+    if old_px > 0 and abs(new_px - old_px) / max(old_px, new_px) < 0.01:
+        return report
+
+    out = dict(report)
+    val2 = dict(val)
+    val2["price"] = new_px
+    if fresh.get("price_source"):
+        val2["price_source"] = fresh.get("price_source")
+    if fresh.get("price_crosscheck_note_vi"):
+        val2["price_crosscheck_note_vi"] = fresh.get("price_crosscheck_note_vi")
+    try:
+        fair = float(
+            val2.get("best_fair_value")
+            or val2.get("composite_target_price")
+            or val2.get("graham_capped_fair")
+            or 0
+        )
+    except (TypeError, ValueError):
+        fair = 0.0
+    if fair > 0 and str(val2.get("best_fair_method") or "") != "price_anchor":
+        mos = (fair - new_px) / fair * 100.0
+        val2["margin_of_safety_composite_pct"] = mos
+        val2["margin_of_safety_composite_pct_raw"] = mos
+    out["valuation"] = val2
+    return out
+
+
 def _consume_bg_job(jid: str) -> dict[str, Any] | None:
     from core import pg_analysis_jobs as pgj
 
@@ -136,6 +232,7 @@ def _finalize_cached_report(
         get_forecast_accuracy_dashboard=get_forecast_accuracy_dashboard,
     )
     report["task_mode_used"] = mode_cached
+    report = _refresh_valuation_live_price(report, ticker)
     return report, ohlcv
 
 

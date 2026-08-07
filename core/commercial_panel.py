@@ -21,18 +21,21 @@ def render_commercial_pilot_panel(
 ) -> None:
     pid = str(plan_id or "free").lower()
     p = plan if isinstance(plan, dict) else {}
-    with st.expander("🚀 Pilot / Waitlist & giới thiệu (Wave 6)", expanded=False):
+    # Nested-safe: parent sidebar uses expander — do not nest another expander.
+    st.markdown("---")
+    st.markdown("**🚀 Pilot / Waitlist & giới thiệu (Wave 6)**")
+    with st.container():
         st.caption(
             "Mục tiêu nội bộ: ~50 MAU và ~10% nâng Pro, hoặc waitlist rõ ràng. "
             "Không phải cam kết lợi nhuận."
         )
         c1, c2 = st.columns(2)
         with c1:
-            if st.button("📝 Tham gia waitlist Pro", width="stretch", key="waitlist_join_btn"):
+            if st.button("📝 Tham gia waitlist Pro", use_container_width=True, key="waitlist_join_btn"):
                 log_event(user_id, "waitlist_join", {"from_plan": pid, "source": "commercial_panel"})
                 st.success("Đã ghi danh waitlist. Chúng tôi ưu tiên khi mở quota Pro.")
         with c2:
-            if st.button("💬 Quan tâm nâng Pro", width="stretch", key="upgrade_intent_btn"):
+            if st.button("💬 Quan tâm nâng Pro", use_container_width=True, key="upgrade_intent_btn"):
                 log_event(user_id, "upgrade_intent", {"from": pid, "to": "pro", "source": "commercial_panel"})
                 st.info("Đã ghi nhận tín hiệu nâng cấp.")
 
@@ -75,7 +78,7 @@ def render_commercial_pilot_panel(
                 st.caption("So sánh gói (edge features)")
                 import pandas as pd
 
-                st.dataframe(pd.DataFrame(plan_feature_matrix()), width="stretch", hide_index=True)
+                st.dataframe(pd.DataFrame(plan_feature_matrix()), use_container_width=True, hide_index=True)
             except Exception:
                 pass
 

@@ -95,6 +95,70 @@ def test_swr_price_overlay_updates_price_from_fast_quote(monkeypatch) -> None:
     assert launched.get("sym") == "FPT"
 
 
+def test_hot_cache_prefer_live_refreshes_price(monkeypatch) -> None:
+    import scrapers.finance_scraper as fs
+    import scrapers.financial_data as fd
+
+    monkeypatch.setenv("II_SNAPSHOT_PREFER_LIVE", "1")
+    monkeypatch.setenv("II_SNAPSHOT_SWR_PRICE_OVERLAY", "1")
+    monkeypatch.setattr(
+        fd,
+        "get_cached_snapshot",
+        lambda sym: {"symbol": sym, "price": 98_000.0, "eps": 6.0, "source": "vietstock"},
+    )
+    monkeypatch.setattr(fd, "get_disk_snapshot_any_age", lambda sym: None)
+    monkeypatch.setattr(fd, "_load_mock_json", lambda: {})
+    monkeypatch.setattr(
+        fs,
+        "get_quote_price_fast",
+        lambda sym, budget_sec=None, max_providers=None: {"symbol": sym, "price": 70_500.0, "source": "vndirect"},
+    )
+
+    out = fd.fetch_financial_snapshot("FPT")
+    assert out is not None
+    assert float(out.get("price") or 0) == 70_500.0
+    assert float(out.get("eps") or 0) == 6.0
+    assert str(out.get("price_source", "")).startswith("quote_fast:")
+
+
+def test_market_fallback_cache_is_not_treated_as_pure_mock(monkeypatch) -> None:
+    """Bug: 'mock_json' in 'mock_json+market_fallback' từng khiến bỏ cache giá đúng → rơi về mock 98k."""
+    import scrapers.finance_scraper as fs
+    import scrapers.financial_data as fd
+
+    monkeypatch.setenv("II_SNAPSHOT_PREFER_LIVE", "1")
+    monkeypatch.setenv("II_SNAPSHOT_SWR_PRICE_OVERLAY", "1")
+    monkeypatch.setattr(
+        fd,
+        "get_cached_snapshot",
+        lambda sym: {
+            "symbol": sym,
+            "price": 70_800.0,
+            "eps": 6200.0,
+            "source": "mock_json+market_fallback",
+            "price_source": "vnstock:vci",
+        },
+    )
+    monkeypatch.setattr(fd, "get_disk_snapshot_any_age", lambda sym: None)
+    monkeypatch.setattr(fd, "_load_mock_json", lambda: {"FPT": {"price": 98_000}})
+    monkeypatch.setattr(
+        fs,
+        "get_quote_price_fast",
+        lambda sym, budget_sec=None, max_providers=None: {"symbol": sym, "price": 70_900.0, "source": "vndirect"},
+    )
+    # Nếu nhầm skip cache → sẽ scrape; chặn scrape để chắc đi path cache.
+    monkeypatch.setattr(
+        fs,
+        "get_stock_data",
+        lambda *a, **k: (_ for _ in ()).throw(fs.ScraperError("should_not_scrape")),
+    )
+
+    out = fd.fetch_financial_snapshot("FPT")
+    assert out is not None
+    assert float(out.get("price") or 0) == 70_900.0
+    assert "98" not in str(int(out.get("price") or 0))
+
+
 def test_list_universe_symbols_offset_and_limit(monkeypatch) -> None:
     import scrapers.financial_data as fd
 

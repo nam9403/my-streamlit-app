@@ -588,6 +588,10 @@ def scan_symbol_row(
             "analysis_verdict": str(rep.get("analysis_verdict") or gate_row.get("analysis_verdict") or ""),
             "Khung thời gian": horizon,
             "MOS%": round(mos, 2),
+            "Fair": None,
+            "FairMethod": str(val.get("best_fair_label_vi") or val.get("best_fair_method") or ""),
+            "Graham": None,
+            "MOS_graham%": None,
             "F-Score": fscore,
             "Rev YoY%": round(rev, 2),
             "Profit YoY%": round(ni, 2) if ni is not None else None,
@@ -601,6 +605,24 @@ def scan_symbol_row(
             "missing_items": _missing_fundamentals(snap, val, fin),
             "decision_readiness": str(rep.get("decision_readiness") or gate_row.get("decision_readiness") or ""),
         }
+        try:
+            fair_v = val.get("best_fair_value") or val.get("composite_target_price")
+            if fair_v not in (None, "") and float(fair_v) > 0:
+                row["Fair"] = round(float(fair_v), 2)
+        except (TypeError, ValueError):
+            pass
+        try:
+            g_v = val.get("intrinsic_value_graham") or val.get("graham_number")
+            if g_v not in (None, "") and float(g_v) > 0:
+                row["Graham"] = round(float(g_v), 2)
+        except (TypeError, ValueError):
+            pass
+        try:
+            mos_g = val.get("margin_of_safety_pct")
+            if mos_g not in (None, ""):
+                row["MOS_graham%"] = round(float(mos_g), 2)
+        except (TypeError, ValueError):
+            pass
         if gate_row:
             for key in (
                 "Readiness",
@@ -681,17 +703,43 @@ def _missing_fundamentals(snap: dict[str, Any], val: dict[str, Any], fin: dict[s
         return missing
 
 
-def refresh_top_prices(df: pd.DataFrame, *, max_symbols: int = 10) -> tuple[pd.DataFrame, dict[str, Any]]:
-    """Light morning freshness: update Giá from live/disk snapshot for Top-N only."""
+def _mos_from_fair(fair: float, price: float) -> float | None:
+    if fair <= 0 or price <= 0:
+        return None
+    return (float(fair) - float(price)) / float(fair) * 100.0
+
+
+def _recompute_expected_return(mos: float, rev: float, fscore: float) -> float:
+    return max(float(mos) * 0.6 + float(rev) * 0.2 + float(fscore) * 1.2, 0.0)
+
+
+def refresh_top_prices(
+    df: pd.DataFrame,
+    *,
+    max_symbols: int = 10,
+    revalue: bool = True,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """
+    Morning freshness for Top-N:
+    - luôn cập nhật Giá từ snapshot
+    - đồng bộ MOS%/ER với định giá công bố (best fair) để khớp Decision Card
+    """
     if df is None or df.empty or "Mã" not in df.columns:
-        return df, {"refreshed": 0, "attempted": 0}
+        return df, {"refreshed": 0, "attempted": 0, "revalued": 0}
     out = df.copy()
     attempted = 0
     refreshed = 0
+    revalued = 0
     try:
         from core.analysis_runtime_service import _snapshot_impl
     except Exception:
-        return out, {"refreshed": 0, "attempted": 0, "error": "snapshot_unavailable"}
+        return out, {"refreshed": 0, "attempted": 0, "revalued": 0, "error": "snapshot_unavailable"}
+
+    do_revalue = bool(revalue)
+    if do_revalue:
+        env_flag = str(os.environ.get("II_AUTOPILOT_MORNING_REVALUE", "1") or "1").strip().lower()
+        do_revalue = env_flag not in ("0", "false", "no", "off")
+
     for idx in out.head(max(1, int(max_symbols))).index:
         sym = str(out.at[idx, "Mã"] or "").strip().upper()
         if not sym:
@@ -703,9 +751,73 @@ def refresh_top_prices(df: pd.DataFrame, *, max_symbols: int = 10) -> tuple[pd.D
             if price > 0:
                 out.at[idx, "Giá"] = round(price, 2)
                 refreshed += 1
+
+            mos_updated = False
+            if do_revalue and isinstance(snap, dict) and price > 0:
+                try:
+                    from core.valuation import value_investing_summary
+
+                    # Merge board fundamentals hints if snapshot thin.
+                    merged = dict(snap)
+                    if not merged.get("symbol"):
+                        merged["symbol"] = sym
+                    val = value_investing_summary(merged, include_extensions=False)
+                    fair = val.get("best_fair_value") or val.get("composite_target_price")
+                    mos = val.get("margin_of_safety_composite_pct")
+                    if fair not in (None, "") and float(fair) > 0:
+                        out.at[idx, "Fair"] = round(float(fair), 2)
+                    if val.get("best_fair_label_vi"):
+                        out.at[idx, "FairMethod"] = str(val.get("best_fair_label_vi"))
+                    g_raw = val.get("intrinsic_value_graham") or val.get("graham_number")
+                    if g_raw not in (None, "") and float(g_raw) > 0:
+                        out.at[idx, "Graham"] = round(float(g_raw), 2)
+                    if mos not in (None, ""):
+                        out.at[idx, "MOS%"] = round(float(mos), 2)
+                        mos_updated = True
+                        revalued += 1
+                        try:
+                            rev = float(out.at[idx, "Rev YoY%"] or 0)
+                        except (TypeError, ValueError):
+                            rev = 0.0
+                        try:
+                            fscore = float(out.at[idx, "F-Score"] or 0)
+                        except (TypeError, ValueError):
+                            fscore = 0.0
+                        out.at[idx, "Expected Return %"] = round(
+                            _recompute_expected_return(float(mos), rev, fscore), 2
+                        )
+                except Exception:
+                    mos_updated = False
+
+            if not mos_updated and price > 0:
+                # Fail-soft: recomputes MOS from stored Fair (board đêm / lần refresh trước).
+                fair_stored = out.at[idx, "Fair"] if "Fair" in out.columns else None
+                try:
+                    fair_f = float(fair_stored) if fair_stored not in (None, "") else 0.0
+                except (TypeError, ValueError):
+                    fair_f = 0.0
+                mos_f = _mos_from_fair(fair_f, price)
+                if mos_f is not None:
+                    out.at[idx, "MOS%"] = round(mos_f, 2)
+                    try:
+                        rev = float(out.at[idx, "Rev YoY%"] or 0)
+                    except (TypeError, ValueError):
+                        rev = 0.0
+                    try:
+                        fscore = float(out.at[idx, "F-Score"] or 0)
+                    except (TypeError, ValueError):
+                        fscore = 0.0
+                    out.at[idx, "Expected Return %"] = round(
+                        _recompute_expected_return(mos_f, rev, fscore), 2
+                    )
         except Exception:
             continue
-    return out, {"refreshed": refreshed, "attempted": attempted}
+    return out, {
+        "refreshed": refreshed,
+        "attempted": attempted,
+        "revalued": revalued,
+        "morning_revalue": bool(do_revalue),
+    }
 
 
 def board_health_report(

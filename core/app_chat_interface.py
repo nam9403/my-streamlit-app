@@ -261,7 +261,7 @@ def render_chat_header(
             unsafe_allow_html=True,
         )
     with right:
-        if st.button("⚙️ Cài đặt / Portfolio", key="ii_chat_settings_btn", width="stretch"):
+        if st.button("⚙️ Cài đặt / Portfolio", key="ii_chat_settings_btn", use_container_width=True):
             st.session_state[CHAT_SETTINGS_KEY] = not bool(st.session_state.get(CHAT_SETTINGS_KEY))
             if on_settings_click:
                 on_settings_click()
@@ -287,7 +287,7 @@ def render_empty_state(*, chip_callback: Callable[[str], None]) -> None:
     ]
     for col, label, token in chips:
         with col:
-            if st.button(label, key=f"ii_chip_{token}", width="stretch"):
+            if st.button(label, key=f"ii_chip_{token}", use_container_width=True):
                 chip_callback(token)
 
 
@@ -397,7 +397,15 @@ def _smart_money_vi(label: Any) -> str:
 
 
 def _fair_price_from_val(val: dict[str, Any]) -> Any:
-    for key in ("composite_target_price", "intrinsic_value_graham", "graham_number", "safe_buy_price"):
+    """Published fair price — ưu tiên best fair / composite; Graham vẫn fallback."""
+    for key in (
+        "best_fair_value",
+        "composite_target_price",
+        "graham_capped_fair",
+        "intrinsic_value_graham",
+        "graham_number",
+        "safe_buy_price",
+    ):
         v = val.get(key)
         try:
             if v is not None and float(v) > 0:
@@ -832,7 +840,31 @@ def _load_mini_chart_series(
         for d, c in candidates
         if _series_looks_fresh(d, c, live_price=live_price)
     ]
-    chosen_dates, chosen_closes = (fresh[0] if fresh else (candidates[0] if candidates else ([], [])))
+    if fresh:
+        chosen_dates, chosen_closes = fresh[0]
+    elif candidates:
+        # Giá UI đang mock/sai (vd. 98k) trong khi OHLCV thị trường ~70k — vẫn vẽ chuỗi thị trường.
+        # Ưu tiên series có ngày gần nhất.
+        def _last_ts(pair: tuple[list[Any], list[float]]) -> float:
+            try:
+                import pandas as pd
+
+                return float(pd.Timestamp(pair[0][-1]).timestamp())
+            except Exception:
+                return 0.0
+
+        chosen_dates, chosen_closes = max(candidates, key=_last_ts)
+        try:
+            last_px = float(chosen_closes[-1])
+            if live_price and live_price > 0 and last_px > 0:
+                rel = abs(last_px - float(live_price)) / max(last_px, float(live_price))
+                if rel > 0.12:
+                    # Endpoint chart = nến cuối; card sẽ được refresh giá live riêng.
+                    pass
+        except Exception:
+            pass
+    else:
+        return [], []
     if not chosen_closes:
         return [], []
     return _align_chart_endpoint_to_live(chosen_dates, chosen_closes, live_price)
@@ -911,7 +943,12 @@ def render_decision_card_in_chat(
     except (TypeError, ValueError):
         cr_ready = False
 
-    show_plan = trade_plan_is_active(rep) and bool(gate.get("show_trade_plan")) and action in ("BUY", "HOLD")
+    show_plan = trade_plan_is_active(rep) and bool(
+        gate.get("show_trade_plan") or gate.get("risk_management_visible")
+    ) and action in ("BUY", "HOLD", "CONDITIONAL_BUY")
+    entry_allowed = bool(gate.get("entry_allowed", action in ("BUY", "CONDITIONAL_BUY")))
+    if "entry_allowed" in rep:
+        entry_allowed = bool(rep.get("entry_allowed"))
     pe_anomaly = bool(val.get("pe_anomaly_flag") or val.get("eps_anomaly_flag"))
     anomaly_msg = str(
         val.get("eps_pe_anomaly_warning_vi")
@@ -921,20 +958,24 @@ def render_decision_card_in_chat(
     buy_hi = rp.get("buy_zone_high") or rp.get("entry_price") or card.get("entry")
     buy_lo = rp.get("buy_zone_low")
     safe_zone = ""
-    if buy_hi not in (None, ""):
+    if entry_allowed and buy_hi not in (None, ""):
         safe_zone = f"≤ {_disp(buy_hi, money=True, missing='Đang cập nhật')} đ"
         if buy_lo not in (None, ""):
             safe_zone = (
                 f"{_disp(buy_lo, money=True, missing='Đang cập nhật')} – "
                 f"{_disp(buy_hi, money=True, missing='Đang cập nhật')} đ"
             )
+    elif action == "HOLD":
+        safe_zone = "Không mở mua mới"
     nav_line = _nav_priority_vi(action, mos, str(card.get("readiness") or ""))
     pos_pct = rp.get("max_position_pct")
-    if show_plan and pos_pct not in (None, ""):
+    if show_plan and entry_allowed and pos_pct not in (None, ""):
         try:
             nav_line = f"{float(pos_pct):.0f}% Tổng tài khoản (theo kế hoạch rủi ro)"
         except (TypeError, ValueError):
             pass
+    elif action == "HOLD":
+        nav_line = "0% giải ngân mới — quản trị vị thế đang nắm"
 
     name_only = _company_name_only(symbol, company_name, {**val, **snap})
     legend = str(val.get("instant_conclusion") or "Đang cập nhật")
@@ -943,6 +984,43 @@ def render_decision_card_in_chat(
     dividend_line = _strip_dividend_label(_dividend_line_vi(rep, fin, snap))
     price_txt = _disp(price, money=True, missing="Đang cập nhật")
     fair_txt = _disp(fair, money=True, missing="Đang cập nhật")
+    integrity_blocked = bool(
+        card.get("mos_integrity_blocked")
+        or card.get("fair_value_unreliable")
+        or card.get("fair_price_unreliable")
+        or val.get("mos_integrity_blocked")
+        or val.get("fair_value_unreliable")
+    )
+    integrity_note = str(
+        card.get("mos_integrity_note_vi")
+        or val.get("fair_value_suppress_reason_vi")
+        or val.get("mos_integrity_note_vi")
+        or ""
+    ).strip()
+    if not integrity_note and integrity_blocked:
+        notes = val.get("pe_sanity_notes") or []
+        if isinstance(notes, list) and notes:
+            integrity_note = str(notes[0] or "").strip()
+        if not integrity_note:
+            integrity_note = (
+                "Định giá Graham vẫn theo mô hình, nhưng nghi EPS/P/E lệch đơn vị — không dùng để giải ngân."
+            )
+    mos_raw_val = card.get("mos_pct_raw")
+    if mos_raw_val in (None, ""):
+        mos_raw_val = val.get("margin_of_safety_composite_pct_raw")
+    mos_raw_disp = ""
+    try:
+        if mos_raw_val not in (None, ""):
+            mos_raw_f = float(mos_raw_val)
+            mos_raw_disp = f"{mos_raw_f:+.1f}%"
+    except (TypeError, ValueError):
+        mos_raw_disp = ""
+    if integrity_blocked:
+        mos_comment = (
+            f"Đã siết (MOS thô {mos_raw_disp}) — không dùng để giải ngân"
+            if mos_raw_disp
+            else "Định giá Graham tham khảo — không dùng để giải ngân"
+        )
 
     locked_reason = (
         f"Chưa đủ điều kiện an toàn để đề xuất điểm Mua/Cắt lỗ "
@@ -954,14 +1032,40 @@ def render_decision_card_in_chat(
             + (" · Dòng tiền HĐKD âm" if "âm" in cfo_txt.lower() else "")
         )
 
-    plan_inner = (
-        f"<b>Vùng giá giải ngân an toàn:</b> {html.escape(safe_zone or 'Đang cập nhật')}<br/><br/>"
-        f"<b>Tỷ trọng đề xuất (% NAV):</b> {html.escape(nav_line)}<br/><br/>"
-        f"<b>Giá mua / Cắt lỗ / Chốt lời:</b> "
-        f"{html.escape(_disp(rp.get('entry_price') or card.get('entry'), money=True, missing='Đang cập nhật'))} đ"
-        f" · {html.escape(_disp(rp.get('stop_loss_price') or card.get('sl'), money=True, missing='Đang cập nhật'))} đ"
-        f" · {html.escape(_disp(rp.get('take_profit_price') or card.get('tp'), money=True, missing='Đang cập nhật'))} đ"
+    entry_disp = (
+        html.escape(_disp(rp.get("entry_price") or card.get("entry"), money=True, missing="Đang cập nhật")) + " đ"
+        if entry_allowed
+        else "Không mở mua mới"
     )
+    sl_disp = html.escape(
+        _disp(rp.get("stop_loss_price") or card.get("sl"), money=True, missing="Đang cập nhật")
+    )
+    tp_disp = html.escape(
+        _disp(rp.get("take_profit_price") or card.get("tp"), money=True, missing="Đang cập nhật")
+    )
+    plan_note = str(rp.get("display_note_vi") or "").strip()
+    plan_note_html = (
+        f"<br/><span style='color:#64748b;font-size:0.92em;'>{html.escape(plan_note)}</span>"
+        if plan_note
+        else ""
+    )
+    if entry_allowed:
+        plan_inner = (
+            f"<b>Vùng giá giải ngân an toàn:</b> {html.escape(safe_zone or 'Đang cập nhật')}<br/><br/>"
+            f"<b>Tỷ trọng đề xuất (% NAV):</b> {html.escape(nav_line)}<br/><br/>"
+            f"<b>Giá mua / Cắt lỗ / Chốt lời:</b> "
+            f"{entry_disp} · {sl_disp} đ · {tp_disp} đ"
+            f"{plan_note_html}"
+        )
+    else:
+        # HOLD: khóa Entry, bắt buộc hiện SL / quản trị rủi ro
+        plan_inner = (
+            f"<b>Vùng mua (Entry):</b> {entry_disp}<br/><br/>"
+            f"<b>Tỷ trọng giải ngân mới:</b> {html.escape(nav_line)}<br/><br/>"
+            f"<b>Cắt lỗ (SL) / Chốt lời (TP):</b> {sl_disp} đ · {tp_disp} đ<br/><br/>"
+            f"<b>Vùng quản trị rủi ro:</b> theo dõi SL / trailing stop để bảo vệ vị thế đang nắm."
+            f"{plan_note_html}"
+        )
 
     chart_dates, chart_closes = _load_mini_chart_series(str(symbol).upper(), live_price=price)
     price_chart_html = build_price_chart_svg(chart_closes, dates=chart_dates)
@@ -998,12 +1102,20 @@ def render_decision_card_in_chat(
         locked_reason=locked_reason,
         radar=radar,
         price_chart_html=price_chart_html,
+        valuation_integrity_blocked=integrity_blocked,
+        valuation_integrity_note=integrity_note,
+        fair_method_label=str(
+            card.get("fair_method_label_vi") or val.get("best_fair_label_vi") or ""
+        ),
+        mos_raw_disp=mos_raw_disp,
     )
 
     with st.container(border=False):
         render_decision_dashboard(body)
         if pe_anomaly:
             st.warning(f"⚠️ Cảnh báo định giá: {anomaly_msg}")
+        elif integrity_blocked and integrity_note:
+            st.warning(f"⚠️ Cảnh báo định giá: {integrity_note}")
 
         b1, b2 = st.columns(2)
         with b1:
@@ -1027,7 +1139,7 @@ def render_decision_card_in_chat(
             if st.button(
                 "🔔 Thêm Mã Này Vào Cảnh Báo Telegram",
                 key=f"{key_prefix}_tg_{symbol}",
-                width="stretch",
+                use_container_width=True,
             ):
                 if on_add_telegram_alert:
                     on_add_telegram_alert(str(symbol).upper())
@@ -1169,7 +1281,7 @@ def _handle_prompt(
                 content="Autopilot chưa có dữ liệu. Chạy nightly scan hoặc bật ép quét live trong chế độ cổ điển.",
             )
             return
-        lines = ["**Autopilot Top 10** (board hiện tại):", ""]
+        lines = ["**Autopilot Top 10** (board hiện tại · MOS = định giá công bố):", ""]
         from core.decision_action_gate import action_display_vi, normalize_action
 
         for i, row in df.head(10).iterrows():
@@ -1178,11 +1290,16 @@ def _handle_prompt(
             kn = action_display_vi(normalize_action(kn_raw))
             mos = row.get("MOS%")
             er = row.get("Expected Return %")
+            fair = row.get("Fair")
+            fair_bit = f" · Đ.giá {_fmt(fair, money=True)}" if fair not in (None, "") else ""
             lines.append(
-                f"{len(lines) - 1}. **{sym}** · {kn} · MOS {_fmt(mos, suffix='%')} · ER {_fmt(er, suffix='%')}"
+                f"{len(lines) - 1}. **{sym}** · {kn} · MOS {_fmt(mos, suffix='%')} · ER {_fmt(er, suffix='%')}{fair_bit}"
             )
         lines.append("")
-        lines.append("Gõ mã (vd: `PNJ`) để mở Decision Card chi tiết.")
+        lines.append(
+            "MOS Autopilot đồng bộ best-fair (cùng công thức Decision Card). "
+            "Gõ mã (vd: `BID`) để mở thẻ chi tiết."
+        )
         _push_assistant(kind="text", content="\n".join(lines))
         if log_event and user_id:
             try:

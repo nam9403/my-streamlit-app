@@ -102,7 +102,9 @@ def render_watchlist_controls(
         }[x],
         help="6S: loại bỏ bước dư thừa theo ngữ cảnh, chuẩn hóa luồng chạy nhưng không cắt tính năng.",
     )
-    with st.expander("Gợi ý chọn mode 6S", expanded=False):
+    st.markdown("---")
+    st.markdown("**Gợi ý chọn mode 6S**")
+    with st.container():
         st.markdown(
             "- **Smooth**: dùng hằng ngày trên máy yếu/VPS nhỏ, ưu tiên mượt và phản hồi nhanh.\n"
             "- **Balanced**: dùng mặc định cho vận hành ổn định, cân bằng tốc độ và độ sâu.\n"
@@ -147,7 +149,7 @@ def render_watchlist_controls(
     )
     autopilot_limit = plan_autopilot_limit_cap(plan, autopilot_limit)
     st.caption(f"Autopilot limit sau khi áp gói: **{autopilot_limit}** (max {slider_max}).")
-    autopilot_refresh = st.button("♻️ Làm mới Auto Pilot", width="stretch")
+    autopilot_refresh = st.button("♻️ Làm mới Auto Pilot", use_container_width=True)
     quick_mode = st.toggle(
         "⚡ Chế độ phản hồi nhanh",
         value=False,
@@ -186,10 +188,10 @@ def render_watchlist_controls(
             step=5,
         )
     )
-    prewarm_now = st.button("🔥 Làm nóng dữ liệu watchlist", width="stretch")
-    prewarm_now_async = st.button("♨️ Warm now (non-blocking)", width="stretch")
+    prewarm_now = st.button("🔥 Làm nóng dữ liệu watchlist", use_container_width=True)
+    prewarm_now_async = st.button("♨️ Warm now (non-blocking)", use_container_width=True)
     st.caption("Gợi ý chạy nền: `python scripts/prefetch_cache.py --watchlist FPT,HPG,VNM --universe-limit 30`")
-    run_analysis = st.button("🚀 Phân tích ngay", width="stretch", type="primary")
+    run_analysis = st.button("🚀 Phân tích ngay", use_container_width=True, type="primary")
 
     cmd_flags = render_command_center_panel(
         ticker=ticker,

@@ -24,6 +24,66 @@ MIN_PE_ABSURD = 5.0
 
 PAPER_LONG_ACTIONS = frozenset({"BUY", "CONDITIONAL_BUY"})
 
+# Reasons that mean fair-value inputs (EPS/PE scale) are untrusted → suppress published fair price.
+_FAIR_VALUE_SUPPRESS_REASONS = frozenset(
+    {
+        "pe_sanity_notes",
+        "absurd_earnings_yield",
+        "pe_eps_anomaly",
+    }
+)
+
+
+def should_suppress_fair_value(*, mos_integrity_blocked: bool, reasons: list[str] | None) -> bool:
+    """True when integrity block is due to untrusted EPS/P/E — do not publish Graham fair value."""
+    if not mos_integrity_blocked:
+        return False
+    rs = {str(x).strip() for x in (reasons or []) if str(x).strip()}
+    return bool(rs & _FAIR_VALUE_SUPPRESS_REASONS)
+
+
+def review_fair_value_after_integrity(
+    *,
+    fair_value: float | None,
+    mos_integrity_blocked: bool,
+    reasons: list[str] | None,
+    note_vi: str = "",
+) -> dict[str, Any]:
+    """
+    Re-review fair value after MOS integrity gate.
+
+    Policy (product): vẫn công bố định giá Graham như trước để người dùng thấy
+    mô hình tính gì, nhưng đánh dấu không tin cậy giải ngân khi nghi EPS/P/E.
+    MOS hiển thị vẫn bị siết/block ở lớp ``apply_mos_integrity_clamp``.
+    """
+    raw = None if fair_value is None else float(fair_value)
+    suspect = should_suppress_fair_value(
+        mos_integrity_blocked=bool(mos_integrity_blocked),
+        reasons=reasons,
+    )
+    if not suspect:
+        return {
+            "fair_value_suppressed": False,
+            "fair_value_unreliable": False,
+            "composite_target_price": raw,
+            "composite_target_price_raw": raw,
+            "fair_value_suppress_reason_vi": "",
+            "publish_mos": True,
+        }
+    reason = str(note_vi or "").strip() or (
+        "Định giá Graham vẫn hiển thị theo mô hình, nhưng chưa đủ tin cậy để giải ngân "
+        "do nghi EPS/P/E lệch đơn vị — cần xác minh BCTC."
+    )
+    return {
+        # Keep publishing Graham number (do not blank UI to "Chưa xác định").
+        "fair_value_suppressed": False,
+        "fair_value_unreliable": True,
+        "composite_target_price": raw,
+        "composite_target_price_raw": raw,
+        "fair_value_suppress_reason_vi": reason,
+        "publish_mos": True,
+    }
+
 
 def _f(v: Any) -> float | None:
     if v is None or v == "":
@@ -258,15 +318,23 @@ def apply_mos_integrity_clamp(
     if pe_v is not None and pe_v > 0 and pe_v < MIN_PE_ABSURD and ey is not None and ey > EARNINGS_YIELD_ABSURD:
         blocked = True
         reasons.append("absurd_earnings_yield")
-    if mos_pct is not None and abs(float(mos_pct)) > MOS_ABS_HARD_CAP:
-        blocked = True
-        reasons.append("mos_abs_over_cap")
 
     raw = None if mos_pct is None else float(mos_pct)
     display = raw
+    extreme_mos = raw is not None and abs(raw) > MOS_ABS_HARD_CAP
+    if extreme_mos:
+        reasons.append("mos_abs_over_cap")
+        # |MOS| > 100% sau khi EPS đã chuẩn → chỉ siết hiển thị, không coi là lỗi đơn vị.
+        # Chỉ block giải ngân khi kèm tín hiệu PE/EPS bất thường.
+        if blocked:
+            pass
+        else:
+            display = MOS_DISPLAY_CAP if raw > 0 else -MOS_DISPLAY_CAP
+            reasons.append("mos_display_clamped")
     if raw is not None and abs(raw) > MOS_DISPLAY_CAP:
         display = MOS_DISPLAY_CAP if raw > 0 else -MOS_DISPLAY_CAP
-        reasons.append("mos_display_clamped")
+        if "mos_display_clamped" not in reasons:
+            reasons.append("mos_display_clamped")
     if blocked and raw is not None:
         # Do not advertise extreme MOS as actionable edge
         if abs(raw) > 40.0:
@@ -279,6 +347,11 @@ def apply_mos_integrity_clamp(
             "MOS bị siết/không dùng để giải ngân do nghi ngờ đơn vị EPS/P/E hoặc biên an toàn phi thực tế. "
             + (" ".join(notes[:2]) if notes else "")
         ).strip()
+    elif extreme_mos:
+        note_vi = (
+            f"MOS thô {raw:+.1f}% vượt ngưỡng hiển thị — đã siết về ±{MOS_DISPLAY_CAP:.0f}% "
+            "(định giá vẫn công bố; kiểm tra lại trước khi giải ngân)."
+        )
 
     return {
         "mos_raw_pct": raw,

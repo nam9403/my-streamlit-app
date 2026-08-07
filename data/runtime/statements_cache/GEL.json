@@ -1,0 +1,91 @@
+{
+  "symbol": "GEL",
+  "source": "fireant_quarterly",
+  "cached_at": "2026-08-06T14:43:56.369188+00:00",
+  "rows": [
+    {
+      "year": 2026,
+      "quarter": 1,
+      "revenue": null,
+      "net_income": null,
+      "total_assets": null,
+      "equity": null,
+      "sales_growth_ttm_pct": 18.4726,
+      "profit_growth_ttm_pct": -94.0541,
+      "roe_ttm_pct": 5.9448,
+      "eps_ttm": 237.624748421519,
+      "bvps": 28395.598702001265,
+      "_provider": "fireant"
+    },
+    {
+      "year": 2025,
+      "quarter": 4,
+      "revenue": null,
+      "net_income": null,
+      "total_assets": null,
+      "equity": null,
+      "sales_growth_ttm_pct": null,
+      "profit_growth_ttm_pct": null,
+      "roe_ttm_pct": 7.7796,
+      "eps_ttm": 605.9609440253165,
+      "bvps": 24000.613784489873,
+      "_provider": "fireant"
+    },
+    {
+      "year": 2025,
+      "quarter": 3,
+      "revenue": null,
+      "net_income": null,
+      "total_assets": null,
+      "equity": null,
+      "sales_growth_ttm_pct": null,
+      "profit_growth_ttm_pct": null,
+      "roe_ttm_pct": null,
+      "eps_ttm": 553.607758221519,
+      "bvps": 23095.961046072152,
+      "_provider": "fireant"
+    },
+    {
+      "year": 2025,
+      "quarter": 2,
+      "revenue": null,
+      "net_income": null,
+      "total_assets": null,
+      "equity": null,
+      "sales_growth_ttm_pct": null,
+      "profit_growth_ttm_pct": null,
+      "roe_ttm_pct": null,
+      "eps_ttm": null,
+      "bvps": 23034.595674341774,
+      "_provider": "fireant"
+    },
+    {
+      "year": 2025,
+      "quarter": 1,
+      "revenue": null,
+      "net_income": null,
+      "total_assets": null,
+      "equity": null,
+      "sales_growth_ttm_pct": null,
+      "profit_growth_ttm_pct": null,
+      "roe_ttm_pct": null,
+      "eps_ttm": null,
+      "bvps": 22170.236532694937,
+      "_provider": "fireant"
+    },
+    {
+      "year": 2024,
+      "quarter": 4,
+      "revenue": null,
+      "net_income": null,
+      "total_assets": null,
+      "equity": null,
+      "sales_growth_ttm_pct": null,
+      "profit_growth_ttm_pct": null,
+      "roe_ttm_pct": null,
+      "eps_ttm": null,
+      "bvps": 21122.165039840507,
+      "_provider": "fireant"
+    }
+  ]
+}

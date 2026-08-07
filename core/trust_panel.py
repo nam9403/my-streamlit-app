@@ -76,7 +76,7 @@ def render_trust_panel(
             recent = recent_closed_trades(limit=8, anonymize=True)
             if recent:
                 st.markdown("**Mẫu lệnh đã đóng (ẩn danh)**")
-                st.dataframe(recent, width="stretch", hide_index=True)
+                st.dataframe(recent, use_container_width=True, hide_index=True)
         except Exception:
             st.caption("Paper ledger chưa sẵn sàng.")
 

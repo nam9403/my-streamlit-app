@@ -463,7 +463,7 @@ def _render_matplotlib_candles(
     target_ax.set_xticklabels(tick_labels, rotation=0, fontsize=8)
     fig.autofmt_xdate(rotation=0)
     plt.tight_layout()
-    st.pyplot(fig, width="stretch")
+    st.pyplot(fig, use_container_width=True)
     plt.close(fig)
 
 
@@ -567,13 +567,13 @@ def render_candlestick_with_intrinsic(
         if show_ma50:
             base["MA50"] = ma50
         base = base.set_index("Ngày")
-        st.line_chart(base, width="stretch")
+        st.line_chart(base, use_container_width=True)
         if show_volume and "volume" in d.columns:
             vol_df = pd.DataFrame({"Ngày": d["date"], "Volume": d["volume"]}).set_index("Ngày")
-            st.bar_chart(vol_df, width="stretch")
+            st.bar_chart(vol_df, use_container_width=True)
         if show_rsi:
             rsi_df = pd.DataFrame({"Ngày": d["date"], "RSI (14)": rsi14}).set_index("Ngày")
-            st.line_chart(rsi_df, width="stretch")
+            st.line_chart(rsi_df, use_container_width=True)
         st.caption("Đang dùng chế độ tương thích: line chart (ổn định hơn trên một số máy/browser).")
         src = str(ohlcv.attrs.get("source") or "")
         if src in ("disk_cache", "disk_cache_fastpath"):
@@ -874,13 +874,13 @@ def render_candlestick_with_intrinsic(
         col=1,
     )
     try:
-        st.plotly_chart(fig, width="stretch")
+        st.plotly_chart(fig, use_container_width=True)
     except Exception as exc:
         st.warning(f"Plotly render lỗi, chuyển sang biểu đồ dự phòng. Chi tiết: {exc}")
         fallback = d[["date", "close"]].copy().rename(columns={"date": "Ngày", "close": "Giá đóng cửa"})
         if not fallback.empty:
             fallback = fallback.set_index("Ngày")
-            st.line_chart(fallback, width="stretch")
+            st.line_chart(fallback, use_container_width=True)
         else:
             st.warning("Không có dữ liệu dự phòng để hiển thị biểu đồ.")
     if intrinsic > 0 and intrinsic_for_plot <= 0 and median_close > 0:

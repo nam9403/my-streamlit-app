@@ -44,6 +44,14 @@ def build_decision_card_payload(report: dict[str, Any] | None, *, symbol: str = 
     sym = str(symbol or (report or {}).get("symbol") or (report or {}).get("ticker") or "").upper()
     # Same action as Autopilot Top when board is fresh (ACB: GIỮ on both, never GIỮ vs QUAN SÁT).
     rep = align_report_action_with_autopilot_board(report if isinstance(report, dict) else {}, symbol=sym)
+    # Day/session cache có thể kẹt giá mock — làm mới giá trước khi đưa lên card.
+    if sym:
+        try:
+            from core.app_analysis_orchestration import _refresh_valuation_live_price
+
+            rep = _refresh_valuation_live_price(rep, sym)
+        except Exception:
+            pass
     gate = resolve_display_action(rep)
     val = rep.get("valuation") if isinstance(rep.get("valuation"), dict) else {}
     phase = rep.get("phase") if isinstance(rep.get("phase"), dict) else {}
@@ -57,6 +65,20 @@ def build_decision_card_payload(report: dict[str, Any] | None, *, symbol: str = 
     trig = pb.get("trigger") if isinstance(pb.get("trigger"), dict) else {}
     thesis = pb.get("thesis") if isinstance(pb.get("thesis"), dict) else {}
     setup = pb.get("setup") if isinstance(pb.get("setup"), dict) else {}
+    mos_blocked = bool(val.get("mos_integrity_blocked"))
+    mos_raw = val.get("margin_of_safety_composite_pct_raw")
+    integrity_reasons = val.get("mos_integrity_reasons") or []
+    if not isinstance(integrity_reasons, list):
+        integrity_reasons = []
+    integrity_note = str(val.get("mos_integrity_note_vi") or "").strip()
+    if not integrity_note and mos_blocked:
+        notes = val.get("pe_sanity_notes") or []
+        note0 = ""
+        if isinstance(notes, list) and notes:
+            note0 = str(notes[0] or "").strip()
+        integrity_note = note0 or (
+            "MOS/định giá bị đánh dấu không tin cậy do nghi lệch EPS/P/E hoặc biên an toàn phi thực tế."
+        )
     return {
         "symbol": sym,
         "action": action,
@@ -64,8 +86,26 @@ def build_decision_card_payload(report: dict[str, Any] | None, *, symbol: str = 
         "legend": str(val.get("instant_conclusion") or gate.get("legend_view") or "—"),
         "phase": str(phase.get("phase") or "neutral"),
         "mos_pct": val.get("margin_of_safety_composite_pct"),
+        "mos_pct_raw": mos_raw,
+        "mos_integrity_blocked": mos_blocked,
+        "mos_integrity_reasons": [str(x) for x in integrity_reasons if str(x).strip()],
+        "mos_integrity_note_vi": integrity_note,
+        "fair_price_unreliable": mos_blocked
+        or bool(val.get("fair_value_unreliable"))
+        or bool(val.get("fair_value_suppressed")),
+        "fair_value_suppressed": bool(val.get("fair_value_suppressed")),
+        "fair_value_unreliable": bool(val.get("fair_value_unreliable")) or mos_blocked,
         "price": val.get("price"),
-        "fair_price": val.get("composite_target_price") or val.get("intrinsic_value_graham") or val.get("graham_number"),
+        "fair_price": (
+            val.get("best_fair_value")
+            or val.get("composite_target_price")
+            or val.get("graham_capped_fair")
+            or val.get("intrinsic_value_graham")
+            or val.get("graham_number")
+        ),
+        "fair_method_label_vi": str(val.get("best_fair_label_vi") or ""),
+        "fair_method_confidence": val.get("best_fair_confidence"),
+        "graham_raw_price": val.get("intrinsic_value_graham") or val.get("graham_number"),
         "confidence_pct": rep.get("confidence_score"),
         "readiness": gate.get("decision_readiness") or rep.get("decision_readiness") or "LOW",
         "missing_summary": gate.get("missing_summary") or format_missing_items(rep.get("missing_items")),
@@ -87,6 +127,10 @@ def build_decision_card_payload(report: dict[str, Any] | None, *, symbol: str = 
         "data_trust_score": dts.get("score"),
         "data_trust_band": dts.get("band"),
         "show_trade_plan": bool(gate.get("show_trade_plan")),
+        "entry_allowed": bool(gate.get("entry_allowed", action in ("BUY", "CONDITIONAL_BUY"))),
+        "risk_management_visible": bool(
+            gate.get("risk_management_visible", action in ("BUY", "CONDITIONAL_BUY", "HOLD"))
+        ),
         "is_conditional": bool(gate.get("is_conditional") or action == "CONDITIONAL_BUY"),
         "pe_anomaly_flag": pe_anomaly,
         "eps_pe_anomaly_warning_vi": str(val.get("eps_pe_anomaly_warning_vi") or "") if pe_anomaly else "",
@@ -266,7 +310,7 @@ def render_journal_one_click(
         if st.button(
             "📒 Ghi journal 1 click",
             key=f"journal_one_click_{sym}",
-            width="stretch",
+            use_container_width=True,
             disabled=not (draft["ready"] and quota_ok),
         ):
             ok, msg = add_decision(
@@ -301,7 +345,7 @@ def render_journal_one_click(
         if st.button(
             "🟢 Mở trade 100 CP",
             key=f"journal_open_trade_{sym}",
-            width="stretch",
+            use_container_width=True,
             disabled=not (draft["entry_price"] > 0 and quota_ok),
         ):
             ok_tr, msg_tr = open_trade(
@@ -368,9 +412,19 @@ def render_mobile_decision_card(
         trust_line = f"Độ tin cậy dữ liệu {card.get('data_trust_score')} ({card.get('data_trust_band') or '—'})"
 
     plan_bits = []
-    if card.get("show_trade_plan"):
+    entry_ok = bool(card.get("entry_allowed"))
+    risk_ok = bool(card.get("risk_management_visible") or card.get("show_trade_plan"))
+    if entry_ok:
         if card.get("entry"):
             plan_bits.append(f"Giá mua {_fmt_num(card.get('entry'))} đ")
+        if card.get("sl"):
+            plan_bits.append(f"Cắt lỗ {_fmt_num(card.get('sl'))} đ")
+        if card.get("tp"):
+            plan_bits.append(f"Chốt lời {_fmt_num(card.get('tp'))} đ")
+        if card.get("invalidation"):
+            plan_bits.append(f"Hủy nếu mất {_fmt_num(card.get('invalidation'))} đ")
+    elif risk_ok:
+        plan_bits.append("Không mở mua mới")
         if card.get("sl"):
             plan_bits.append(f"Cắt lỗ {_fmt_num(card.get('sl'))} đ")
         if card.get("tp"):
@@ -381,6 +435,8 @@ def render_mobile_decision_card(
         plan_line = html.escape(str(card.get("entry_hint")))
         if plan_bits:
             plan_line = plan_line + " · " + " · ".join(plan_bits)
+    elif card.get("action") == "HOLD" and risk_ok:
+        plan_line = " · ".join(plan_bits) if plan_bits else "Không mở mua mới — theo dõi SL bảo vệ vị thế."
     else:
         plan_line = " · ".join(plan_bits) if plan_bits else "Không đề xuất vào lệnh (QUAN SÁT/TRÁNH)."
 
@@ -395,7 +451,19 @@ def render_mobile_decision_card(
     if mos_f is not None and mos_f > 0 and not str(mos_txt).startswith("+") and mos_txt != "—":
         mos_txt = f"+{mos_txt}"
     mos_txt = html.escape(mos_txt)
-    if mos_f is None:
+    integrity_blocked = bool(card.get("mos_integrity_blocked") or card.get("fair_price_unreliable"))
+    mos_raw_pct = card.get("mos_pct_raw")
+    mos_raw_label = ""
+    try:
+        if mos_raw_pct not in (None, ""):
+            mos_raw_label = f"{float(mos_raw_pct):+.1f}%"
+    except (TypeError, ValueError):
+        mos_raw_label = ""
+    if integrity_blocked:
+        mos_emoji, mos_color, mos_note = "⚠️", "#b45309", (
+            f"Đã siết (thô {mos_raw_label})" if mos_raw_label else "Đã siết — không tin cậy giải ngân"
+        )
+    elif mos_f is None:
         mos_emoji, mos_color, mos_note = "🛡️", "#64748b", ""
     elif mos_f < 0:
         mos_emoji, mos_color, mos_note = "🔴", "#b91c1c", "Thị giá cao hơn định giá"
@@ -404,6 +472,21 @@ def render_mobile_decision_card(
     else:
         mos_emoji, mos_color, mos_note = "🛡️", "#64748b", "Hòa với định giá"
     mos_note_html = f" <span style='color:#64748b;'>({html.escape(mos_note)})</span>" if mos_note else ""
+    fair_mark = (
+        " <span style='color:#b45309;font-weight:700;'>(⚠ tham khảo · không giải ngân)</span>"
+        if integrity_blocked
+        else ""
+    )
+    integrity_banner = ""
+    if integrity_blocked:
+        note = html.escape(
+            str(card.get("mos_integrity_note_vi") or "Định giá Graham tham khảo — nghi EPS/P/E lệch đơn vị.")
+        )
+        integrity_banner = (
+            f"<div style='margin-top:8px;padding:8px 10px;border-radius:8px;border:1px solid #fcd34d;"
+            f"background:#fffbeb;color:#92400e;font-size:0.82rem;'>"
+            f"<b>⚠ Cảnh báo định giá:</b> {note}</div>"
+        )
 
     playbook_bits = []
     if card.get("thesis_grade"):
@@ -441,9 +524,11 @@ background:linear-gradient(135deg,#fafafa,#f4f6f8);max-width:480px;">
         💵 {price_txt} <span style="font-size:0.9rem;font-weight:600;color:#64748b;">đ</span>
       </div>
       <div style="font-size:0.88rem;color:#334155;margin-top:8px;line-height:1.45;">
-        {mos_emoji} Định giá: <b>{fair_txt} đ</b> · MOS:
+        {mos_emoji} Định giá: <b>{fair_txt} đ</b>{fair_mark} · MOS:
         <b style="color:{mos_color};">{mos_txt}</b>{mos_note_html}
       </div>
+      {('<div style="font-size:0.78rem;color:#64748b;margin-top:2px;">' + html.escape(str(card.get("fair_method_label_vi") or "")) + "</div>") if card.get("fair_method_label_vi") else ""}
+      {integrity_banner}
     </div>
     <div style="font-size:0.82rem;font-weight:700;color:{accent};border:1.5px solid {accent};
       border-radius:999px;padding:6px 10px;white-space:nowrap;">{action_vi}</div>

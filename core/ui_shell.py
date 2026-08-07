@@ -238,7 +238,7 @@ def render_app() -> None:
     if flags.should_defer_autopilot:
         st.markdown("### 🤖 Auto Pilot")
         st.caption("Đang trì hoãn tải Auto Pilot để ưu tiên mở app nhanh trên máy cấu hình thấp.")
-        if st.button("Tải Auto Pilot ngay", key="load_autopilot_now", width="stretch"):
+        if st.button("Tải Auto Pilot ngay", key="load_autopilot_now", use_container_width=True):
             sm.request_autopilot_load()
             st.rerun()
     else:
@@ -275,7 +275,7 @@ def render_app() -> None:
             st.caption(
                 "Fast shell: Finder & quét nặng **chưa tải** để giữ mở app nhanh. Bấm nút bên dưới khi bạn cần."
             )
-            if st.button("Mở Finder & quét thị trường", key="unlock_finder_shell", width="stretch"):
+            if st.button("Mở Finder & quét thị trường", key="unlock_finder_shell", use_container_width=True):
                 sm.unlock_finder_shell()
                 st.rerun()
         else:
