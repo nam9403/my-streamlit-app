@@ -1,8 +1,0 @@
--r requirements.txt
-pytest>=8.0.0
-pytest-cov>=5.0.0
-pytest-xdist>=3.5.0
-ruff>=0.6.0
-mypy>=1.11.0
-alembic>=1.13.0
-SQLAlchemy>=2.0.0
